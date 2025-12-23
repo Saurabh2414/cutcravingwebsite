@@ -1,0 +1,450 @@
+<section class="hero-mobile" style="padding: 24px 6% 16px; text-align: center; background: {{ section.settings.background_color }};">
+  <h1 class="hero-mobile-title">{{ section.settings.title | newline_to_br }}</h1>
+
+  <p class="hero-mobile-subtitle">{{ section.settings.subtitle | newline_to_br }}</p>
+
+  <p class="hero-mobile-tagline">{{ section.settings.tagline }}</p>
+
+  <div style="margin: 32px 0;">
+    <!-- Auto-rotating product carousel -->
+    <div id="heroCarousel-{{ section.id }}" class="hero-carousel">
+      <div class="carousel-item" data-product="0">
+        {% if section.blocks.first.settings.text %}
+          {{ section.blocks.first.settings.text }}
+        {% else %}
+          PB
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="product-icons">
+      {% for block in section.blocks %}
+        {% if block.type == 'product_icon' and block.settings.icon %}
+          <span class="product-icon" {{ block.shopify_attributes }}>{{ block.settings.icon }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="benefits-tags">{{ section.settings.benefits_tags }}</div>
+
+  <a href="{{ section.settings.primary_button_link }}" class="primary-cta">
+    {{ section.settings.primary_button_text }} →
+  </a>
+
+  {% if section.settings.secondary_link_text %}
+    <p class="secondary-link">
+      {{ section.settings.secondary_link_label }}
+      <a href="{{ section.settings.secondary_link_url }}">{{ section.settings.secondary_link_text }}</a>
+    </p>
+  {% endif %}
+</section>
+
+<style>
+  .hero-mobile {
+    padding: 24px 6% 16px;
+    text-align: center;
+  }
+
+  .hero-mobile-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    line-height: 1.15;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 20px 0;
+    letter-spacing: -0.8px;
+  }
+
+  .hero-mobile-subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: 12px;
+    line-height: 1.5;
+    font-weight: 600;
+  }
+
+  .hero-mobile-tagline {
+    font-size: 14px;
+    color: {{ section.settings.tagline_color }};
+    margin-bottom: 36px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .hero-carousel {
+    width: 200px;
+    height: 200px;
+    background: {{ section.settings.carousel_bg_color }};
+    color: {{ section.settings.carousel_text_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 40px;
+    font-weight: 700;
+    box-shadow: 0 12px 28px rgba(61,95,74,0.25), 0 4px 12px rgba(0,0,0,0.1);
+    transition: all 0.5s ease;
+  }
+
+  .product-icons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .product-icon {
+    font-size: 24px;
+    background: rgba(255,255,255,0.9);
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    opacity: 0.7;
+  }
+
+  .benefits-tags {
+    font-size: 13px;
+    color: #7a7a7a;
+    margin-bottom: 32px;
+  }
+
+  .primary-cta {
+    display: block;
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 18px 40px;
+    background: linear-gradient(135deg, {{ section.settings.button_bg_start }} 0%, {{ section.settings.button_bg_end }} 100%);
+    color: {{ section.settings.button_text_color }};
+    border-radius: 60px;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(61,95,74,0.3), 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+  }
+
+  .primary-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(61,95,74,0.4);
+  }
+
+  .secondary-link {
+    font-size: 13px;
+    color: #7a7a7a;
+    margin-top: 16px;
+    margin-bottom: 0;
+  }
+
+  .secondary-link a {
+    color: #7a7a7a;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .hero-mobile-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.9);
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const products = [
+      {% for block in section.blocks %}
+        {% if block.type == 'carousel_product' %}
+        { text: '{{ block.settings.text | escape }}', bg: '{{ block.settings.bg_color }}' }{% unless forloop.last %},{% endunless %}
+        {% endif %}
+      {% endfor %}
+    ];
+
+    if (products.length === 0) {
+      products.push(
+        { text: 'PB', bg: '#3d5f4a' },
+        { text: '🌿', bg: '#4a6b5a' },
+        { text: '🌺', bg: '#5a4a6b' },
+        { text: '🦋', bg: '#4a5a6b' }
+      );
+    }
+
+    let currentIndex = 0;
+    const carousel = document.getElementById('heroCarousel-{{ section.id }}');
+    const carouselItem = carousel.querySelector('.carousel-item');
+
+    function rotateProduct() {
+      currentIndex = (currentIndex + 1) % products.length;
+      const product = products[currentIndex];
+
+      // Fade out
+      carousel.style.opacity = '0.5';
+      carousel.style.transform = 'scale(0.95)';
+
+      setTimeout(() => {
+        carouselItem.textContent = product.text;
+        carousel.style.background = product.bg;
+
+        // Fade in
+        carousel.style.opacity = '1';
+        carousel.style.transform = 'scale(1)';
+      }, 250);
+    }
+
+    // Rotate every 2.5 seconds
+    setInterval(rotateProduct, {{ section.settings.rotation_speed | times: 1000 }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero Mobile Carousel",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f8f6f3"
+    },
+    {
+      "type": "header",
+      "content": "Headline"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Main Title (use Shift+Enter for line breaks)",
+      "default": "Food That Understands\nYour Cravings."
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 24,
+      "max": 52,
+      "step": 2,
+      "default": 38,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Stay full. Stay calm.\nStay in control."
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size",
+      "min": 14,
+      "max": 24,
+      "step": 2,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Because fighting cravings never works."
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Tagline Color",
+      "default": "#5a5a5a"
+    },
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+    {
+      "type": "color",
+      "id": "carousel_bg_color",
+      "label": "Carousel Background",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "carousel_text_color",
+      "label": "Carousel Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "label": "Rotation Speed (seconds)",
+      "min": 1,
+      "max": 10,
+      "step": 0.5,
+      "default": 2.5,
+      "unit": "s"
+    },
+    {
+      "type": "header",
+      "content": "Benefits"
+    },
+    {
+      "type": "text",
+      "id": "benefits_tags",
+      "label": "Benefits Tags",
+      "default": "🥜 Protein  •  🌿 Calm  •  ⚡ Focus"
+    },
+    {
+      "type": "header",
+      "content": "Primary CTA"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Button Text",
+      "default": "Shop Flagship"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_start",
+      "label": "Button Background Start",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_end",
+      "label": "Button Background End",
+      "default": "#2d4a38"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_link_label",
+      "label": "Label",
+      "default": "Not sure?"
+    },
+    {
+      "type": "text",
+      "id": "secondary_link_text",
+      "label": "Link Text",
+      "default": "Take the 60-sec quiz"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link_url",
+      "label": "Link URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "carousel_product",
+      "name": "Carousel Product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Display Text (emoji or letters)",
+          "default": "PB"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#3d5f4a"
+        }
+      ]
+    },
+    {
+      "type": "product_icon",
+      "name": "Product Icon",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "🦋"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Mobile Carousel",
+      "blocks": [
+        {
+          "type": "carousel_product",
+          "settings": {
+            "text": "PB",
+            "bg_color": "#3d5f4a"
+          }
+        },
+        {
+          "type": "carousel_product",
+          "settings": {
+            "text": "🌿",
+            "bg_color": "#4a6b5a"
+          }
+        },
+        {
+          "type": "carousel_product",
+          "settings": {
+            "text": "🌺",
+            "bg_color": "#5a4a6b"
+          }
+        },
+        {
+          "type": "carousel_product",
+          "settings": {
+            "text": "🦋",
+            "bg_color": "#4a5a6b"
+          }
+        },
+        {
+          "type": "product_icon",
+          "settings": {
+            "icon": "🦋"
+          }
+        },
+        {
+          "type": "product_icon",
+          "settings": {
+            "icon": "🌺"
+          }
+        },
+        {
+          "type": "product_icon",
+          "settings": {
+            "icon": "🌿"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
