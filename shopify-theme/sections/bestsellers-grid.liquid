@@ -1,0 +1,486 @@
+<section class="bestsellers-section" style="padding: 80px 5%; background: {{ section.settings.background_color }};">
+  <div class="section-header">
+    {% if section.settings.kicker %}
+      <div class="section-kicker">{{ section.settings.kicker }}</div>
+    {% endif %}
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+  </div>
+
+  <div class="products-grid">
+    {% if section.settings.collection != blank %}
+      {% assign featured_collection = collections[section.settings.collection] %}
+      {% for product in featured_collection.products limit: section.settings.products_limit %}
+        <div class="product-card">
+          {% if product.metafields.custom.badge %}
+            <div class="urgency-badge {{ product.metafields.custom.badge_type }}">{{ product.metafields.custom.badge }}</div>
+          {% endif %}
+
+          <div class="product-image-area">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | img_url: '400x400' }}" alt="{{ product.title | escape }}" loading="lazy">
+            {% else %}
+              <div class="product-placeholder">{{ product.title | slice: 0, 2 }}</div>
+            {% endif %}
+          </div>
+
+          <div class="product-info">
+            {% if product.type %}
+              <div class="product-category">{{ product.type }}</div>
+            {% endif %}
+            <h3 class="product-title">{{ product.title }}</h3>
+            {% if product.metafields.custom.subtitle %}
+              <p class="product-subtitle">{{ product.metafields.custom.subtitle }}</p>
+            {% endif %}
+
+            <div class="product-price">
+              <span class="price-current">{{ product.price | money }}</span>
+              {% if product.compare_at_price > product.price %}
+                <span class="price-original">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+
+            {% if product.metafields.custom.per_serving_price %}
+              <p class="per-serving-price">{{ product.metafields.custom.per_serving_price }}</p>
+            {% endif %}
+            {% if section.settings.show_limited_time %}
+              <p class="limited-time-text">{{ section.settings.limited_time_text }}</p>
+            {% endif %}
+
+            {% form 'product', product %}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <button type="submit" class="add-to-cart">{{ section.settings.button_text }} — {{ product.price | money }}</button>
+            {% endform %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {% for block in section.blocks %}
+        <div class="product-card" {{ block.shopify_attributes }}>
+          {% if block.settings.badge %}
+            <div class="urgency-badge {{ block.settings.badge_type }}">{{ block.settings.badge }}</div>
+          {% endif %}
+
+          <div class="product-image-area">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | img_url: '400x400' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              <div class="product-placeholder">{{ block.settings.icon }}</div>
+            {% endif %}
+          </div>
+
+          <div class="product-info">
+            {% if block.settings.category %}
+              <div class="product-category">{{ block.settings.category }}</div>
+            {% endif %}
+            <h3 class="product-title">{{ block.settings.title }}</h3>
+            {% if block.settings.subtitle %}
+              <p class="product-subtitle">{{ block.settings.subtitle }}</p>
+            {% endif %}
+
+            <div class="product-price">
+              <span class="price-current">{{ block.settings.price }}</span>
+              {% if block.settings.original_price %}
+                <span class="price-original">{{ block.settings.original_price }}</span>
+              {% endif %}
+            </div>
+
+            {% if block.settings.per_serving %}
+              <p class="per-serving-price">{{ block.settings.per_serving }}</p>
+            {% endif %}
+            <p class="limited-time-text">{{ section.settings.limited_time_text }}</p>
+
+            <a href="{{ block.settings.link }}" class="add-to-cart">{{ section.settings.button_text }} — {{ block.settings.price }}</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .bestsellers-section {
+    padding: 80px 5%;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-kicker {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: {{ section.settings.kicker_color }};
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    letter-spacing: -0.5px;
+    margin: 0;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px 24px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  .urgency-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+  }
+
+  .urgency-badge.bestseller {
+    background: #FFD700;
+    color: #2C2416;
+  }
+
+  .urgency-badge.low-stock {
+    background: #FF6B6B;
+    color: white;
+  }
+
+  .product-image-area {
+    text-align: center;
+    margin-bottom: 24px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-image-area img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+
+  .product-placeholder {
+    width: 150px;
+    height: 150px;
+    background: #F5EDE4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2D5F3F;
+  }
+
+  .product-info {
+    text-align: center;
+  }
+
+  .product-category {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: {{ section.settings.category_color }};
+    margin-bottom: 8px;
+  }
+
+  .product-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #2C2416;
+    margin: 0 0 8px 0;
+  }
+
+  .product-subtitle {
+    font-size: 14px;
+    color: #6B5D4F;
+    margin-bottom: 16px;
+  }
+
+  .product-price {
+    margin-bottom: 8px;
+  }
+
+  .price-current {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2C2416;
+  }
+
+  .price-original {
+    font-size: 18px;
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 8px;
+  }
+
+  .per-serving-price {
+    font-size: 13px;
+    color: #6B5D4F;
+    margin-bottom: 6px;
+  }
+
+  .limited-time-text {
+    font-size: 12px;
+    color: #FF6B6B;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .add-to-cart {
+    display: block;
+    width: 100%;
+    padding: 14px 24px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .add-to-cart:hover {
+    background: {{ section.settings.button_hover_color }};
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Bestsellers Grid",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFF9F3"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "MOST LOVED PRODUCTS"
+    },
+    {
+      "type": "color",
+      "id": "kicker_color",
+      "label": "Kicker Color",
+      "default": "#8B6F47"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop Our Bestsellers"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "color",
+      "id": "category_color",
+      "label": "Category Color",
+      "default": "#8B6F47"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection (leave blank for manual products)"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background",
+      "default": "#2D5F3F"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Color",
+      "default": "#234a31"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_limited_time",
+      "label": "Show Limited Time Text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "limited_time_text",
+      "label": "Limited Time Text",
+      "default": "Limited-time pricing"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Default Badge Background",
+      "default": "#2D5F3F"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Default Badge Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Manual Product",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon/Text (if no image)",
+          "default": "PB"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text",
+          "default": "Fresh Batch"
+        },
+        {
+          "type": "select",
+          "id": "badge_type",
+          "label": "Badge Type",
+          "options": [
+            {"value": "", "label": "Default"},
+            {"value": "bestseller", "label": "Bestseller"},
+            {"value": "low-stock", "label": "Low Stock"}
+          ],
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "default": "Protein Power"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Title",
+          "default": "Creamy Peanut Butter"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Protein-packed • Zero additives"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Current Price",
+          "default": "₹299"
+        },
+        {
+          "type": "text",
+          "id": "original_price",
+          "label": "Original Price (optional)",
+          "default": "₹450"
+        },
+        {
+          "type": "text",
+          "id": "per_serving",
+          "label": "Per Serving Price",
+          "default": "₹9.9 per serving • Fresh weekly batch"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bestsellers Grid"
+    }
+  ]
+}
+{% endschema %}

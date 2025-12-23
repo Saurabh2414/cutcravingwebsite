@@ -1,0 +1,284 @@
+<section class="usp-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+  <div class="usp-container">
+    <div class="usp-content">
+      <h2 class="usp-title">{{ section.settings.title }}</h2>
+      <p class="usp-description">{{ section.settings.description }}</p>
+
+      <div class="usp-benefits">
+        {% for block in section.blocks %}
+          {% if block.type == 'benefit_pill' %}
+            <span class="usp-pill" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.social_proof %}
+        <div class="usp-social-proof">{{ section.settings.social_proof }}</div>
+      {% endif %}
+    </div>
+
+    <div class="proof-pills-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'proof_card' %}
+          <div class="proof-pill" {{ block.shopify_attributes }}>
+            <div class="pill-icon">{{ block.settings.icon }}</div>
+            <div class="pill-text">{{ block.settings.text }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .usp-section {
+    padding: 80px 5%;
+  }
+
+  .usp-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .usp-content {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .usp-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .usp-description {
+    font-size: 18px;
+    color: {{ section.settings.description_color }};
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto 30px;
+  }
+
+  .usp-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .usp-pill {
+    display: inline-block;
+    padding: 10px 20px;
+    background: {{ section.settings.pill_bg_color }};
+    color: {{ section.settings.pill_text_color }};
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+  }
+
+  .usp-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+
+  .usp-social-proof {
+    font-size: 15px;
+    color: {{ section.settings.social_proof_color }};
+    font-weight: 600;
+  }
+
+  .proof-pills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .proof-pill {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+  }
+
+  .proof-pill:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .pill-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+
+  .pill-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .usp-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+
+    .proof-pills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "USP Section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F5EDE4"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Designed to Satisfy Real Cravings"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Rich, slow-digesting nutrition that keeps you full, steady, and in control — without sugar spikes or regret."
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "text",
+      "id": "social_proof",
+      "label": "Social Proof Text",
+      "default": "✓ Trusted by 500+ mindful eaters"
+    },
+    {
+      "type": "color",
+      "id": "social_proof_color",
+      "label": "Social Proof Color",
+      "default": "#2D5F3F"
+    },
+    {
+      "type": "color",
+      "id": "pill_bg_color",
+      "label": "Pill Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "pill_text_color",
+      "label": "Pill Text Color",
+      "default": "#2C2416"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit_pill",
+      "name": "Benefit Pill",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Feel satisfied"
+        }
+      ]
+    },
+    {
+      "type": "proof_card",
+      "name": "Proof Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "🥜"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Naturally Filling"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "USP Section",
+      "blocks": [
+        {
+          "type": "benefit_pill",
+          "settings": {"text": "Feel satisfied"}
+        },
+        {
+          "type": "benefit_pill",
+          "settings": {"text": "Stay in control"}
+        },
+        {
+          "type": "benefit_pill",
+          "settings": {"text": "Eat consciously"}
+        },
+        {
+          "type": "proof_card",
+          "settings": {"icon": "🥜", "text": "Naturally Filling"}
+        },
+        {
+          "type": "proof_card",
+          "settings": {"icon": "💚", "text": "No Sugar. No Crash."}
+        },
+        {
+          "type": "proof_card",
+          "settings": {"icon": "🔥", "text": "Fresh, Clean Nutrition"}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
