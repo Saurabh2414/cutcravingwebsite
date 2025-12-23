@@ -1,0 +1,388 @@
+<section class="testimonials-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+  <div class="testimonials-container">
+    <div class="section-header">
+      <div class="section-kicker">{{ section.settings.kicker }}</div>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {% if section.settings.subtitle %}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="testimonials-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'testimonial' %}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+            <div class="testimonial-header">
+              <div class="testimonial-author-info">
+                <span class="testimonial-author">{{ block.settings.author }}</span>
+                <span class="testimonial-location">{{ block.settings.location }}</span>
+              </div>
+              {% if block.settings.show_verified %}
+                <span class="verified-badge">{{ block.settings.verified_text }}</span>
+              {% endif %}
+            </div>
+
+            <div class="stars">
+              {% assign star_count = block.settings.rating %}
+              {% for i in (1..5) %}
+                {% if i <= star_count %}⭐{% endif %}
+              {% endfor %}
+            </div>
+
+            <p class="testimonial-text">"{{ block.settings.testimonial }}"</p>
+
+            {% if block.settings.use_case %}
+              <p class="testimonial-usecase">{{ block.settings.use_case }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: 80px 5%;
+  }
+
+  .testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-kicker {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: {{ section.settings.kicker_color }};
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 18px;
+    color: {{ section.settings.subtitle_color }};
+    line-height: 1.6;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .testimonial-card {
+    background: {{ section.settings.card_bg_color }};
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .testimonial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+
+  .testimonial-author-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .testimonial-author {
+    font-size: 16px;
+    font-weight: 700;
+    color: {{ section.settings.author_color }};
+    margin-bottom: 4px;
+  }
+
+  .testimonial-location {
+    font-size: 13px;
+    color: {{ section.settings.location_color }};
+  }
+
+  .verified-badge {
+    padding: 4px 10px;
+    background: {{ section.settings.verified_bg_color }};
+    color: {{ section.settings.verified_text_color }};
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stars {
+    font-size: 18px;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .testimonial-text {
+    font-size: 16px;
+    color: {{ section.settings.testimonial_text_color }};
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .testimonial-usecase {
+    font-size: 13px;
+    color: {{ section.settings.usecase_color }};
+    padding-top: 16px;
+    border-top: 1px solid #E5DDD4;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      padding: 24px;
+    }
+
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Customer Testimonials",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "CUSTOMER LOVE"
+    },
+    {
+      "type": "color",
+      "id": "kicker_color",
+      "label": "Kicker Color",
+      "default": "#8B7355"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Loved by Real Customers"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle (optional)"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background",
+      "default": "#F8F6F3"
+    },
+    {
+      "type": "color",
+      "id": "author_color",
+      "label": "Author Name Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "color",
+      "id": "location_color",
+      "label": "Location Color",
+      "default": "#8B7355"
+    },
+    {
+      "type": "color",
+      "id": "verified_bg_color",
+      "label": "Verified Badge Background",
+      "default": "#E8F5E9"
+    },
+    {
+      "type": "color",
+      "id": "verified_text_color",
+      "label": "Verified Badge Text",
+      "default": "#2E7D32"
+    },
+    {
+      "type": "color",
+      "id": "testimonial_text_color",
+      "label": "Testimonial Text Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "color",
+      "id": "usecase_color",
+      "label": "Use Case Color",
+      "default": "#8B7355"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Priya S."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Gurgaon"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified",
+          "label": "Show Verified Badge",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "verified_text",
+          "label": "Verified Badge Text",
+          "default": "Verified Customer"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star Rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial Text",
+          "default": "Absolutely love the peanut butter! So fresh and tasty!"
+        },
+        {
+          "type": "text",
+          "id": "use_case",
+          "label": "Use Case (e.g., 'Post-workout nutrition • Used for 30 days')",
+          "default": "Post-workout nutrition • Used for 30 days"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Priya S.",
+            "location": "Gurgaon",
+            "show_verified": true,
+            "verified_text": "Verified Customer",
+            "rating": 5,
+            "testimonial": "Absolutely love the peanut butter! So fresh and tasty!",
+            "use_case": "Post-workout nutrition • Used for 30 days"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Rahul K.",
+            "location": "Pune",
+            "show_verified": true,
+            "verified_text": "Verified Customer",
+            "rating": 5,
+            "testimonial": "The teas are a game changer for my evenings!",
+            "use_case": "Evening relaxation • Used for 60 days"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Aditi M.",
+            "location": "Bangalore",
+            "show_verified": true,
+            "verified_text": "Verified Customer",
+            "rating": 5,
+            "testimonial": "Healthy and natural. Exactly what I needed!",
+            "use_case": "Daily user for 3 months"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

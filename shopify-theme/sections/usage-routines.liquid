@@ -1,0 +1,657 @@
+<section class="usage-routines-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+  <div class="usage-routines-container">
+    <!-- Header -->
+    <div class="section-header">
+      <div class="section-kicker">{{ section.settings.kicker }}</div>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <!-- Routine Cards -->
+    <div class="routines-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'routine' %}
+          <div class="routine-card{% if block.settings.reverse_layout %} reverse{% endif %}" {{ block.shopify_attributes }}>
+            <div class="routine-visual {{ block.settings.visual_class }}">
+              <div class="visual-peanut">{{ block.settings.icon }}</div>
+              <div class="visual-label">{{ block.settings.visual_label }}</div>
+            </div>
+            <div class="routine-content">
+              <div class="routine-badge">{{ block.settings.badge }}</div>
+              <h3 class="routine-title">{{ block.settings.title }}</h3>
+              <p class="routine-description">{{ block.settings.description }}</p>
+
+              <div class="routine-benefits">
+                {% if block.settings.benefit_1 %}<span class="benefit-tag">{{ block.settings.benefit_1 }}</span>{% endif %}
+                {% if block.settings.benefit_2 %}<span class="benefit-tag">{{ block.settings.benefit_2 }}</span>{% endif %}
+                {% if block.settings.benefit_3 %}<span class="benefit-tag">{{ block.settings.benefit_3 }}</span>{% endif %}
+              </div>
+
+              <div class="routine-personas">
+                <strong>Perfect for:</strong> {{ block.settings.personas }}
+              </div>
+
+              <a href="{{ block.settings.cta_link }}" class="routine-cta">{{ block.settings.cta_text }}</a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Bottom CTA -->
+    {% if section.settings.show_bottom_cta %}
+      <div class="routines-bottom-cta">
+        <h3>{{ section.settings.bottom_cta_title }}</h3>
+        <p>{{ section.settings.bottom_cta_subtitle }}</p>
+        <a href="{{ section.settings.bottom_cta_link }}" class="btn-secondary">{{ section.settings.bottom_cta_button }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .usage-routines-section {
+    padding: 80px 5%;
+  }
+
+  .usage-routines-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-kicker {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: {{ section.settings.kicker_color }};
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 18px;
+    color: {{ section.settings.subtitle_color }};
+    line-height: 1.6;
+  }
+
+  .routines-grid {
+    display: grid;
+    gap: 60px;
+  }
+
+  .routine-card {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+    align-items: center;
+    background: {{ section.settings.card_bg_color }};
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .routine-card.reverse {
+    grid-template-columns: 1.5fr 1fr;
+  }
+
+  .routine-card.reverse .routine-visual {
+    order: 2;
+  }
+
+  .routine-card.reverse .routine-content {
+    order: 1;
+  }
+
+  .routine-visual {
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, {{ section.settings.visual_bg_start }} 0%, {{ section.settings.visual_bg_end }} 100%);
+    border-radius: 16px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+  }
+
+  .routine-visual.evening-visual {
+    background: linear-gradient(135deg, #7FB069 0%, #5D8C4D 100%);
+  }
+
+  .routine-visual.afternoon-visual {
+    background: linear-gradient(135deg, #E86B8A 0%, #C94D6F 100%);
+  }
+
+  .routine-visual.focus-visual {
+    background: linear-gradient(135deg, #4A7B9D 0%, #2E5C7A 100%);
+  }
+
+  .visual-peanut {
+    font-size: 72px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+  }
+
+  .visual-label {
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .routine-content {
+    padding: 20px;
+  }
+
+  .routine-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .routine-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #2C2416;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+  }
+
+  .routine-description {
+    font-size: 16px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .routine-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .benefit-tag {
+    padding: 8px 14px;
+    background: {{ section.settings.benefit_tag_bg }};
+    color: {{ section.settings.benefit_tag_text }};
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .routine-personas {
+    font-size: 15px;
+    color: #6B5D4F;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #E5DDD4;
+  }
+
+  .routine-personas strong {
+    color: #2C2416;
+  }
+
+  .routine-cta {
+    display: inline-block;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, {{ section.settings.cta_bg_start }} 0%, {{ section.settings.cta_bg_end }} 100%);
+    color: {{ section.settings.cta_text_color }};
+    border-radius: 60px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(61,95,74,0.25);
+    transition: transform 0.3s;
+  }
+
+  .routine-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(61,95,74,0.35);
+  }
+
+  .routines-bottom-cta {
+    text-align: center;
+    margin-top: 80px;
+    padding: 50px 40px;
+    background: {{ section.settings.bottom_cta_bg }};
+    border-radius: 20px;
+  }
+
+  .routines-bottom-cta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #2C2416;
+    margin: 0 0 12px 0;
+  }
+
+  .routines-bottom-cta p {
+    font-size: 16px;
+    color: #6B5D4F;
+    margin-bottom: 24px;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 16px 32px;
+    background: transparent;
+    color: #3D5F4A;
+    border: 2px solid #3D5F4A;
+    border-radius: 60px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary:hover {
+    background: #3D5F4A;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .routine-card,
+    .routine-card.reverse {
+      grid-template-columns: 1fr;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    .routine-card.reverse .routine-visual {
+      order: 1;
+    }
+
+    .routine-card.reverse .routine-content {
+      order: 2;
+    }
+
+    .routine-visual {
+      padding: 30px;
+    }
+
+    .visual-peanut {
+      font-size: 56px;
+    }
+
+    .routine-title {
+      font-size: 24px;
+    }
+
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+
+    .routines-bottom-cta {
+      padding: 40px 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Usage Routines",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "REAL ROUTINES"
+    },
+    {
+      "type": "color",
+      "id": "kicker_color",
+      "label": "Kicker Color",
+      "default": "#8B7355"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "How People Use CutCraving"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Real routines. Real results. No guesswork."
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "header",
+      "content": "Card Style"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background",
+      "default": "#F8F6F3"
+    },
+    {
+      "type": "color",
+      "id": "visual_bg_start",
+      "label": "Visual Background Start",
+      "default": "#FFB347"
+    },
+    {
+      "type": "color",
+      "id": "visual_bg_end",
+      "label": "Visual Background End",
+      "default": "#FF8C42"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background",
+      "default": "#FFF3E0"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#E65100"
+    },
+    {
+      "type": "color",
+      "id": "benefit_tag_bg",
+      "label": "Benefit Tag Background",
+      "default": "#E8F5E9"
+    },
+    {
+      "type": "color",
+      "id": "benefit_tag_text",
+      "label": "Benefit Tag Text",
+      "default": "#2E7D32"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_start",
+      "label": "CTA Background Start",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_end",
+      "label": "CTA Background End",
+      "default": "#2D4A38"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Bottom CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_cta",
+      "label": "Show Bottom CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "bottom_cta_title",
+      "label": "Bottom CTA Title",
+      "default": "Not sure which routine fits your lifestyle?"
+    },
+    {
+      "type": "text",
+      "id": "bottom_cta_subtitle",
+      "label": "Bottom CTA Subtitle",
+      "default": "Take our 60-second quiz for personalized suggestions"
+    },
+    {
+      "type": "text",
+      "id": "bottom_cta_button",
+      "label": "Bottom CTA Button Text",
+      "default": "Take the Quiz →"
+    },
+    {
+      "type": "url",
+      "id": "bottom_cta_link",
+      "label": "Bottom CTA Link"
+    },
+    {
+      "type": "color",
+      "id": "bottom_cta_bg",
+      "label": "Bottom CTA Background",
+      "default": "#FFF3E0"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "routine",
+      "name": "Routine Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Visual"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "🥜"
+        },
+        {
+          "type": "text",
+          "id": "visual_label",
+          "label": "Visual Label",
+          "default": "Morning Energy"
+        },
+        {
+          "type": "select",
+          "id": "visual_class",
+          "label": "Visual Color",
+          "options": [
+            {"value": "", "label": "Default (Orange)"},
+            {"value": "evening-visual", "label": "Evening (Green)"},
+            {"value": "afternoon-visual", "label": "Afternoon (Pink)"},
+            {"value": "focus-visual", "label": "Focus (Blue)"}
+          ],
+          "default": ""
+        },
+        {
+          "type": "checkbox",
+          "id": "reverse_layout",
+          "label": "Reverse Layout (visual on right)",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge",
+          "default": "☀️ MORNING"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Protein-Packed Start"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Start your day with sustained energy. 1 tbsp of our natural peanut butter on toast, in smoothies, or with banana keeps you full and focused until lunch."
+        },
+        {
+          "type": "text",
+          "id": "benefit_1",
+          "label": "Benefit Tag 1",
+          "default": "⚡ Sustained Energy"
+        },
+        {
+          "type": "text",
+          "id": "benefit_2",
+          "label": "Benefit Tag 2",
+          "default": "🚫 No Sugar Crash"
+        },
+        {
+          "type": "text",
+          "id": "benefit_3",
+          "label": "Benefit Tag 3",
+          "default": "💪 High Protein"
+        },
+        {
+          "type": "text",
+          "id": "personas",
+          "label": "Perfect For (Personas)",
+          "default": "Professionals • Gym-Goers • Busy Parents"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Build This Morning Routine →"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Usage Routines",
+      "blocks": [
+        {
+          "type": "routine",
+          "settings": {
+            "icon": "🥜",
+            "visual_label": "Morning Energy",
+            "badge": "☀️ MORNING",
+            "title": "Protein-Packed Start",
+            "description": "Start your day with sustained energy. 1 tbsp of our natural peanut butter on toast, in smoothies, or with banana keeps you full and focused until lunch.",
+            "benefit_1": "⚡ Sustained Energy",
+            "benefit_2": "🚫 No Sugar Crash",
+            "benefit_3": "💪 High Protein",
+            "personas": "Professionals • Gym-Goers • Busy Parents",
+            "cta_text": "Build This Morning Routine →",
+            "reverse_layout": false
+          }
+        },
+        {
+          "type": "routine",
+          "settings": {
+            "icon": "🌿",
+            "visual_label": "Evening Calm",
+            "visual_class": "evening-visual",
+            "badge": "🌙 EVENING",
+            "title": "Wind-Down Ritual",
+            "description": "Transform your evenings with chamomile tea. Sip slowly after dinner, put your phone away, and let natural relaxation take over.",
+            "benefit_1": "😴 Better Sleep",
+            "benefit_2": "🧘 Reduced Stress",
+            "benefit_3": "☕ Zero Caffeine",
+            "personas": "Office Workers • Anyone with Sleep Issues",
+            "cta_text": "Try This Evening Routine →",
+            "reverse_layout": true
+          }
+        },
+        {
+          "type": "routine",
+          "settings": {
+            "icon": "🌺",
+            "visual_label": "Afternoon Refresh",
+            "visual_class": "afternoon-visual",
+            "badge": "☀️ AFTERNOON",
+            "title": "Daily Detox Boost",
+            "description": "Replace sugary drinks with hibiscus tea. Naturally sweet, loaded with antioxidants, and refreshing hot or iced.",
+            "benefit_1": "❤️ Heart Health",
+            "benefit_2": "💧 Hydration",
+            "benefit_3": "🌿 Antioxidants",
+            "personas": "Health-Conscious • 30+ Age Group",
+            "cta_text": "Start Your Daily Detox →",
+            "reverse_layout": false
+          }
+        },
+        {
+          "type": "routine",
+          "settings": {
+            "icon": "🦋",
+            "visual_label": "Focus Time",
+            "visual_class": "focus-visual",
+            "badge": "🧠 WORK BREAKS",
+            "title": "Focus & Clarity",
+            "description": "Blue tea during work breaks. Take 5 minutes to pause, breathe, and reset. Zero caffeine, pure focus.",
+            "benefit_1": "🧠 Mental Clarity",
+            "benefit_2": "🦋 Antioxidants",
+            "benefit_3": "☕ Zero Caffeine",
+            "personas": "Creators • Students • Knowledge Workers",
+            "cta_text": "Build Your Focus Routine →",
+            "reverse_layout": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

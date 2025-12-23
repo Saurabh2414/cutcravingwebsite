@@ -1,0 +1,413 @@
+<section class="videos-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+  <div class="videos-container">
+    <div class="section-header">
+      <div class="section-kicker">{{ section.settings.kicker }}</div>
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    </div>
+
+    {% if section.settings.tagline %}
+      <p class="videos-tagline">{{ section.settings.tagline }}</p>
+    {% endif %}
+
+    <div class="videos-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'video' %}
+          <div class="video-card" {{ block.shopify_attributes }}>
+            {% if block.settings.video_url != blank %}
+              <div class="video-wrapper" onclick="playVideo(this, '{{ block.settings.video_url }}')">
+                {% if block.settings.thumbnail_image %}
+                  <img src="{{ block.settings.thumbnail_image | image_url: width: 600 }}" alt="{{ block.settings.caption }}" class="video-thumbnail">
+                {% else %}
+                  <div class="video-placeholder"></div>
+                {% endif %}
+                <div class="video-credit">{{ block.settings.credit }}</div>
+                <div class="video-overlay">
+                  <div class="play-button">▶</div>
+                </div>
+              </div>
+            {% else %}
+              <div class="video-placeholder-static">
+                <div class="video-credit">{{ block.settings.credit }}</div>
+                <div class="video-overlay">
+                  <div class="play-button">▶</div>
+                </div>
+              </div>
+            {% endif %}
+            <div class="video-caption">{{ block.settings.caption }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .videos-section {
+    padding: 80px 5%;
+  }
+
+  .videos-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .section-kicker {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: {{ section.settings.kicker_color }};
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .videos-tagline {
+    text-align: center;
+    font-size: 16px;
+    color: {{ section.settings.tagline_color }};
+    margin-bottom: 50px;
+    font-weight: 600;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+  }
+
+  .video-card {
+    position: relative;
+  }
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 125%; /* 4:5 aspect ratio */
+    background: {{ section.settings.placeholder_bg_color }};
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transition: all 0.3s;
+  }
+
+  .video-wrapper:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  }
+
+  .video-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-placeholder,
+  .video-placeholder-static {
+    position: relative;
+    width: 100%;
+    padding-bottom: 125%;
+    background: linear-gradient(135deg, {{ section.settings.placeholder_gradient_start }} 0%, {{ section.settings.placeholder_gradient_end }} 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  .video-placeholder-static {
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .video-placeholder-static:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+  }
+
+  .video-credit {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    z-index: 2;
+  }
+
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.2);
+    transition: background 0.3s;
+  }
+
+  .video-wrapper:hover .video-overlay,
+  .video-placeholder-static:hover .video-overlay {
+    background: rgba(0,0,0,0.4);
+  }
+
+  .play-button {
+    width: 72px;
+    height: 72px;
+    background: {{ section.settings.play_button_bg }};
+    color: {{ section.settings.play_button_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    padding-left: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transition: all 0.3s;
+  }
+
+  .video-wrapper:hover .play-button,
+  .video-placeholder-static:hover .play-button {
+    transform: scale(1.1);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .video-caption {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: {{ section.settings.caption_color }};
+    font-weight: 600;
+  }
+
+  /* Embedded video iframe */
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .videos-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .section-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+  }
+</style>
+
+<script>
+  function playVideo(element, videoUrl) {
+    if (!videoUrl) return;
+
+    // Create iframe for embedded video
+    const iframe = document.createElement('iframe');
+    iframe.src = videoUrl + (videoUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+
+    // Replace thumbnail with iframe
+    element.innerHTML = '';
+    element.appendChild(iframe);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Customer Videos",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F5EDE4"
+    },
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker Text",
+      "default": "REAL STORIES"
+    },
+    {
+      "type": "color",
+      "id": "kicker_color",
+      "label": "Kicker Color",
+      "default": "#8B7355"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Real Customers Using CutCraving"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (optional)",
+      "default": "100+ customers have shared their CutCraving routine"
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Tagline Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "header",
+      "content": "Video Style"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_bg_color",
+      "label": "Placeholder Background",
+      "default": "#D5C7B8"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_gradient_start",
+      "label": "Placeholder Gradient Start",
+      "default": "#C8B8A8"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_gradient_end",
+      "label": "Placeholder Gradient End",
+      "default": "#A89888"
+    },
+    {
+      "type": "color",
+      "id": "play_button_bg",
+      "label": "Play Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "play_button_color",
+      "label": "Play Button Icon Color",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Caption Color",
+      "default": "#6B5D4F"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (YouTube/Vimeo embed URL)",
+          "info": "Example: https://www.youtube.com/embed/VIDEO_ID"
+        },
+        {
+          "type": "image_picker",
+          "id": "thumbnail_image",
+          "label": "Thumbnail Image (optional)",
+          "info": "Shown before video plays. If empty, uses gradient placeholder."
+        },
+        {
+          "type": "text",
+          "id": "credit",
+          "label": "Credit Text",
+          "default": "Shot by real customers"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Real customer using CutCraving"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Videos",
+      "blocks": [
+        {
+          "type": "video",
+          "settings": {
+            "credit": "Shot by real customers",
+            "caption": "Real customer using CutCraving"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "credit": "Shot by real customers",
+            "caption": "Real customer using CutCraving"
+          }
+        },
+        {
+          "type": "video",
+          "settings": {
+            "credit": "Shot by real customers",
+            "caption": "Real customer using CutCraving"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

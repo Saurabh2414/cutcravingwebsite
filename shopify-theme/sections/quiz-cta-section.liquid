@@ -1,0 +1,339 @@
+<section class="cta-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+  <div class="cta-container">
+    <div class="cta-box">
+      <h2 class="cta-title">{{ section.settings.title }}</h2>
+      <p class="cta-subtitle">{{ section.settings.subtitle }}</p>
+      {% if section.settings.incentive %}
+        <p class="cta-incentive">{{ section.settings.incentive }}</p>
+      {% endif %}
+      <a href="{{ section.settings.cta_link }}" class="cta-button">{{ section.settings.cta_text }}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: 80px 5%;
+  }
+
+  .cta-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .cta-box {
+    background: {{ section.settings.box_bg_color }};
+    padding: {{ section.settings.box_padding }}px;
+    border-radius: {{ section.settings.box_border_radius }}px;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+  }
+
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .cta-incentive {
+    font-size: {{ section.settings.incentive_size }}px;
+    color: {{ section.settings.incentive_color }};
+    margin-bottom: 32px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding_v }}px {{ section.settings.button_padding_h }}px;
+    background: linear-gradient(135deg, {{ section.settings.button_bg_start }} 0%, {{ section.settings.button_bg_end }} 100%);
+    color: {{ section.settings.button_text_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    text-decoration: none;
+    font-size: {{ section.settings.button_text_size }}px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(61,95,74,0.3);
+    transition: all 0.3s;
+    text-transform: {{ section.settings.button_text_transform }};
+    letter-spacing: 0.5px;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(61,95,74,0.45);
+  }
+
+  @media (max-width: 768px) {
+    .cta-box {
+      padding: calc({{ section.settings.box_padding }}px * 0.7);
+    }
+
+    .cta-title {
+      font-size: calc({{ section.settings.title_size }}px * 0.8);
+    }
+
+    .cta-subtitle {
+      font-size: calc({{ section.settings.subtitle_size }}px * 0.9);
+    }
+
+    .cta-incentive {
+      font-size: calc({{ section.settings.incentive_size }}px * 0.9);
+    }
+
+    .cta-button {
+      padding: calc({{ section.settings.button_padding_v }}px * 0.9) {{ section.settings.button_padding_h }}px;
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Quiz CTA Section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "CTA Box"
+    },
+    {
+      "type": "color",
+      "id": "box_bg_color",
+      "label": "Box Background Color",
+      "default": "#FFF3E0"
+    },
+    {
+      "type": "range",
+      "id": "box_padding",
+      "label": "Box Padding",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "box_border_radius",
+      "label": "Box Border Radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border Width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E5DDD4"
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Want to Control Your Cravings?"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 24,
+      "max": 56,
+      "step": 2,
+      "default": 42,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "header",
+      "content": "Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Take our 1-minute quiz & get your plan today"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "header",
+      "content": "Incentive Text"
+    },
+    {
+      "type": "textarea",
+      "id": "incentive",
+      "label": "Incentive Text (optional)",
+      "default": "Get personalized product suggestions + exclusive offers"
+    },
+    {
+      "type": "range",
+      "id": "incentive_size",
+      "label": "Incentive Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "incentive_color",
+      "label": "Incentive Color",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "header",
+      "content": "CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Text",
+      "default": "Take Free Quiz →"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "label": "Button Text Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_start",
+      "label": "Button Background Start",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_end",
+      "label": "Button Background End",
+      "default": "#2D4A38"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_v",
+      "label": "Button Vertical Padding",
+      "min": 12,
+      "max": 28,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_h",
+      "label": "Button Horizontal Padding",
+      "min": 24,
+      "max": 64,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_text_transform",
+      "label": "Button Text Transform",
+      "options": [
+        {"value": "none", "label": "None"},
+        {"value": "uppercase", "label": "Uppercase"},
+        {"value": "lowercase", "label": "Lowercase"},
+        {"value": "capitalize", "label": "Capitalize"}
+      ],
+      "default": "none"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz CTA Section"
+    }
+  ]
+}
+{% endschema %}

@@ -1,6 +1,8 @@
 <section class="usp-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
   <div class="usp-container">
-    <div class="usp-content">
+    <!-- Main Anchor Card -->
+    <div class="usp-anchor-card">
+      <div class="usp-icon">{{ section.settings.main_icon }}</div>
       <h2 class="usp-title">{{ section.settings.title }}</h2>
       <p class="usp-description">{{ section.settings.description }}</p>
 
@@ -17,6 +19,7 @@
       {% endif %}
     </div>
 
+    <!-- Supporting Proof Pills -->
     <div class="proof-pills-grid">
       {% for block in section.blocks %}
         {% if block.type == 'proof_card' %}
@@ -40,9 +43,18 @@
     margin: 0 auto;
   }
 
-  .usp-content {
+  .usp-anchor-card {
+    background: {{ section.settings.card_bg_color }};
+    padding: 50px 40px;
+    border-radius: 24px;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .usp-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
   }
 
   .usp-title {
@@ -157,6 +169,22 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#F5EDE4"
+    },
+    {
+      "type": "header",
+      "content": "Main Anchor Card"
+    },
+    {
+      "type": "text",
+      "id": "main_icon",
+      "label": "Main Icon (emoji)",
+      "default": "🧠"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
     },
     {
       "type": "textarea",
