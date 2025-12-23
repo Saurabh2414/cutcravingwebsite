@@ -1,0 +1,145 @@
+<div class="trust-bar">
+  <div class="trust-bar-content">
+    {% for block in section.blocks %}
+      <div class="trust-bar-item" {{ block.shopify_attributes }}>
+        {% if block.settings.show_icon %}
+          <span>{{ block.settings.icon }}</span>
+        {% endif %}
+        <strong>{{ block.settings.highlight_text }}</strong>
+        {{ block.settings.normal_text }}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .trust-bar {
+    background: rgba(250, 250, 247, 0.95);
+    border-bottom: 1px solid rgba(139, 111, 71, 0.1);
+    padding: 8px 5%;
+    text-align: center;
+    font-size: 13px;
+    color: {{ section.settings.text_color }};
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    backdrop-filter: blur(10px);
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trust-bar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .trust-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .trust-bar-item strong {
+    color: {{ section.settings.highlight_color }};
+    font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .trust-bar-content {
+      font-size: 11px;
+      gap: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Trust Bar",
+  "settings": [
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Highlight Color",
+      "default": "#2C2416"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji or text)",
+          "default": "✓"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show Icon",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "highlight_text",
+          "label": "Highlighted Text",
+          "default": "500+"
+        },
+        {
+          "type": "text",
+          "id": "normal_text",
+          "label": "Normal Text",
+          "default": "Happy Customers"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Bar",
+      "blocks": [
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "✓",
+            "show_icon": true,
+            "highlight_text": "500+",
+            "normal_text": "Happy Customers"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "⭐",
+            "show_icon": true,
+            "highlight_text": "4.8/5",
+            "normal_text": "Rating"
+          }
+        },
+        {
+          "type": "trust_item",
+          "settings": {
+            "icon": "🚚",
+            "show_icon": true,
+            "highlight_text": "Free",
+            "normal_text": "Shipping on orders over ₹500"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

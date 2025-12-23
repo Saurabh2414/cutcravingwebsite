@@ -1,0 +1,89 @@
+{
+  "current": {
+    "color_primary": "#2D5F3F",
+    "color_accent": "#8B6F47",
+    "color_background": "#F5EDE4",
+    "color_text": "#2C2416",
+    "color_text_light": "#6B5D4F",
+    "social_facebook": "",
+    "social_instagram": "",
+    "social_twitter": "",
+    "sections": {
+      "trust-bar": {
+        "type": "trust-bar",
+        "blocks": {
+          "trust-1": {
+            "type": "trust_item",
+            "settings": {
+              "icon": "✓",
+              "show_icon": true,
+              "highlight_text": "500+",
+              "normal_text": "Happy Customers"
+            }
+          },
+          "trust-2": {
+            "type": "trust_item",
+            "settings": {
+              "icon": "⭐",
+              "show_icon": true,
+              "highlight_text": "4.8/5",
+              "normal_text": "Rating"
+            }
+          },
+          "trust-3": {
+            "type": "trust_item",
+            "settings": {
+              "icon": "🚚",
+              "show_icon": true,
+              "highlight_text": "Free",
+              "normal_text": "Shipping on orders over ₹500"
+            }
+          }
+        },
+        "block_order": ["trust-1", "trust-2", "trust-3"],
+        "settings": {
+          "text_color": "#6B5D4F",
+          "highlight_color": "#2C2416"
+        }
+      },
+      "header": {
+        "type": "header",
+        "blocks": {
+          "nav-1": {
+            "type": "nav_link",
+            "settings": {
+              "label": "Products",
+              "link": "/collections/all"
+            }
+          },
+          "nav-2": {
+            "type": "nav_link",
+            "settings": {
+              "label": "About",
+              "link": "/pages/about"
+            }
+          },
+          "nav-3": {
+            "type": "nav_link",
+            "settings": {
+              "label": "Reviews",
+              "link": "/pages/reviews"
+            }
+          }
+        },
+        "block_order": ["nav-1", "nav-2", "nav-3"],
+        "settings": {
+          "logo_text": "CutCraving",
+          "logo_size": 24,
+          "logo_color": "#2D5F3F",
+          "cart_icon": "🛒",
+          "cart_text": "Cart"
+        }
+      }
+    },
+    "content_for_index": [
+      "trust-bar",
+      "header"
+    ]
+  }
+}

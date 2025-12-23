@@ -1,0 +1,86 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "CutCraving Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "CutCraving",
+    "theme_documentation_url": "https://cutcraving.com/docs",
+    "theme_support_url": "https://cutcraving.com/support"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brand Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Green",
+        "default": "#2D5F3F"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent Brown",
+        "default": "#8B6F47"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background Beige",
+        "default": "#F5EDE4"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Text Color",
+        "default": "#2C2416"
+      },
+      {
+        "type": "color",
+        "id": "color_text_light",
+        "label": "Light Text Color",
+        "default": "#6B5D4F"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Fonts"
+      },
+      {
+        "type": "paragraph",
+        "content": "This theme uses Playfair Display for headings and Inter for body text."
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social Links"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter",
+        "label": "Twitter URL"
+      }
+    ]
+  }
+]

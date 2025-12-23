@@ -1,0 +1,378 @@
+<section class="products-section" style="padding: 24px 0 16px; background: {{ section.settings.background_color }};">
+  <h3 id="products" class="section-title">{{ section.settings.title }}</h3>
+
+  <div class="products-carousel">
+    {% if section.settings.collection != blank %}
+      {% assign featured_collection = collections[section.settings.collection] %}
+      {% for product in featured_collection.products limit: section.settings.products_to_show %}
+        <div class="product-card">
+          <div class="product-icon">
+            {% if product.featured_image %}
+              <img src="{{ product.featured_image | img_url: '200x200' }}" alt="{{ product.title | escape }}" loading="lazy">
+            {% else %}
+              <span style="font-size: 40px;">{{ section.settings.default_icon }}</span>
+            {% endif %}
+          </div>
+
+          <h4 class="product-title">{{ product.title }}</h4>
+          <p class="product-description">{{ product.description | strip_html | truncate: 50 }}</p>
+
+          <a href="{{ product.url }}" class="product-button">
+            {{ section.settings.button_text }} →
+          </a>
+
+          <small class="product-meta">
+            {% if product.metafields.custom.trust_text %}
+              {{ product.metafields.custom.trust_text }}
+            {% else %}
+              {{ product.price | money }}
+            {% endif %}
+          </small>
+        </div>
+      {% endfor %}
+    {% else %}
+      <!-- Fallback blocks if no collection selected -->
+      {% for block in section.blocks %}
+        <div class="product-card" {{ block.shopify_attributes }}>
+          <div class="product-icon">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | img_url: '200x200' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              <span style="font-size: 40px;">{{ block.settings.icon }}</span>
+            {% endif %}
+          </div>
+
+          <h4 class="product-title">{{ block.settings.title }}</h4>
+          <p class="product-description">{{ block.settings.description }}</p>
+
+          <a href="{{ block.settings.link }}" class="product-button">
+            {{ section.settings.button_text }} →
+          </a>
+
+          <small class="product-meta">{{ block.settings.meta_text }}</small>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <p class="swipe-hint">← Swipe →</p>
+
+  {% if section.settings.bottom_text %}
+    <div class="section-footer">
+      <p class="tagline">{{ section.settings.bottom_text }}</p>
+    </div>
+  {% endif %}
+</section>
+
+<style>
+  .products-section {
+    padding: 24px 0 16px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 0 28px 0;
+    padding: 0 6%;
+    color: {{ section.settings.title_color }};
+    letter-spacing: -0.5px;
+  }
+
+  .products-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+    padding: 0 6% 16px;
+    scrollbar-width: none;
+  }
+
+  .products-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-card {
+    flex-shrink: 0;
+    width: 300px;
+    scroll-snap-align: center;
+    background: linear-gradient(135deg, #ffffff 0%, #fafaf8 100%);
+    border-radius: 24px;
+    padding: 36px 24px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .product-icon {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  .product-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-title {
+    font-size: 21px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    color: #1a1a1a;
+  }
+
+  .product-description {
+    font-size: 15px;
+    color: #5a5a5a;
+    margin-bottom: 18px;
+    line-height: 1.4;
+  }
+
+  .product-button {
+    display: inline-block;
+    padding: 14px 28px;
+    background: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: all 0.3s;
+  }
+
+  .product-button:hover {
+    background: {{ section.settings.button_hover_color }};
+    transform: scale(1.05);
+  }
+
+  .product-meta {
+    display: block;
+    font-size: 12px;
+    color: #7a7a7a;
+    margin-top: 12px;
+  }
+
+  .swipe-hint {
+    text-align: center;
+    font-size: 13px;
+    color: #7a7a7a;
+    padding: 0 6%;
+    margin-top: 16px;
+  }
+
+  .section-footer {
+    text-align: center;
+    padding: 32px 6% 0;
+    margin-top: 24px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .tagline {
+    font-size: 15px;
+    color: {{ section.settings.tagline_color }};
+    font-weight: 600;
+    font-style: italic;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .swipe-hint {
+      display: block;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .swipe-hint {
+      display: none;
+    }
+
+    .products-carousel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      overflow-x: visible;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Start your day"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection (leave blank to use manual products below)"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Number of Products to Show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "default_icon",
+      "label": "Default Icon (if product has no image)",
+      "default": "🥜"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Explore"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Color",
+      "default": "#2d4a38"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom Tagline",
+      "default": "One small habit. Big difference."
+    },
+    {
+      "type": "color",
+      "id": "tagline_color",
+      "label": "Tagline Color",
+      "default": "#3d5f4a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Manual Product",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (if no image)",
+          "default": "PB"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Title",
+          "default": "100% Peanut Butter"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Keeps you full till lunch."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Link"
+        },
+        {
+          "type": "text",
+          "id": "meta_text",
+          "label": "Meta Text (below button)",
+          "default": "Used by 500+ daily"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Carousel",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "icon": "PB",
+            "title": "100% Peanut Butter",
+            "description": "Keeps you full till lunch.",
+            "meta_text": "Used by 500+ daily"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "icon": "🌿",
+            "title": "Chamomile Tea",
+            "description": "Wind down naturally.",
+            "meta_text": "Trusted for better sleep"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "icon": "🌺",
+            "title": "Hibiscus Tea",
+            "description": "Refresh without sugar.",
+            "meta_text": "Loved by 400+"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

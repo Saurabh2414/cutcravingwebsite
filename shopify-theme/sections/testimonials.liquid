@@ -1,0 +1,197 @@
+<section class="testimonials-section" style="padding: 24px 6% 16px; background: {{ section.settings.background_color }};">
+  <h3 class="testimonials-title">{{ section.settings.title }}</h3>
+
+  {% if section.settings.subtitle %}
+    <p class="testimonials-subtitle">{{ section.settings.subtitle }}</p>
+  {% endif %}
+
+  <div class="testimonials-grid">
+    {% for block in section.blocks %}
+      <div class="testimonial-card" {{ block.shopify_attributes }}>
+        <p class="testimonial-quote">{{ block.settings.quote }}</p>
+        <span class="testimonial-author">— {{ block.settings.author }}</span>
+        {% if block.settings.badge_text %}
+          <small class="testimonial-badge">{{ block.settings.badge_text }}</small>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: 24px 6% 16px;
+  }
+
+  .testimonials-title {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 0 16px 0;
+    color: {{ section.settings.title_color }};
+    letter-spacing: -0.5px;
+  }
+
+  .testimonials-subtitle {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: {{ section.settings.subtitle_color }};
+    margin-bottom: 24px;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f6f3 100%);
+    padding: 28px 24px;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transition: transform 0.3s;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  }
+
+  .testimonial-quote {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+  }
+
+  .testimonial-quote::before {
+    content: '"';
+  }
+
+  .testimonial-quote::after {
+    content: '"';
+  }
+
+  .testimonial-author {
+    font-size: 13px;
+    color: #7a7a7a;
+    font-weight: 500;
+  }
+
+  .testimonial-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 8px;
+    margin-left: 8px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Loved by Real People"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "⭐ 4.8/5 average • Real customers • Real routines"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "I stopped opening the fridge at 5pm."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text (optional)",
+          "default": "Protein & Fitness"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I stopped opening the fridge at 5pm.",
+            "author": "Sarah M.",
+            "badge_text": "Protein & Fitness"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

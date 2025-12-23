@@ -1,0 +1,157 @@
+<div id="stickyCTA-{{ section.id }}" class="sticky-cta">
+  <a href="{{ section.settings.link }}" class="sticky-cta-button">
+    {% if section.settings.icon_left %}
+      <span class="cta-icon-left">{{ section.settings.icon_left }}</span>
+    {% endif %}
+    <span class="cta-text">{{ section.settings.text }}</span>
+    {% if section.settings.icon_right %}
+      <span class="cta-icon-right">{{ section.settings.icon_right }}</span>
+    {% endif %}
+  </a>
+</div>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    padding: 12px 6% 16px;
+    background: linear-gradient(180deg, rgba(248,246,243,0) 0%, rgba(248,246,243,0.95) 20%, rgba(248,246,243,1) 40%);
+    z-index: 998;
+    transition: bottom 0.3s ease;
+  }
+
+  .sticky-cta.visible {
+    bottom: 0;
+  }
+
+  .sticky-cta-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, {{ section.settings.button_bg_start }} 0%, {{ section.settings.button_bg_end }} 100%);
+    color: {{ section.settings.button_text_color }};
+    border-radius: 60px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(61,95,74,0.35), 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+  }
+
+  .sticky-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(61,95,74,0.45), 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .cta-icon-left,
+  .cta-icon-right {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .cta-text {
+    flex: 1;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .sticky-cta {
+      padding: 10px 4% 14px;
+    }
+
+    .sticky-cta-button {
+      font-size: 15px;
+      padding: 14px 20px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const cta = document.getElementById('stickyCTA-{{ section.id }}');
+    const triggerScroll = {{ section.settings.trigger_scroll }};
+
+    function checkScroll() {
+      const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (currentScroll > triggerScroll) {
+        cta.classList.add('visible');
+      } else {
+        cta.classList.remove('visible');
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll);
+    setTimeout(checkScroll, 100);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Sticky CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "CTA Text",
+      "default": "Control My Cravings"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "icon_left",
+      "label": "Left Icon (emoji)",
+      "default": "🎯"
+    },
+    {
+      "type": "text",
+      "id": "icon_right",
+      "label": "Right Icon (emoji)",
+      "default": "→"
+    },
+    {
+      "type": "range",
+      "id": "trigger_scroll",
+      "label": "Show after scrolling (pixels)",
+      "min": 100,
+      "max": 1000,
+      "step": 50,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_start",
+      "label": "Button Background Start",
+      "default": "#3d5f4a"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_end",
+      "label": "Button Background End",
+      "default": "#2d4a38"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sticky CTA"
+    }
+  ]
+}
+{% endschema %}
