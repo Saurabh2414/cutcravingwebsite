@@ -13,7 +13,11 @@
         {% if block.type == 'routine' %}
           <div class="routine-card{% if block.settings.reverse_layout %} reverse{% endif %}" {{ block.shopify_attributes }}>
             <div class="routine-visual {{ block.settings.visual_class }}">
-              <div class="visual-peanut">{{ block.settings.icon }}</div>
+              {% if block.settings.visual_image %}
+                <img src="{{ block.settings.visual_image | img_url: '400x400' }}" alt="{{ block.settings.title | escape }}" loading="lazy" class="routine-visual-image">
+              {% else %}
+                <div class="visual-peanut">{{ block.settings.icon }}</div>
+              {% endif %}
               <div class="visual-label">{{ block.settings.visual_label }}</div>
             </div>
             <div class="routine-content">
@@ -140,6 +144,15 @@
     font-size: 72px;
     margin-bottom: 16px;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+  }
+
+  .routine-visual-image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   }
 
   .visual-label {
@@ -488,6 +501,12 @@
         {
           "type": "header",
           "content": "Visual"
+        },
+        {
+          "type": "image_picker",
+          "id": "visual_image",
+          "label": "Visual Image (optional)",
+          "info": "Upload custom visual image. If not provided, icon emoji will be shown."
         },
         {
           "type": "text",

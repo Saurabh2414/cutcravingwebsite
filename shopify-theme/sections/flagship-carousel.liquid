@@ -52,7 +52,9 @@
 
             <div class="flagship-visual">
               <div class="flagship-product-image {{ block.settings.glow_class }}">
-                {% if block.settings.visual_type == 'jar' %}
+                {% if block.settings.product_image %}
+                  <img src="{{ block.settings.product_image | img_url: '600x600' }}" alt="{{ block.settings.product_title | escape }}" loading="lazy" class="uploaded-product-image">
+                {% elsif block.settings.visual_type == 'jar' %}
                   <div class="product-jar-large">
                     <div class="jar-lid-large"></div>
                     <div class="jar-label-large">
@@ -291,6 +293,14 @@
 
   .flagship-product-image:hover {
     transform: scale(1.05);
+  }
+
+  .uploaded-product-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
   }
 
   /* Product visuals */
@@ -647,6 +657,12 @@
       "type": "slide",
       "name": "Product Slide",
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image (optional)",
+          "info": "Upload your product image. If provided, this will override the CSS visual below."
+        },
         {
           "type": "header",
           "content": "Badge & Title"

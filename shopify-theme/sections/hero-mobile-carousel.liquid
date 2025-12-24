@@ -9,7 +9,9 @@
     <!-- Auto-rotating product carousel -->
     <div id="heroCarousel-{{ section.id }}" class="hero-carousel">
       <div class="carousel-item" data-product="0">
-        {% if section.blocks.first.settings.text %}
+        {% if section.blocks.first.settings.image %}
+          <img src="{{ section.blocks.first.settings.image | img_url: '300x300' }}" alt="{{ section.blocks.first.settings.text | escape }}" loading="lazy" class="carousel-product-image">
+        {% elsif section.blocks.first.settings.text %}
           {{ section.blocks.first.settings.text }}
         {% else %}
           PB
@@ -19,8 +21,14 @@
 
     <div class="product-icons">
       {% for block in section.blocks %}
-        {% if block.type == 'product_icon' and block.settings.icon %}
-          <span class="product-icon" {{ block.shopify_attributes }}>{{ block.settings.icon }}</span>
+        {% if block.type == 'product_icon' %}
+          <span class="product-icon" {{ block.shopify_attributes }}>
+            {% if block.settings.icon_image %}
+              <img src="{{ block.settings.icon_image | img_url: '60x60' }}" alt="{{ block.settings.icon | escape }}" loading="lazy" class="product-icon-image">
+            {% elsif block.settings.icon %}
+              {{ block.settings.icon }}
+            {% endif %}
+          </span>
         {% endif %}
       {% endfor %}
     </div>
@@ -86,6 +94,20 @@
     font-weight: 700;
     box-shadow: 0 12px 28px rgba(61,95,74,0.25), 0 4px 12px rgba(0,0,0,0.1);
     transition: all 0.5s ease;
+  }
+
+  .carousel-product-image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .product-icon-image {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
   }
 
   .product-icons {
@@ -158,8 +180,14 @@
   (function() {
     const products = [
       {% for block in section.blocks %}
-        {% if block.type == 'carousel_product' %}
-        { text: '{{ block.settings.text | escape }}', bg: '{{ block.settings.bg_color }}' }{% unless forloop.last %},{% endunless %}
+        {% if block.type == 'product_icon' %}
+        {
+          {% if block.settings.image %}
+            image: '{{ block.settings.image | img_url: '300x300' }}',
+          {% endif %}
+          text: '{{ block.settings.text | default: block.settings.icon | escape }}',
+          bg: '#3d5f4a'
+        }{% unless forloop.last %},{% endunless %}
         {% endif %}
       {% endfor %}
     ];
@@ -186,7 +214,11 @@
       carousel.style.transform = 'scale(0.95)';
 
       setTimeout(() => {
-        carouselItem.textContent = product.text;
+        if (product.image) {
+          carouselItem.innerHTML = '<img src="' + product.image + '" alt="Product" class="carousel-product-image">';
+        } else {
+          carouselItem.textContent = product.text;
+        }
         carousel.style.background = product.bg;
 
         // Fade in
@@ -384,6 +416,24 @@
       "type": "product_icon",
       "name": "Product Icon",
       "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image (for carousel, optional)",
+          "info": "Upload product image for the main carousel. If not provided, text will be shown."
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon Image (for icon row, optional)",
+          "info": "Upload small icon image. If not provided, emoji will be shown."
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text (for carousel fallback)",
+          "default": "PB"
+        },
         {
           "type": "text",
           "id": "icon",

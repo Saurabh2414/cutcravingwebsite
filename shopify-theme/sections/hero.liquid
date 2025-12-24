@@ -35,20 +35,26 @@
   </div>
 
   <div class="hero-product">
-    <div class="product-jar">
-      <div class="jar-lid"></div>
-      <div class="jar-label">
-        <h3>{{ section.settings.jar_brand }}</h3>
-        <div class="percentage">{{ section.settings.jar_percentage }}</div>
-        <div class="product-name">{{ section.settings.jar_product_name }}</div>
-        <div class="product-detail">{{ section.settings.jar_detail }}</div>
+    {% if section.settings.use_custom_image and section.settings.product_image %}
+      <div class="custom-product-image">
+        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.title | escape }}" loading="lazy">
       </div>
-      <div class="floating-peanuts">
-        <div class="peanut"></div>
-        <div class="peanut"></div>
-        <div class="peanut"></div>
+    {% else %}
+      <div class="product-jar">
+        <div class="jar-lid"></div>
+        <div class="jar-label">
+          <h3>{{ section.settings.jar_brand }}</h3>
+          <div class="percentage">{{ section.settings.jar_percentage }}</div>
+          <div class="product-name">{{ section.settings.jar_product_name }}</div>
+          <div class="product-detail">{{ section.settings.jar_detail }}</div>
+        </div>
+        <div class="floating-peanuts">
+          <div class="peanut"></div>
+          <div class="peanut"></div>
+          <div class="peanut"></div>
+        </div>
       </div>
-    </div>
+    {% endif %}
   </div>
 </section>
 
@@ -172,6 +178,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .custom-product-image {
+    max-width: 500px;
+    width: 100%;
+    animation: jarBreathe 5s ease-in-out infinite;
+  }
+
+  .custom-product-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    transition: transform 0.3s;
+  }
+
+  .custom-product-image img:hover {
+    transform: translateY(-8px);
   }
 
   @keyframes jarBreathe {
@@ -445,7 +469,24 @@
     },
     {
       "type": "header",
-      "content": "Product Jar"
+      "content": "Product Visual"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_image",
+      "label": "Use Custom Product Image",
+      "info": "Enable to upload your own product image instead of the CSS jar",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image",
+      "info": "Upload your product image (works when 'Use Custom Product Image' is enabled)"
+    },
+    {
+      "type": "header",
+      "content": "CSS Product Jar (default)"
     },
     {
       "type": "text",
