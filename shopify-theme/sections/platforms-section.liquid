@@ -38,89 +38,108 @@
 
 <style>
   .platforms-section {
-    padding: 80px 5%;
+    padding: 60px 5%;
+    background: #FFFFFF;
+    border-top: 1px solid rgba(139, 111, 71, 0.1);
+    border-bottom: 1px solid rgba(139, 111, 71, 0.1);
   }
 
   .platforms-container {
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 0 auto;
+    text-align: center;
   }
 
   .platforms-header {
-    text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
   }
 
   .platforms-kicker {
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: {{ section.settings.kicker_color }};
+    font-size: 11px;
     font-weight: 700;
-    margin-bottom: 10px;
+    color: #2D5F3F;
     text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
   }
 
   .platforms-title {
     font-family: 'Playfair Display', serif;
-    font-size: {{ section.settings.title_size }}px;
-    font-weight: 800;
-    color: {{ section.settings.title_color }};
-    margin: 0 0 16px 0;
-    letter-spacing: -0.5px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #2C2416;
+    margin-bottom: 12px;
   }
 
   .platforms-subtitle {
-    font-size: 18px;
-    color: {{ section.settings.subtitle_color }};
-    line-height: 1.6;
-    max-width: 700px;
+    font-size: 15px;
+    color: #6B5D4F;
+    max-width: 600px;
     margin: 0 auto;
   }
 
   .platforms-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 24px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
   }
 
   .platform-card {
     position: relative;
-    background: {{ section.settings.card_bg_color }};
-    padding: 40px 24px;
-    border-radius: 16px;
+    background: #F5EDE4;
+    padding: 32px 20px;
+    border-radius: 12px;
     text-align: center;
     text-decoration: none;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+    transition: all 0.3s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
     border: 2px solid transparent;
   }
 
   .platform-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    border-color: #2D5F3F;
+    background: white;
   }
 
   .platform-special {
     position: absolute;
     top: 12px;
     right: 12px;
-    background: {{ section.settings.special_badge_bg }};
-    color: {{ section.settings.special_badge_text }};
-    padding: 6px 12px;
+    background: #D4A574;
+    color: white;
+    font-size: 10px;
+    padding: 4px 8px;
     border-radius: 12px;
-    font-size: 11px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
   .platform-logo {
-    font-size: 28px;
-    font-weight: 800;
+    width: 100%;
+    max-width: 140px;
+    height: 60px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
     color: #2C2416;
-    margin-bottom: 16px;
-    line-height: 1.3;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  .platform-card:hover .platform-logo {
+    transform: scale(1.05);
   }
 
   .platform-logo-image {
@@ -132,56 +151,43 @@
   }
 
   .platform-badge {
-    font-size: 14px;
-    font-weight: 600;
-    color: #6B5D4F;
-    transition: color 0.3s;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2D5F3F;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
   }
 
-  .platform-card:hover .platform-badge {
-    color: {{ section.settings.hover_badge_color }};
-  }
-
-  /* Platform-specific colors */
-  .platform-card.amazon:hover {
-    border-color: #FF9900;
-  }
-
-  .platform-card.amazon .platform-logo {
+  /* Platform-specific hover colors for logo text only */
+  .platform-card.amazon:hover .platform-logo {
     color: #FF9900;
   }
 
-  .platform-card.flipkart:hover {
-    border-color: #2874F0;
-  }
-
-  .platform-card.flipkart .platform-logo {
+  .platform-card.flipkart:hover .platform-logo {
     color: #2874F0;
   }
 
-  .platform-card.meesho:hover {
-    border-color: #9F2089;
+  .platform-card.meesho:hover .platform-logo {
+    color: #8B008B;
   }
 
-  .platform-card.meesho .platform-logo {
-    color: #9F2089;
-  }
-
-  .platform-card.website:hover {
-    border-color: #3D5F4A;
-  }
-
-  .platform-card.website .platform-logo {
-    color: #3D5F4A;
+  .platform-card.website:hover .platform-logo {
+    color: #2D5F3F;
   }
 
   .platforms-bottom-cta {
+    margin-top: 20px;
+    padding: 20px;
+    background: #FFF9F3;
+    border-radius: 8px;
     text-align: center;
-    font-size: 16px;
-    color: {{ section.settings.bottom_cta_color }};
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto;
+  }
+
+  .platforms-bottom-cta p {
+    font-size: 13px;
+    color: #6B5D4F;
+    font-weight: 500;
+    margin: 0;
   }
 
   @media (max-width: 768px) {
