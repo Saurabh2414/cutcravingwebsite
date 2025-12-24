@@ -141,46 +141,52 @@
     grid-template-columns: 1fr 1fr;
     gap: 60px;
     align-items: center;
+    background: white;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transform: translateX(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .flagship-slide.active {
     display: grid;
     opacity: 1;
+    transform: translateX(0);
   }
 
   .flagship-content {
-    padding: 40px;
+    /* Padding removed - now on .flagship-slide */
   }
 
   .flagship-badge {
     display: inline-block;
-    padding: 8px 16px;
-    background: {{ section.settings.badge_bg_color }};
-    color: {{ section.settings.badge_text_color }};
+    padding: 8px 18px;
+    background: #F5EDE4;
+    color: #2C2416;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
 
   .flagship-product-title {
     font-family: 'Playfair Display', serif;
-    font-size: 36px;
-    font-weight: 800;
+    font-size: 42px;
+    font-weight: 700;
     color: #2C2416;
     margin: 0 0 16px 0;
     line-height: 1.2;
   }
 
   .flagship-tagline {
-    font-size: 18px;
+    font-size: 17px;
     color: #6B5D4F;
     line-height: 1.6;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 
   .flagship-benefits {
@@ -190,19 +196,19 @@
   }
 
   .flagship-benefits li {
-    font-size: 16px;
+    font-size: 15px;
     color: #2C2416;
-    margin-bottom: 10px;
-    line-height: 1.6;
+    line-height: 2;
+    padding-left: 0;
   }
 
   .flagship-routine {
-    font-size: 15px;
+    font-size: 14px;
     color: #6B5D4F;
     margin-bottom: 24px;
-    padding: 12px 0;
-    border-top: 1px solid #E5DDD4;
-    border-bottom: 1px solid #E5DDD4;
+    padding: 12px;
+    background: #F5EDE4;
+    border-radius: 8px;
   }
 
   .flagship-routine strong {
@@ -283,7 +289,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
   }
 
   .flagship-product-image {
@@ -447,27 +452,58 @@
     color: #2C2416;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .flagship-slide {
       grid-template-columns: 1fr;
-      gap: 30px;
-    }
-
-    .flagship-content {
-      padding: 20px;
+      padding: 40px 30px;
     }
 
     .flagship-product-title {
-      font-size: 28px;
+      font-size: 32px;
+    }
+
+    .flagship-product-image {
+      width: 300px;
+      height: 300px;
+    }
+
+    .product-jar-large {
+      width: 220px;
+      height: 260px;
+    }
+
+    .tea-package-large {
+      width: 200px;
+      height: 240px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .flagship-slide {
+      padding: 30px 24px;
+    }
+
+    .flagship-product-title {
+      font-size: 26px;
+    }
+
+    .flagship-tagline {
+      font-size: 15px;
     }
 
     .flagship-ctas {
       flex-direction: column;
     }
 
-    .btn-primary, .btn-secondary-outline {
+    .flagship-ctas .btn-primary,
+    .flagship-ctas .btn-secondary-outline {
       width: 100%;
       text-align: center;
+    }
+
+    .flagship-product-image {
+      width: 250px;
+      height: 250px;
     }
   }
 </style>
