@@ -1,4 +1,4 @@
-<section class="testimonials-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+<section class="testimonials-section">
   <div class="testimonials-container">
     <div class="section-header">
       <div class="section-kicker">{{ section.settings.kicker }}</div>
@@ -44,6 +44,7 @@
 <style>
   .testimonials-section {
     padding: 80px 5%;
+    background: #F5EDE4;  /* Warm beige background like original */
   }
 
   .testimonials-container {
@@ -82,21 +83,25 @@
 
   .testimonials-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .testimonial-card {
-    background: {{ section.settings.card_bg_color }};
+    background: white;  /* White card background like original */
     padding: 32px;
-    border-radius: 16px;
+    border-radius: 12px;  /* 12px like original, not 16px */
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;  /* For hover effect */
   }
 
   .testimonial-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-color: rgba(45, 95, 63, 0.1);  /* Green border on hover */
   }
 
   .testimonial-header {
@@ -124,14 +129,12 @@
   }
 
   .verified-badge {
+    background: #2D5F3F;  /* Green background like original */
+    color: white;  /* White text like original */
     padding: 4px 10px;
-    background: {{ section.settings.verified_bg_color }};
-    color: {{ section.settings.verified_text_color }};
     border-radius: 12px;
     font-size: 11px;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
   .stars {
@@ -187,12 +190,6 @@
       "unit": "px"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#FFFFFF"
-    },
-    {
       "type": "header",
       "content": "Section Header"
     },
@@ -206,7 +203,7 @@
       "type": "color",
       "id": "kicker_color",
       "label": "Kicker Color",
-      "default": "#8B7355"
+      "default": "#8B6F47"
     },
     {
       "type": "textarea",
@@ -247,12 +244,6 @@
     },
     {
       "type": "color",
-      "id": "card_bg_color",
-      "label": "Card Background",
-      "default": "#F8F6F3"
-    },
-    {
-      "type": "color",
       "id": "author_color",
       "label": "Author Name Color",
       "default": "#2C2416"
@@ -261,19 +252,7 @@
       "type": "color",
       "id": "location_color",
       "label": "Location Color",
-      "default": "#8B7355"
-    },
-    {
-      "type": "color",
-      "id": "verified_bg_color",
-      "label": "Verified Badge Background",
-      "default": "#E8F5E9"
-    },
-    {
-      "type": "color",
-      "id": "verified_text_color",
-      "label": "Verified Badge Text",
-      "default": "#2E7D32"
+      "default": "#6B5D4F"
     },
     {
       "type": "color",
@@ -285,7 +264,7 @@
       "type": "color",
       "id": "usecase_color",
       "label": "Use Case Color",
-      "default": "#8B7355"
+      "default": "#6B5D4F"
     }
   ],
   "blocks": [
