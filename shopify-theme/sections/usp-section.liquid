@@ -1,4 +1,4 @@
-<section class="usp-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+<section class="usp-anchor-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
   <div class="usp-container">
     <!-- Main Anchor Card -->
     <div class="usp-anchor-card">
@@ -34,7 +34,7 @@
 </section>
 
 <style>
-  .usp-section {
+  .usp-anchor-section {
     padding: 80px 5%;
   }
 
@@ -45,16 +45,18 @@
 
   .usp-anchor-card {
     background: {{ section.settings.card_bg_color }};
-    padding: 50px 40px;
+    padding: 60px 50px;
     border-radius: 24px;
     text-align: center;
     margin-bottom: 40px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
   }
 
   .usp-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
+    font-size: 72px;
+    margin-bottom: 24px;
+    line-height: 1;
   }
 
   .usp-title {
@@ -64,95 +66,135 @@
     color: {{ section.settings.title_color }};
     margin: 0 0 20px 0;
     letter-spacing: -0.5px;
+    line-height: 1.2;
   }
 
   .usp-description {
     font-size: 18px;
     color: {{ section.settings.description_color }};
     line-height: 1.7;
+    margin: 0 auto 32px auto;
     max-width: 700px;
-    margin: 0 auto 30px;
   }
 
   .usp-benefits {
     display: flex;
     justify-content: center;
-    gap: 12px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 28px;
   }
 
   .usp-pill {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background: {{ section.settings.pill_bg_color }};
     color: {{ section.settings.pill_text_color }};
-    border-radius: 50px;
-    font-size: 14px;
+    border-radius: 30px;
+    font-size: 15px;
     font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    transition: all 0.3s;
+    border: 2px solid transparent;
   }
 
   .usp-pill:hover {
+    background: {{ section.settings.pill_hover_bg }};
+    border-color: {{ section.settings.pill_hover_border }};
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   }
 
   .usp-social-proof {
-    font-size: 15px;
+    font-size: 16px;
     color: {{ section.settings.social_proof_color }};
     font-weight: 600;
   }
 
   .proof-pills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 900px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
   .proof-pill {
-    background: white;
-    padding: 30px 20px;
+    background: {{ section.settings.proof_pill_bg }};
+    padding: 32px 24px;
     border-radius: 16px;
     text-align: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     transition: all 0.3s;
+    border: 2px solid {{ section.settings.proof_pill_border }};
   }
 
   .proof-pill:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    border-color: {{ section.settings.proof_pill_hover_border }};
   }
 
   .pill-icon {
     font-size: 48px;
-    margin-bottom: 15px;
+    margin-bottom: 16px;
+    line-height: 1;
   }
 
   .pill-text {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
-    color: #2C2416;
+    color: {{ section.settings.proof_pill_text_color }};
     line-height: 1.4;
   }
 
   @media (max-width: 768px) {
+    .usp-anchor-card {
+      padding: 40px 30px;
+    }
+
+    .usp-icon {
+      font-size: 56px;
+    }
+
     .usp-title {
-      font-size: calc({{ section.settings.title_size }}px * 0.8);
+      font-size: calc({{ section.settings.title_size }}px * 0.75);
+    }
+
+    .usp-description {
+      font-size: 16px;
+    }
+
+    .usp-benefits {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .usp-pill {
+      padding: 10px 20px;
+      font-size: 14px;
     }
 
     .proof-pills-grid {
       grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .proof-pill {
+      padding: 24px 20px;
+    }
+
+    .pill-icon {
+      font-size: 40px;
+    }
+
+    .pill-text {
+      font-size: 16px;
     }
   }
 </style>
 
 {% schema %}
 {
-  "name": "USP Section",
+  "name": "USP Anchor Section",
   "settings": [
     {
       "type": "range",
@@ -185,6 +227,22 @@
       "id": "card_bg_color",
       "label": "Card Background Color",
       "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card Border Width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#E5DDD4"
     },
     {
       "type": "textarea",
@@ -221,6 +279,38 @@
       "default": "#6B5D4F"
     },
     {
+      "type": "header",
+      "content": "Benefit Pills"
+    },
+    {
+      "type": "color",
+      "id": "pill_bg_color",
+      "label": "Pill Background",
+      "default": "#E8F5E9"
+    },
+    {
+      "type": "color",
+      "id": "pill_text_color",
+      "label": "Pill Text Color",
+      "default": "#2E7D32"
+    },
+    {
+      "type": "color",
+      "id": "pill_hover_bg",
+      "label": "Pill Hover Background",
+      "default": "#C8E6C9"
+    },
+    {
+      "type": "color",
+      "id": "pill_hover_border",
+      "label": "Pill Hover Border",
+      "default": "#2E7D32"
+    },
+    {
+      "type": "header",
+      "content": "Social Proof"
+    },
+    {
       "type": "text",
       "id": "social_proof",
       "label": "Social Proof Text",
@@ -230,18 +320,34 @@
       "type": "color",
       "id": "social_proof_color",
       "label": "Social Proof Color",
-      "default": "#2D5F3F"
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "header",
+      "content": "Proof Pills Grid"
     },
     {
       "type": "color",
-      "id": "pill_bg_color",
-      "label": "Pill Background Color",
+      "id": "proof_pill_bg",
+      "label": "Proof Pill Background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
-      "id": "pill_text_color",
-      "label": "Pill Text Color",
+      "id": "proof_pill_border",
+      "label": "Proof Pill Border",
+      "default": "#E5DDD4"
+    },
+    {
+      "type": "color",
+      "id": "proof_pill_hover_border",
+      "label": "Proof Pill Hover Border",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "proof_pill_text_color",
+      "label": "Proof Pill Text Color",
       "default": "#2C2416"
     }
   ],
@@ -253,7 +359,7 @@
         {
           "type": "text",
           "id": "text",
-          "label": "Text",
+          "label": "Pill Text",
           "default": "Feel satisfied"
         }
       ]
@@ -279,31 +385,46 @@
   ],
   "presets": [
     {
-      "name": "USP Section",
+      "name": "USP Anchor Section",
       "blocks": [
         {
           "type": "benefit_pill",
-          "settings": {"text": "Feel satisfied"}
+          "settings": {
+            "text": "Feel satisfied"
+          }
         },
         {
           "type": "benefit_pill",
-          "settings": {"text": "Stay in control"}
+          "settings": {
+            "text": "Stay in control"
+          }
         },
         {
           "type": "benefit_pill",
-          "settings": {"text": "Eat consciously"}
+          "settings": {
+            "text": "Eat consciously"
+          }
         },
         {
           "type": "proof_card",
-          "settings": {"icon": "🥜", "text": "Naturally Filling"}
+          "settings": {
+            "icon": "🥜",
+            "text": "Naturally Filling"
+          }
         },
         {
           "type": "proof_card",
-          "settings": {"icon": "💚", "text": "No Sugar. No Crash."}
+          "settings": {
+            "icon": "💚",
+            "text": "No Sugar. No Crash."
+          }
         },
         {
           "type": "proof_card",
-          "settings": {"icon": "🔥", "text": "Fresh, Clean Nutrition"}
+          "settings": {
+            "icon": "🔥",
+            "text": "Fresh, Clean Nutrition"
+          }
         }
       ]
     }

@@ -1,0 +1,548 @@
+<footer class="footer" style="background: {{ section.settings.footer_bg }}; color: {{ section.settings.footer_text_color }};">
+  <div class="footer-content">
+    <!-- Footer Brand -->
+    <div class="footer-brand">
+      <h3>{{ section.settings.brand_name }}</h3>
+      <p>{{ section.settings.brand_description }}</p>
+
+      <!-- Trust Seals -->
+      <div class="footer-trust-seals">
+        {% for block in section.blocks %}
+          {% if block.type == 'trust_seal' %}
+            <div class="trust-seal" {{ block.shopify_attributes }}>{{ block.settings.icon }} {{ block.settings.text }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Social -->
+      {% if section.settings.social_text %}
+        <div class="footer-social">
+          {{ section.settings.social_text }} <a href="{{ section.settings.social_link }}" target="_blank" rel="noopener">{{ section.settings.social_handle }}</a> {{ section.settings.social_suffix }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Footer Sections -->
+    {% for block in section.blocks %}
+      {% if block.type == 'footer_section' %}
+        <div class="footer-section" {{ block.shopify_attributes }}>
+          <h4>{{ block.settings.heading }}</h4>
+          <ul>
+            {% if block.settings.link_1_text %}
+              <li><a href="{{ block.settings.link_1_url }}">{{ block.settings.link_1_text }}</a></li>
+            {% endif %}
+            {% if block.settings.link_2_text %}
+              <li><a href="{{ block.settings.link_2_url }}">{{ block.settings.link_2_text }}</a></li>
+            {% endif %}
+            {% if block.settings.link_3_text %}
+              <li><a href="{{ block.settings.link_3_url }}">{{ block.settings.link_3_text }}</a></li>
+            {% endif %}
+            {% if block.settings.link_4_text %}
+              <li><a href="{{ block.settings.link_4_url }}">{{ block.settings.link_4_text }}</a></li>
+            {% endif %}
+            {% if block.settings.link_5_text %}
+              <li>{{ block.settings.link_5_text }}</li>
+            {% endif %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if section.settings.trust_line %}
+    <div class="footer-trust-line">
+      {{ section.settings.trust_line }}
+    </div>
+  {% endif %}
+
+  <div class="footer-bottom">
+    <p>{{ section.settings.copyright_text }}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: {{ section.settings.footer_padding }}px 5% 40px;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 40px;
+  }
+
+  .footer-brand h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: {{ section.settings.brand_name_size }}px;
+    font-weight: 800;
+    color: {{ section.settings.brand_name_color }};
+    margin: 0 0 16px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .footer-brand p {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+    color: {{ section.settings.brand_desc_color }};
+  }
+
+  .footer-trust-seals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .trust-seal {
+    padding: 8px 14px;
+    background: {{ section.settings.trust_seal_bg }};
+    color: {{ section.settings.trust_seal_text }};
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid {{ section.settings.trust_seal_border }};
+  }
+
+  .footer-social {
+    font-size: 14px;
+    color: {{ section.settings.social_text_color }};
+  }
+
+  .footer-social a {
+    color: {{ section.settings.social_link_color }};
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s;
+  }
+
+  .footer-social a:hover {
+    color: {{ section.settings.social_link_hover }};
+    text-decoration: underline;
+  }
+
+  .footer-section h4 {
+    font-size: {{ section.settings.section_heading_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.section_heading_color }};
+    margin: 0 0 20px 0;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section li {
+    margin-bottom: 12px;
+  }
+
+  .footer-section a {
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+
+  .footer-section a:hover {
+    color: {{ section.settings.link_hover_color }};
+  }
+
+  .footer-trust-line {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid {{ section.settings.border_color }};
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    font-size: 14px;
+    font-weight: 600;
+    color: {{ section.settings.trust_line_color }};
+    letter-spacing: 0.5px;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 28px;
+    font-size: 13px;
+    color: {{ section.settings.copyright_color }};
+  }
+
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  @media (max-width: 992px) {
+    .footer-content {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand h3 {
+      font-size: calc({{ section.settings.brand_name_size }}px * 0.85);
+    }
+
+    .trust-seal {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "range",
+      "id": "footer_padding",
+      "label": "Footer Top Padding",
+      "min": 40,
+      "max": 100,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "footer_bg",
+      "label": "Footer Background",
+      "default": "#F5EDE4"
+    },
+    {
+      "type": "color",
+      "id": "footer_text_color",
+      "label": "Footer Text Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#D5C7B8"
+    },
+    {
+      "type": "header",
+      "content": "Brand Section"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "CutCraving"
+    },
+    {
+      "type": "range",
+      "id": "brand_name_size",
+      "label": "Brand Name Size",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "brand_name_color",
+      "label": "Brand Name Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "We believe in pure, natural wellness. Every product is crafted with care, sourced ethically, and made fresh to fuel your healthiest life."
+    },
+    {
+      "type": "color",
+      "id": "brand_desc_color",
+      "label": "Brand Description Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "header",
+      "content": "Trust Seals"
+    },
+    {
+      "type": "color",
+      "id": "trust_seal_bg",
+      "label": "Trust Seal Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "trust_seal_text",
+      "label": "Trust Seal Text",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "trust_seal_border",
+      "label": "Trust Seal Border",
+      "default": "#D5C7B8"
+    },
+    {
+      "type": "header",
+      "content": "Social"
+    },
+    {
+      "type": "text",
+      "id": "social_text",
+      "label": "Social Text",
+      "default": "Follow"
+    },
+    {
+      "type": "text",
+      "id": "social_handle",
+      "label": "Social Handle",
+      "default": "@cutcraving"
+    },
+    {
+      "type": "url",
+      "id": "social_link",
+      "label": "Social Link"
+    },
+    {
+      "type": "text",
+      "id": "social_suffix",
+      "label": "Social Suffix",
+      "default": "for wellness tips"
+    },
+    {
+      "type": "color",
+      "id": "social_text_color",
+      "label": "Social Text Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "color",
+      "id": "social_link_color",
+      "label": "Social Link Color",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "color",
+      "id": "social_link_hover",
+      "label": "Social Link Hover Color",
+      "default": "#2D4A38"
+    },
+    {
+      "type": "header",
+      "content": "Footer Sections"
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "label": "Section Heading Size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "default": 17,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "section_heading_color",
+      "label": "Section Heading Color",
+      "default": "#2C2416"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#6B5D4F"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "header",
+      "content": "Trust Line"
+    },
+    {
+      "type": "text",
+      "id": "trust_line",
+      "label": "Trust Line Text",
+      "default": "Crafted in India • 100% Natural • No Additives"
+    },
+    {
+      "type": "color",
+      "id": "trust_line_color",
+      "label": "Trust Line Color",
+      "default": "#3D5F4A"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2025 CutCraving. All rights reserved."
+    },
+    {
+      "type": "color",
+      "id": "copyright_color",
+      "label": "Copyright Color",
+      "default": "#8B7355"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_seal",
+      "name": "Trust Seal",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji or text)",
+          "default": "🔒"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Secure Checkout"
+        }
+      ]
+    },
+    {
+      "type": "footer_section",
+      "name": "Footer Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shop"
+        },
+        {
+          "type": "text",
+          "id": "link_1_text",
+          "label": "Link 1 Text"
+        },
+        {
+          "type": "url",
+          "id": "link_1_url",
+          "label": "Link 1 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_2_text",
+          "label": "Link 2 Text"
+        },
+        {
+          "type": "url",
+          "id": "link_2_url",
+          "label": "Link 2 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_3_text",
+          "label": "Link 3 Text"
+        },
+        {
+          "type": "url",
+          "id": "link_3_url",
+          "label": "Link 3 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_4_text",
+          "label": "Link 4 Text"
+        },
+        {
+          "type": "url",
+          "id": "link_4_url",
+          "label": "Link 4 URL"
+        },
+        {
+          "type": "text",
+          "id": "link_5_text",
+          "label": "Link 5 Text (plain text, no link)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        {
+          "type": "trust_seal",
+          "settings": {
+            "icon": "🔒",
+            "text": "Secure Checkout"
+          }
+        },
+        {
+          "type": "trust_seal",
+          "settings": {
+            "icon": "✓",
+            "text": "100% Natural"
+          }
+        },
+        {
+          "type": "trust_seal",
+          "settings": {
+            "icon": "↩️",
+            "text": "Easy Returns"
+          }
+        },
+        {
+          "type": "footer_section",
+          "settings": {
+            "heading": "Shop",
+            "link_1_text": "Peanut Butter",
+            "link_1_url": "/collections/peanut-butter",
+            "link_2_text": "Herbal Teas",
+            "link_2_url": "/collections/herbal-teas",
+            "link_3_text": "Combos",
+            "link_3_url": "/collections/combos"
+          }
+        },
+        {
+          "type": "footer_section",
+          "settings": {
+            "heading": "Quick Links",
+            "link_1_text": "About Us",
+            "link_1_url": "/pages/about",
+            "link_2_text": "Blog",
+            "link_2_url": "/blogs/news",
+            "link_3_text": "Contact",
+            "link_3_url": "/pages/contact",
+            "link_4_text": "FAQs",
+            "link_4_url": "/pages/faq"
+          }
+        },
+        {
+          "type": "footer_section",
+          "settings": {
+            "heading": "Contact",
+            "link_1_text": "cutcraving@gmail.com",
+            "link_1_url": "mailto:cutcraving@gmail.com",
+            "link_5_text": "Mon-Sat: 10am-6pm"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
