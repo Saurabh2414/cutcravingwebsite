@@ -1,7 +1,31 @@
-<section class="products-section">  <h3 id="products" class="section-title">{{ section.settings.title }}</h3>
+<section class="products-section">
+  <h3 id="products" class="section-title">{{ section.settings.title }}</h3>
 
   <div class="products-carousel">
-    {% if section.settings.collection != blank %}
+    {% comment %} Show manual product blocks first (if any) {% endcomment %}
+    {% if section.blocks.size > 0 %}
+      {% for block in section.blocks %}
+        <div class="product-card" {{ block.shopify_attributes }}>
+          <div class="product-icon">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | img_url: '200x200' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
+            {% else %}
+              <span style="font-size: 40px;">{{ block.settings.icon }}</span>
+            {% endif %}
+          </div>
+
+          <h4 class="product-title">{{ block.settings.title }}</h4>
+          <p class="product-description">{{ block.settings.description }}</p>
+
+          <a href="{{ block.settings.link }}" class="product-button">
+            {{ section.settings.button_text }} →
+          </a>
+
+          <small class="product-meta">{{ block.settings.meta_text }}</small>
+        </div>
+      {% endfor %}
+    {% elsif section.settings.collection != blank %}
+      {% comment %} Fallback to collection products if no manual blocks {% endcomment %}
       {% assign featured_collection = collections[section.settings.collection] %}
       {% for product in featured_collection.products limit: section.settings.products_to_show %}
         <div class="product-card">
@@ -27,28 +51,6 @@
               {{ product.price | money }}
             {% endif %}
           </small>
-        </div>
-      {% endfor %}
-    {% else %}
-      <!-- Fallback blocks if no collection selected -->
-      {% for block in section.blocks %}
-        <div class="product-card" {{ block.shopify_attributes }}>
-          <div class="product-icon">
-            {% if block.settings.image %}
-              <img src="{{ block.settings.image | img_url: '200x200' }}" alt="{{ block.settings.title | escape }}" loading="lazy">
-            {% else %}
-              <span style="font-size: 40px;">{{ block.settings.icon }}</span>
-            {% endif %}
-          </div>
-
-          <h4 class="product-title">{{ block.settings.title }}</h4>
-          <p class="product-description">{{ block.settings.description }}</p>
-
-          <a href="{{ block.settings.link }}" class="product-button">
-            {{ section.settings.button_text }} →
-          </a>
-
-          <small class="product-meta">{{ block.settings.meta_text }}</small>
         </div>
       {% endfor %}
     {% endif %}
@@ -244,7 +246,8 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "Product Collection (leave blank to use manual products below)"
+      "label": "Product Collection (Fallback Only)",
+      "info": "Only used if no manual products are added below. Add individual products using the 'Add block' button."
     },
     {
       "type": "range",
