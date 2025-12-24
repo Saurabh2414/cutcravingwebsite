@@ -57,46 +57,61 @@
   </div>
 
   <div class="hero-product">
-    {% if section.settings.show_floating_products %}
-      <div class="floating-products-ecosystem">
-        <div class="floating-product floating-product-1">
-          <div class="product-mini blue-tea-mini">{{ section.settings.floating_product_1_icon }}</div>
-          <span class="product-mini-label">{{ section.settings.floating_product_1_label }}</span>
+    <!-- Rotating Product Images Carousel -->
+    <div class="product-carousel">
+      {% if section.settings.product_image_1 %}
+        <div class="product-image active">
+          <img src="{{ section.settings.product_image_1 | img_url: '800x800' }}" alt="Product 1" loading="eager">
         </div>
-        <div class="floating-product floating-product-2">
-          <div class="product-mini hibiscus-mini">{{ section.settings.floating_product_2_icon }}</div>
-          <span class="product-mini-label">{{ section.settings.floating_product_2_label }}</span>
+      {% endif %}
+      {% if section.settings.product_image_2 %}
+        <div class="product-image">
+          <img src="{{ section.settings.product_image_2 | img_url: '800x800' }}" alt="Product 2" loading="lazy">
         </div>
-        <div class="floating-product floating-product-3">
-          <div class="product-mini chamomile-mini">{{ section.settings.floating_product_3_icon }}</div>
-          <span class="product-mini-label">{{ section.settings.floating_product_3_label }}</span>
+      {% endif %}
+      {% if section.settings.product_image_3 %}
+        <div class="product-image">
+          <img src="{{ section.settings.product_image_3 | img_url: '800x800' }}" alt="Product 3" loading="lazy">
         </div>
-      </div>
-    {% endif %}
+      {% endif %}
+      {% if section.settings.product_image_4 %}
+        <div class="product-image">
+          <img src="{{ section.settings.product_image_4 | img_url: '800x800' }}" alt="Product 4" loading="lazy">
+        </div>
+      {% endif %}
+    </div>
 
     <div class="floating-peanuts">
       <div class="peanut"></div>
       <div class="peanut"></div>
       <div class="peanut"></div>
     </div>
-
-    {% if section.settings.use_custom_image and section.settings.product_image %}
-      <div class="custom-product-jar">
-        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.title | escape }}" loading="lazy">
-      </div>
-    {% else %}
-      <div class="product-jar">
-        <div class="jar-lid"></div>
-        <div class="jar-label">
-          <h3>{{ section.settings.jar_brand }}</h3>
-          <div class="percentage">{{ section.settings.jar_percentage }}</div>
-          <div class="product-name">{{ section.settings.jar_product_name }}</div>
-          <div class="product-detail">{{ section.settings.jar_detail }}</div>
-        </div>
-      </div>
-    {% endif %}
   </div>
 </section>
+
+<script>
+  // Auto-rotate product images
+  document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.product-carousel .product-image');
+    if (images.length <= 1) return; // No rotation needed for single image
+
+    let currentIndex = 0;
+
+    function rotateImages() {
+      // Fade out current image
+      images[currentIndex].classList.remove('active');
+
+      // Move to next image
+      currentIndex = (currentIndex + 1) % images.length;
+
+      // Fade in next image
+      images[currentIndex].classList.add('active');
+    }
+
+    // Rotate every 3 seconds
+    setInterval(rotateImages, 3000);
+  });
+</script>
 
 <style>
   :root {
@@ -133,9 +148,9 @@
     display: inline;
   }
 
+  /* Hide ritual icons on desktop - mobile only */
   .hero-system-cue {
-    text-align: center;
-    margin: 20px 0 30px 0;
+    display: none;
   }
 
   .system-label {
@@ -259,171 +274,47 @@
     align-items: center;
   }
 
-  /* Floating Products Ecosystem */
-  .floating-products-ecosystem {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-  }
-
-  .floating-product {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    opacity: 0.65;
-    filter: blur(0.5px);
-    transition: all 0.3s;
-  }
-
-  .floating-product:hover {
-    opacity: 0.9;
-    filter: blur(0px);
-    transform: scale(1.05);
-  }
-
-  .product-mini {
-    font-size: 80px;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-  }
-
-  .product-mini-label {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-dark);
-    opacity: 0.8;
-  }
-
-  .floating-product-1 {
-    top: 15%;
-    right: 10%;
-    animation: floatProduct1 5s ease-in-out infinite;
-  }
-
-  .floating-product-2 {
-    bottom: 20%;
-    right: 15%;
-    animation: floatProduct2 6s ease-in-out infinite;
-  }
-
-  .floating-product-3 {
-    top: 25%;
-    left: 8%;
-    animation: floatProduct3 5.5s ease-in-out infinite;
-  }
-
-  @keyframes floatProduct1 {
-    0%, 100% { transform: translate(0, 0) rotate(-3deg); }
-    50% { transform: translate(15px, -20px) rotate(3deg); }
-  }
-
-  @keyframes floatProduct2 {
-    0%, 100% { transform: translate(0, 0) rotate(2deg); }
-    50% { transform: translate(-12px, -18px) rotate(-2deg); }
-  }
-
-  @keyframes floatProduct3 {
-    0%, 100% { transform: translate(0, 0) rotate(-2deg); }
-    50% { transform: translate(10px, -15px) rotate(2deg); }
-  }
-
-  .custom-product-jar {
+  /* Product Carousel with Auto-Rotation */
+  .product-carousel {
+    position: relative;
     max-width: 500px;
     width: 100%;
+    height: 500px;
     animation: jarBreathe 5s ease-in-out infinite;
   }
 
-  .custom-product-jar img {
+  .product-carousel .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    pointer-events: none;
+  }
+
+  .product-carousel .product-image.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .product-carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     transition: transform 0.3s;
   }
 
-  .custom-product-jar img:hover {
+  .product-carousel .product-image.active img:hover {
     transform: translateY(-8px);
   }
 
   @keyframes jarBreathe {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
-  }
-
-  .product-jar {
-    animation: jarBreathe 5s ease-in-out infinite;
-    width: 400px;
-    height: 480px;
-    background: linear-gradient(145deg, #3a2f22 0%, #2a1f15 100%);
-    border-radius: 200px 200px 20px 20px;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.3s;
-  }
-
-  .product-jar:hover {
-    transform: translateY(-8px);
-  }
-
-  .jar-lid {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    background: linear-gradient(145deg, #C4A57B 0%, #A68B5B 100%);
-    border-radius: 200px 200px 0 0;
-    border-bottom: 3px solid #8B6F47;
-  }
-
-  .jar-label {
-    background: white;
-    padding: 40px 30px;
-    border-radius: 12px;
-    text-align: center;
-    margin-top: 40px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-
-  .jar-label h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: #2D5F3F;
-    margin-bottom: 8px;
-  }
-
-  .jar-label .percentage {
-    font-family: 'Playfair Display', serif;
-    font-size: 56px;
-    font-weight: 900;
-    color: #2C2416;
-    line-height: 1;
-  }
-
-  .jar-label .product-name {
-    font-size: 18px;
-    font-weight: 700;
-    color: #2D5F3F;
-    margin-top: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .jar-label .product-detail {
-    font-size: 11px;
-    color: #6B5D4F;
-    margin-top: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
   .floating-peanuts {
@@ -494,7 +385,11 @@
       font-size: calc({{ section.settings.subtitle_line_size }}px * 0.75);
     }
 
+    /* Show ritual icons on mobile */
     .hero-system-cue {
+      display: block;
+      text-align: center;
+      margin: 20px 0 30px 0;
       font-size: 14px;
     }
 
@@ -510,36 +405,8 @@
       display: none;
     }
 
-    .floating-products-ecosystem {
-      display: block;
-    }
-
-    .floating-product {
-      opacity: 0.5;
-      filter: blur(1px);
-    }
-
-    .floating-product-1 {
-      top: 5%;
-      right: 5%;
-    }
-
-    .floating-product-2 {
-      bottom: 10%;
-      right: 8%;
-    }
-
-    .floating-product-3 {
-      top: 15%;
-      left: 5%;
-    }
-
-    .product-mini {
-      font-size: 50px;
-    }
-
-    .product-mini-label {
-      font-size: 11px;
+    .product-carousel {
+      height: 350px;
     }
   }
 </style>
@@ -814,94 +681,31 @@
     },
     {
       "type": "header",
-      "content": "Floating Products Ecosystem"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_floating_products",
-      "label": "Show Floating Products",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "floating_product_1_icon",
-      "label": "Floating Product 1 Icon",
-      "default": "🦋"
-    },
-    {
-      "type": "text",
-      "id": "floating_product_1_label",
-      "label": "Floating Product 1 Label",
-      "default": "Blue Tea"
-    },
-    {
-      "type": "text",
-      "id": "floating_product_2_icon",
-      "label": "Floating Product 2 Icon",
-      "default": "🌺"
-    },
-    {
-      "type": "text",
-      "id": "floating_product_2_label",
-      "label": "Floating Product 2 Label",
-      "default": "Hibiscus"
-    },
-    {
-      "type": "text",
-      "id": "floating_product_3_icon",
-      "label": "Floating Product 3 Icon",
-      "default": "🌿"
-    },
-    {
-      "type": "text",
-      "id": "floating_product_3_label",
-      "label": "Floating Product 3 Label",
-      "default": "Chamomile"
-    },
-    {
-      "type": "header",
-      "content": "Product Visual"
-    },
-    {
-      "type": "checkbox",
-      "id": "use_custom_image",
-      "label": "Use Custom Product Image",
-      "info": "Enable to upload your own product image instead of the CSS jar",
-      "default": false
+      "content": "Product Images Carousel"
     },
     {
       "type": "image_picker",
-      "id": "product_image",
-      "label": "Product Image",
-      "info": "Upload your product image (works when 'Use Custom Product Image' is enabled)"
+      "id": "product_image_1",
+      "label": "Product Image 1",
+      "info": "First product image in rotation"
     },
     {
-      "type": "header",
-      "content": "CSS Product Jar (default)"
+      "type": "image_picker",
+      "id": "product_image_2",
+      "label": "Product Image 2",
+      "info": "Second product image in rotation"
     },
     {
-      "type": "text",
-      "id": "jar_brand",
-      "label": "Jar Brand Text",
-      "default": "cutcraving"
+      "type": "image_picker",
+      "id": "product_image_3",
+      "label": "Product Image 3",
+      "info": "Third product image in rotation"
     },
     {
-      "type": "text",
-      "id": "jar_percentage",
-      "label": "Jar Percentage",
-      "default": "100%"
-    },
-    {
-      "type": "text",
-      "id": "jar_product_name",
-      "label": "Jar Product Name",
-      "default": "Peanut Butter"
-    },
-    {
-      "type": "text",
-      "id": "jar_detail",
-      "label": "Jar Detail Text",
-      "default": "Zero Additives • Fresh Roasted"
+      "type": "image_picker",
+      "id": "product_image_4",
+      "label": "Product Image 4",
+      "info": "Fourth product image in rotation (auto-rotates every 3 seconds)"
     }
   ],
   "presets": [
