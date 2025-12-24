@@ -1,5 +1,4 @@
-<footer class="footer" style="background: {{ section.settings.footer_bg }}; color: {{ section.settings.footer_text_color }};">
-  <div class="footer-content">
+<footer class="footer">  <div class="footer-content">
     <!-- Footer Brand -->
     <div class="footer-brand">
       <h3>{{ section.settings.brand_name }}</h3>
@@ -62,7 +61,9 @@
 
 <style>
   .footer {
-    padding: {{ section.settings.footer_padding }}px 5% 40px;
+    padding: 60px 5% 30px;  /* 60px 5% 30px like original */
+    background: #2C2416;  /* Dark brown background like original */
+    color: rgba(255, 249, 243, 0.8);  /* Light beige text like original */
   }
 
   .footer-content {
@@ -76,9 +77,9 @@
 
   .footer-brand h3 {
     font-family: 'Playfair Display', serif;
-    font-size: {{ section.settings.brand_name_size }}px;
+    font-size: 28px;  /* Fixed size like original */
     font-weight: 800;
-    color: {{ section.settings.brand_name_color }};
+    color: #FFF9F3;  /* Light cream color for brand name */
     margin: 0 0 16px 0;
     letter-spacing: -0.5px;
   }
@@ -87,48 +88,50 @@
     font-size: 15px;
     line-height: 1.7;
     margin-bottom: 28px;
-    color: {{ section.settings.brand_desc_color }};
+    color: rgba(255, 249, 243, 0.8);  /* Light beige text like original */
   }
 
   .footer-trust-seals {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-top: 20px;  /* margin-top instead of margin-bottom like original */
+    margin-bottom: 0;
   }
 
   .trust-seal {
-    padding: 8px 14px;
-    background: {{ section.settings.trust_seal_bg }};
-    color: {{ section.settings.trust_seal_text }};
-    border-radius: 20px;
-    font-size: 13px;
+    font-size: 11px;  /* 11px like original */
+    padding: 4px 10px;  /* 4px 10px like original */
+    background: rgba(255, 249, 243, 0.1);  /* Semi-transparent light background like original */
+    border-radius: 6px;  /* 6px like original */
     font-weight: 600;
-    border: 1px solid {{ section.settings.trust_seal_border }};
+    border: none;  /* No border like original */
   }
 
   .footer-social {
     font-size: 14px;
-    color: {{ section.settings.social_text_color }};
+    color: rgba(255, 249, 243, 0.8);  /* Light beige text like original */
   }
 
   .footer-social a {
-    color: {{ section.settings.social_link_color }};
+    color: #FFF9F3;  /* Light cream color for links */
     text-decoration: none;
     font-weight: 700;
     transition: color 0.3s;
   }
 
   .footer-social a:hover {
-    color: {{ section.settings.social_link_hover }};
+    color: #F5EDE4;  /* Warm beige on hover */
     text-decoration: underline;
   }
 
   .footer-section h4 {
-    font-size: {{ section.settings.section_heading_size }}px;
+    font-size: 14px;  /* 14px like original */
     font-weight: 700;
-    color: {{ section.settings.section_heading_color }};
+    color: #F5EDE4;  /* Warm beige like original */
     margin: 0 0 20px 0;
+    text-transform: uppercase;  /* Uppercase like original */
+    letter-spacing: 1px;
   }
 
   .footer-section ul {
@@ -142,32 +145,32 @@
   }
 
   .footer-section a {
-    color: {{ section.settings.link_color }};
+    color: rgba(255, 249, 243, 0.7);  /* Slightly transparent light beige */
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s;
   }
 
   .footer-section a:hover {
-    color: {{ section.settings.link_hover_color }};
+    color: #FFF9F3;  /* Brighter on hover */
   }
 
   .footer-trust-line {
     text-align: center;
     padding: 20px 0;
-    border-top: 1px solid {{ section.settings.border_color }};
-    border-bottom: 1px solid {{ section.settings.border_color }};
-    font-size: 14px;
+    border-top: 1px solid rgba(255, 249, 243, 0.15);  /* Semi-transparent border */
+    border-bottom: 1px solid rgba(255, 249, 243, 0.15);  /* Semi-transparent border */
+    font-size: 13px;  /* 13px like original */
     font-weight: 600;
-    color: {{ section.settings.trust_line_color }};
+    color: #F5EDE4;  /* Warm beige like original */
     letter-spacing: 0.5px;
   }
 
   .footer-bottom {
     text-align: center;
-    padding-top: 28px;
+    padding-top: 30px;  /* 30px like original */
     font-size: 13px;
-    color: {{ section.settings.copyright_color }};
+    color: rgba(255, 249, 243, 0.6);  /* More subtle copyright text */
   }
 
   .footer-bottom p {
