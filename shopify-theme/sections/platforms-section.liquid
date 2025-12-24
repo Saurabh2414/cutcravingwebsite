@@ -79,8 +79,9 @@
   }
 
   .platforms-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     margin-bottom: 30px;
   }
@@ -99,6 +100,8 @@
     align-items: center;
     gap: 16px;
     border: 2px solid transparent;
+    flex: 0 0 auto;
+    width: 220px;  /* Fixed width for consistent sizing with 1-4 cards */
   }
 
   .platform-card:hover {
@@ -192,12 +195,18 @@
 
   @media (max-width: 768px) {
     .platforms-grid {
-      grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
 
     .platform-card {
+      width: calc(50% - 8px);  /* 2 cards per row on mobile */
       padding: 30px 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .platform-card {
+      width: 100%;  /* 1 card per row on very small screens */
     }
 
     .platform-logo {
