@@ -1,4 +1,4 @@
-<section class="platforms-section" style="padding: {{ section.settings.section_padding }}px 5%; background: {{ section.settings.background_color }};">
+<section class="platforms-section">
   <div class="platforms-container">
     <div class="platforms-header">
       <div class="platforms-kicker">{{ section.settings.kicker }}</div>
@@ -215,22 +215,6 @@
   "name": "Platforms Section",
   "settings": [
     {
-      "type": "range",
-      "id": "section_padding",
-      "label": "Section Padding",
-      "min": 40,
-      "max": 120,
-      "step": 10,
-      "default": 80,
-      "unit": "px"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#F5EDE4"
-    },
-    {
       "type": "header",
       "content": "Section Header"
     },
@@ -282,38 +266,6 @@
     },
     {
       "type": "header",
-      "content": "Platform Cards"
-    },
-    {
-      "type": "color",
-      "id": "card_bg_color",
-      "label": "Card Background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "hover_badge_color",
-      "label": "Badge Color on Hover",
-      "default": "#3D5F4A"
-    },
-    {
-      "type": "header",
-      "content": "Special Badge"
-    },
-    {
-      "type": "color",
-      "id": "special_badge_bg",
-      "label": "Special Badge Background",
-      "default": "#FFD700"
-    },
-    {
-      "type": "color",
-      "id": "special_badge_text",
-      "label": "Special Badge Text",
-      "default": "#2C2416"
-    },
-    {
-      "type": "header",
       "content": "Bottom CTA"
     },
     {
@@ -321,12 +273,6 @@
       "id": "bottom_cta",
       "label": "Bottom CTA Text (optional)",
       "default": "💚 Buying direct? You get the freshest batches, best prices, and support our small team."
-    },
-    {
-      "type": "color",
-      "id": "bottom_cta_color",
-      "label": "Bottom CTA Color",
-      "default": "#6B5D4F"
     }
   ],
   "blocks": [
