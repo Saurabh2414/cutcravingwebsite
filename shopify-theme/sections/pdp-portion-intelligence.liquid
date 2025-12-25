@@ -1,0 +1,216 @@
+<section class="portion-intelligence">
+  <div class="portion-container">
+    <h2 class="portion-title">{{ section.settings.title }}</h2>
+
+    <div class="portion-slider-wrapper">
+      <input type="range" min="1" max="3" value="2" class="portion-slider" id="portionSlider">
+
+      <div class="portion-display">
+        <div class="portion-amount" id="portionAmount">2 tbsp</div>
+        <div class="portion-label" id="portionLabel">Sweet craving</div>
+        <div class="portion-meaning" id="portionMeaning">Ideal default</div>
+      </div>
+
+      <div class="portion-markers">
+        <span>1 tbsp</span>
+        <span>2 tbsp</span>
+        <span>3 tbsp</span>
+      </div>
+    </div>
+
+    <p class="portion-insight">{{ section.settings.insight_text }}</p>
+
+    <button class="portion-reset" onclick="resetSlider()">
+      Reset to 2 tbsp (recommended)
+    </button>
+  </div>
+</section>
+
+<script>
+  const slider = document.getElementById('portionSlider');
+  const amount = document.getElementById('portionAmount');
+  const label = document.getElementById('portionLabel');
+  const meaning = document.getElementById('portionMeaning');
+
+  const portions = {
+    1: { amount: '1 tbsp', label: 'Light craving', meaning: 'Taste nudge' },
+    2: { amount: '2 tbsp', label: 'Sweet craving', meaning: 'Ideal default' },
+    3: { amount: '3 tbsp', label: 'Heavy urge', meaning: 'Dessert replacement' }
+  };
+
+  slider.addEventListener('input', (e) => {
+    const value = e.target.value;
+    amount.textContent = portions[value].amount;
+    label.textContent = portions[value].label;
+    meaning.textContent = portions[value].meaning;
+  });
+
+  function resetSlider() {
+    slider.value = 2;
+    amount.textContent = portions[2].amount;
+    label.textContent = portions[2].label;
+    meaning.textContent = portions[2].meaning;
+  }
+</script>
+
+<style>
+  .portion-intelligence {
+    padding: 100px 5%;
+    background: #F5EDE4;
+  }
+
+  .portion-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .portion-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 50px 0;
+  }
+
+  .portion-slider-wrapper {
+    background: white;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+  }
+
+  .portion-slider {
+    width: 100%;
+    height: 8px;
+    background: #E5DDD4;
+    border-radius: 10px;
+    outline: none;
+    margin: 30px 0;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+
+  .portion-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2D5F3F;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(45, 95, 63, 0.3);
+  }
+
+  .portion-slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #2D5F3F;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(45, 95, 63, 0.3);
+  }
+
+  .portion-display {
+    margin-bottom: 20px;
+  }
+
+  .portion-amount {
+    font-size: 42px;
+    font-weight: 800;
+    color: #2D5F3F;
+    margin-bottom: 10px;
+  }
+
+  .portion-label {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2C2416;
+    margin-bottom: 8px;
+  }
+
+  .portion-meaning {
+    font-size: 15px;
+    color: #6B5D4F;
+    font-style: italic;
+  }
+
+  .portion-markers {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #6B5D4F;
+    font-weight: 600;
+  }
+
+  .portion-insight {
+    font-size: 17px;
+    color: #2C2416;
+    line-height: 1.7;
+    margin-bottom: 30px;
+    font-style: italic;
+  }
+
+  .portion-reset {
+    background: transparent;
+    border: 2px solid #2D5F3F;
+    color: #2D5F3F;
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .portion-reset:hover {
+    background: #2D5F3F;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .portion-intelligence {
+      padding: 60px 5%;
+    }
+
+    .portion-title {
+      font-size: 28px;
+    }
+
+    .portion-slider-wrapper {
+      padding: 40px 24px;
+    }
+
+    .portion-amount {
+      font-size: 32px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Portion Intelligence",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "How much satisfaction do you actually need?"
+    },
+    {
+      "type": "textarea",
+      "id": "insight_text",
+      "label": "Insight Text",
+      "default": "Most people don't need more food. They need the right dose."
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Portion Intelligence"
+    }
+  ]
+}
+{% endschema %}

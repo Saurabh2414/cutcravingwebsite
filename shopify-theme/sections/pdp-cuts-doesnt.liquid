@@ -1,0 +1,205 @@
+<section class="cuts-doesnt-section">
+  <div class="cuts-container">
+    <div class="cuts-card cuts-positive">
+      <h3 class="cuts-card-title">{{ section.settings.cuts_title }}</h3>
+      <ul class="cuts-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'cuts_item' %}
+            <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="cuts-card cuts-negative">
+      <h3 class="cuts-card-title">{{ section.settings.doesnt_title }}</h3>
+      <ul class="cuts-list">
+        {% for block in section.blocks %}
+          {% if block.type == 'doesnt_item' %}
+            <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cuts-doesnt-section {
+    padding: 80px 5%;
+    background: #FFF9F3;  /* Cream-light background */
+  }
+
+  .cuts-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .cuts-card {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    border-top: 4px solid transparent;
+  }
+
+  .cuts-positive {
+    border-top-color: #2D5F3F;
+  }
+
+  .cuts-negative {
+    border-top-color: #6B5D4F;
+  }
+
+  .cuts-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 24px 0;
+  }
+
+  .cuts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cuts-list li {
+    font-size: 16px;
+    color: #2C2416;
+    margin-bottom: 14px;
+    padding-left: 28px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .cuts-positive .cuts-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2D5F3F;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .cuts-negative .cuts-list li::before {
+    content: "×";
+    position: absolute;
+    left: 0;
+    color: #6B5D4F;
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .cuts-doesnt-section {
+      padding: 60px 5%;
+    }
+
+    .cuts-container {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .cuts-card {
+      padding: 32px 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Cuts / Doesn't",
+  "settings": [
+    {
+      "type": "text",
+      "id": "cuts_title",
+      "label": "What It Cuts - Title",
+      "default": "What this helps with"
+    },
+    {
+      "type": "text",
+      "id": "doesnt_title",
+      "label": "What It Doesn't - Title",
+      "default": "What it's not meant for"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cuts_item",
+      "name": "What It Cuts Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "doesnt_item",
+      "name": "What It Doesn't Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Cuts / Doesn't",
+      "blocks": [
+        {
+          "type": "cuts_item",
+          "settings": {
+            "text": "Sweet cravings without sugar crash"
+          }
+        },
+        {
+          "type": "cuts_item",
+          "settings": {
+            "text": "3–4 PM energy slumps"
+          }
+        },
+        {
+          "type": "cuts_item",
+          "settings": {
+            "text": "Dessert binges"
+          }
+        },
+        {
+          "type": "cuts_item",
+          "settings": {
+            "text": "Texture cravings for richness"
+          }
+        },
+        {
+          "type": "doesnt_item",
+          "settings": {
+            "text": "Late-night hunger"
+          }
+        },
+        {
+          "type": "doesnt_item",
+          "settings": {
+            "text": "Stress eating before bed"
+          }
+        },
+        {
+          "type": "doesnt_item",
+          "settings": {
+            "text": "Dehydration cravings"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

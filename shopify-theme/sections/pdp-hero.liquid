@@ -1,0 +1,247 @@
+<section class="pdp-hero">
+  <div class="pdp-hero-container">
+    <div class="pdp-hero-content">
+      <h1 class="pdp-hero-headline">{{ section.settings.headline }}</h1>
+
+      <ul class="pdp-hero-benefits">
+        {% if section.settings.benefit_1 %}<li>{{ section.settings.benefit_1 }}</li>{% endif %}
+        {% if section.settings.benefit_2 %}<li>{{ section.settings.benefit_2 }}</li>{% endif %}
+        {% if section.settings.benefit_3 %}<li>{{ section.settings.benefit_3 }}</li>{% endif %}
+      </ul>
+
+      <p class="pdp-hero-micro">{{ section.settings.micro_copy }}</p>
+
+      <div class="pdp-hero-ctas">
+        <a href="{{ section.settings.primary_cta_link }}" class="btn-primary-pdp">
+          {{ section.settings.primary_cta_text }} →
+        </a>
+        <button class="btn-secondary-pdp" onclick="document.getElementById('add-to-cart-section').scrollIntoView({behavior: 'smooth'})">
+          {{ section.settings.secondary_cta_text }}
+        </button>
+      </div>
+    </div>
+
+    <div class="pdp-hero-visual">
+      {% if section.settings.product_image %}
+        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="pdp-product-image">
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .pdp-hero {
+    padding: 100px 5% 80px;
+    background: #F5EDE4;  /* Warm beige like homepage */
+  }
+
+  .pdp-hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .pdp-hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 32px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .pdp-hero-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px 0;
+  }
+
+  .pdp-hero-benefits li {
+    font-size: 18px;
+    color: #2C2416;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 28px;
+    position: relative;
+  }
+
+  .pdp-hero-benefits li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #2D5F3F;
+    font-weight: 700;
+  }
+
+  .pdp-hero-micro {
+    font-size: 15px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 36px;
+    border-left: 3px solid #2D5F3F;
+    padding-left: 20px;
+  }
+
+  .pdp-hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary-pdp {
+    display: inline-block;
+    padding: 16px 36px;
+    background: #2D5F3F;
+    color: white;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(45, 95, 63, 0.2);
+  }
+
+  .btn-primary-pdp:hover {
+    background: #234a31;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(45, 95, 63, 0.3);
+  }
+
+  .btn-secondary-pdp {
+    display: inline-block;
+    padding: 16px 36px;
+    background: transparent;
+    color: #6B5D4F;
+    border: 2px solid #6B5D4F;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary-pdp:hover {
+    background: #6B5D4F;
+    color: white;
+  }
+
+  .pdp-hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pdp-product-image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.15));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @media (max-width: 768px) {
+    .pdp-hero {
+      padding: 60px 5%;
+    }
+
+    .pdp-hero-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .pdp-hero-headline {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+
+    .pdp-hero-ctas {
+      flex-direction: column;
+    }
+
+    .btn-primary-pdp,
+    .btn-secondary-pdp {
+      width: 100%;
+      text-align: center;
+    }
+
+    .pdp-product-image {
+      max-width: 350px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Hero",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "When your body craves chocolate at 4 PM, this is what it's asking for."
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "default": "Rich taste"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "default": "Real satiety"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "default": "No sugar crash"
+    },
+    {
+      "type": "textarea",
+      "id": "micro_copy",
+      "label": "Micro Copy (Emotional Anchor)",
+      "default": "This is not a late-night snack. This is intelligent satisfaction."
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Find My Perfect Portion"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "default": "Add to Cart"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Hero"
+    }
+  ]
+}
+{% endschema %}
