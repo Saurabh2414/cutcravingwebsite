@@ -1,0 +1,315 @@
+<section class="nutrition-explorer">
+  <div class="nutrition-container">
+    <div class="nutrition-grid">
+      <div class="nutrition-card nutrition-inside">
+        <h3 class="nutrition-card-title">{{ section.settings.inside_title }}</h3>
+        <div class="nutrition-items">
+          {% for block in section.blocks %}
+            {% if block.type == 'inside_item' %}
+              <div class="nutrition-item" {{ block.shopify_attributes }}>
+                <div class="nutrition-icon">{{ block.settings.icon }}</div>
+                <div class="nutrition-content">
+                  <div class="nutrition-name">{{ block.settings.name }}</div>
+                  <div class="nutrition-why">{{ block.settings.why }}</div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="nutrition-card nutrition-excluded">
+        <h3 class="nutrition-card-title">{{ section.settings.excluded_title }}</h3>
+        <div class="nutrition-items">
+          {% for block in section.blocks %}
+            {% if block.type == 'excluded_item' %}
+              <div class="nutrition-item excluded" {{ block.shopify_attributes }}>
+                <div class="nutrition-icon">{{ block.settings.icon }}</div>
+                <div class="nutrition-name">{{ block.settings.name }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.show_full_table_toggle %}
+      <button class="nutrition-toggle" onclick="toggleNutritionTable()">
+        View full nutritional table →
+      </button>
+      <div class="nutrition-table-expanded" id="nutritionTable" style="display: none;">
+        <p>{{ section.settings.full_table_content }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  function toggleNutritionTable() {
+    const table = document.getElementById('nutritionTable');
+    const button = event.target;
+    if (table.style.display === 'none') {
+      table.style.display = 'block';
+      button.textContent = 'Hide nutritional table ↑';
+    } else {
+      table.style.display = 'none';
+      button.textContent = 'View full nutritional table →';
+    }
+  }
+</script>
+
+<style>
+  .nutrition-explorer {
+    padding: 100px 5%;
+    background: #FFFFFF;
+  }
+
+  .nutrition-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .nutrition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .nutrition-card {
+    background: #FFF9F3;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .nutrition-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 30px 0;
+  }
+
+  .nutrition-items {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .nutrition-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .nutrition-item.excluded {
+    opacity: 0.8;
+  }
+
+  .nutrition-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .nutrition-content {
+    flex: 1;
+  }
+
+  .nutrition-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2C2416;
+    margin-bottom: 6px;
+  }
+
+  .nutrition-why {
+    font-size: 14px;
+    color: #6B5D4F;
+    line-height: 1.6;
+  }
+
+  .nutrition-toggle {
+    display: block;
+    margin: 0 auto;
+    background: transparent;
+    border: 2px solid #2D5F3F;
+    color: #2D5F3F;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .nutrition-toggle:hover {
+    background: #2D5F3F;
+    color: white;
+  }
+
+  .nutrition-table-expanded {
+    max-width: 700px;
+    margin: 30px auto 0;
+    padding: 30px;
+    background: #F5EDE4;
+    border-radius: 12px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #2C2416;
+  }
+
+  @media (max-width: 768px) {
+    .nutrition-explorer {
+      padding: 60px 5%;
+    }
+
+    .nutrition-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .nutrition-card {
+      padding: 32px 24px;
+    }
+
+    .nutrition-icon {
+      font-size: 28px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Nutrition Explorer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "inside_title",
+      "label": "What's Inside Title",
+      "default": "What's Inside (Why It Works)"
+    },
+    {
+      "type": "text",
+      "id": "excluded_title",
+      "label": "What We Don't Use Title",
+      "default": "What We Don't Use"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_full_table_toggle",
+      "label": "Show Full Table Toggle",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "full_table_content",
+      "label": "Full Nutritional Table Content",
+      "default": "Per 100g: Energy 600 kcal | Protein 28g | Fat 50g | Carbs 18g | Fiber 8g | Sodium 2mg"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "inside_item",
+      "name": "Inside Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "💪"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Protein"
+        },
+        {
+          "type": "text",
+          "id": "why",
+          "label": "Why It Works",
+          "default": "Triggers satiety hormones"
+        }
+      ]
+    },
+    {
+      "type": "excluded_item",
+      "name": "Excluded Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "🚫"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Palm oil"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Nutrition Explorer",
+      "blocks": [
+        {
+          "type": "inside_item",
+          "settings": {
+            "icon": "💪",
+            "name": "Protein",
+            "why": "Triggers satiety hormones"
+          }
+        },
+        {
+          "type": "inside_item",
+          "settings": {
+            "icon": "🥜",
+            "name": "Healthy fats",
+            "why": "Slow digestion"
+          }
+        },
+        {
+          "type": "inside_item",
+          "settings": {
+            "icon": "✓",
+            "name": "No refined sugar",
+            "why": "No crash"
+          }
+        },
+        {
+          "type": "excluded_item",
+          "settings": {
+            "icon": "🚫",
+            "name": "Palm oil"
+          }
+        },
+        {
+          "type": "excluded_item",
+          "settings": {
+            "icon": "🚫",
+            "name": "Hydrogenated fats"
+          }
+        },
+        {
+          "type": "excluded_item",
+          "settings": {
+            "icon": "🚫",
+            "name": "Artificial stabilizers"
+          }
+        },
+        {
+          "type": "excluded_item",
+          "settings": {
+            "icon": "🚫",
+            "name": "Added sugar"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
