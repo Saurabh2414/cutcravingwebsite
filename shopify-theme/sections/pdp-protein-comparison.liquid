@@ -1,0 +1,305 @@
+<section class="protein-comparison">
+  <div class="protein-container">
+    <h2 class="protein-title">{{ section.settings.title }}</h2>
+    <p class="protein-subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="protein-grid">
+      {% for block in section.blocks %}
+        <div class="protein-card {% if block.settings.is_featured %}protein-featured{% endif %}" {{ block.shopify_attributes }}>
+          <div class="protein-source">{{ block.settings.source }}</div>
+          <div class="protein-amount">{{ block.settings.protein_amount }}</div>
+          <div class="protein-label">{{ block.settings.label }}</div>
+          <div class="protein-satisfaction">
+            <div class="satisfaction-bar">
+              <div class="satisfaction-fill" style="width: {{ block.settings.satisfaction_level }}%;"></div>
+            </div>
+            <div class="satisfaction-text">{{ block.settings.satisfaction_text }}</div>
+          </div>
+          {% if block.settings.note %}
+            <div class="protein-note">{{ block.settings.note }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <p class="protein-insight">{{ section.settings.closing_insight }}</p>
+  </div>
+</section>
+
+<style>
+  .protein-comparison {
+    padding: 100px 5%;
+    background: #FFFFFF;
+  }
+
+  .protein-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .protein-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+  }
+
+  .protein-subtitle {
+    font-size: 17px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .protein-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 50px;
+  }
+
+  .protein-card {
+    background: #F5EDE4;
+    padding: 36px 28px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  .protein-card.protein-featured {
+    background: #2D5F3F;
+    transform: scale(1.05);
+    box-shadow: 0 8px 28px rgba(45, 95, 63, 0.25);
+  }
+
+  .protein-card.protein-featured .protein-source,
+  .protein-card.protein-featured .protein-amount,
+  .protein-card.protein-featured .protein-label,
+  .protein-card.protein-featured .satisfaction-text,
+  .protein-card.protein-featured .protein-note {
+    color: white;
+  }
+
+  .protein-source {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2C2416;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .protein-amount {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2D5F3F;
+    margin-bottom: 8px;
+  }
+
+  .protein-card.protein-featured .protein-amount {
+    color: #FFF9F3;
+  }
+
+  .protein-label {
+    font-size: 13px;
+    color: #6B5D4F;
+    margin-bottom: 20px;
+  }
+
+  .protein-satisfaction {
+    margin-bottom: 16px;
+  }
+
+  .satisfaction-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(107, 93, 79, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .protein-card.protein-featured .satisfaction-bar {
+    background: rgba(255, 249, 243, 0.3);
+  }
+
+  .satisfaction-fill {
+    height: 100%;
+    background: #2D5F3F;
+    border-radius: 10px;
+    transition: width 0.6s ease;
+  }
+
+  .protein-card.protein-featured .satisfaction-fill {
+    background: #FFF9F3;
+  }
+
+  .satisfaction-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2C2416;
+  }
+
+  .protein-note {
+    font-size: 12px;
+    color: #6B5D4F;
+    font-style: italic;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .protein-insight {
+    font-size: 18px;
+    color: #2D5F3F;
+    font-weight: 600;
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .protein-comparison {
+      padding: 60px 5%;
+    }
+
+    .protein-title {
+      font-size: 28px;
+    }
+
+    .protein-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .protein-card.protein-featured {
+      transform: scale(1);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Protein Comparison",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Protein is useless without satisfaction."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Most high-protein snacks leave you hungry in 30 minutes. Here's why."
+    },
+    {
+      "type": "text",
+      "id": "closing_insight",
+      "label": "Closing Insight",
+      "default": "Protein without fat = temporary fullness. That's why eggs work. That's why this works."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "protein_item",
+      "name": "Protein Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Protein Source",
+          "default": "1 Egg"
+        },
+        {
+          "type": "text",
+          "id": "protein_amount",
+          "label": "Protein Amount",
+          "default": "6g"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "protein"
+        },
+        {
+          "type": "range",
+          "id": "satisfaction_level",
+          "label": "Satisfaction Level (%)",
+          "min": 0,
+          "max": 100,
+          "step": 10,
+          "default": 70
+        },
+        {
+          "type": "text",
+          "id": "satisfaction_text",
+          "label": "Satisfaction Text",
+          "default": "Stays 2–3 hours"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note (optional)"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Featured (CutCraving Product)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Protein Comparison",
+      "blocks": [
+        {
+          "type": "protein_item",
+          "settings": {
+            "source": "1 Egg",
+            "protein_amount": "6g",
+            "label": "protein",
+            "satisfaction_level": 70,
+            "satisfaction_text": "Stays 2–3 hours",
+            "note": "5g fat included",
+            "is_featured": false
+          }
+        },
+        {
+          "type": "protein_item",
+          "settings": {
+            "source": "1 Cup Milk",
+            "protein_amount": "8g",
+            "label": "protein",
+            "satisfaction_level": 40,
+            "satisfaction_text": "Gone in 45 min",
+            "note": "Mostly liquid",
+            "is_featured": false
+          }
+        },
+        {
+          "type": "protein_item",
+          "settings": {
+            "source": "CutCraving Peanut Butter",
+            "protein_amount": "7g",
+            "label": "protein per 2 tbsp",
+            "satisfaction_level": 95,
+            "satisfaction_text": "Stays 4+ hours",
+            "note": "14g healthy fats",
+            "is_featured": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

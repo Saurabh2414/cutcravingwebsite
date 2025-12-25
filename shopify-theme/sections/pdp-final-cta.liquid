@@ -1,0 +1,350 @@
+<section class="pdp-final-cta">
+  <div class="final-cta-container">
+    <div class="final-cta-content">
+      <h2 class="final-cta-headline">{{ section.settings.headline }}</h2>
+      <p class="final-cta-subline">{{ section.settings.subline }}</p>
+
+      {% if section.settings.show_principles %}
+        <div class="final-cta-principles">
+          {% for block in section.blocks %}
+            {% if block.type == 'principle' %}
+              <div class="principle-item" {{ block.shopify_attributes }}>
+                <div class="principle-icon">{{ block.settings.icon }}</div>
+                <div class="principle-text">{{ block.settings.text }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="final-cta-buttons">
+        <a href="{{ section.settings.primary_cta_link }}" class="btn-final-primary">
+          {{ section.settings.primary_cta_text }} →
+        </a>
+        {% if section.settings.show_secondary_cta %}
+          <a href="{{ section.settings.secondary_cta_link }}" class="btn-final-secondary">
+            {{ section.settings.secondary_cta_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.trust_line %}
+        <div class="final-trust-line">
+          {{ section.settings.trust_line }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_visual %}
+      <div class="final-cta-visual">
+        {% if section.settings.visual_image %}
+          <img src="{{ section.settings.visual_image | img_url: '600x600' }}" alt="{{ section.settings.headline | escape }}" class="final-cta-image">
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .pdp-final-cta {
+    padding: 120px 5%;
+    background: linear-gradient(135deg, #2D5F3F 0%, #234a31 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pdp-final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="rgba(255,249,243,0.1)"/></svg>');
+    opacity: 0.3;
+  }
+
+  .final-cta-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .final-cta-content {
+    text-align: left;
+  }
+
+  .final-cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #FFF9F3;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .final-cta-subline {
+    font-size: 20px;
+    color: rgba(255, 249, 243, 0.9);
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  .final-cta-principles {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .principle-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: rgba(255, 249, 243, 0.95);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .principle-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .final-cta-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .btn-final-primary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: #FFF9F3;
+    color: #2D5F3F;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  .btn-final-primary:hover {
+    background: #F5EDE4;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .btn-final-secondary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: transparent;
+    color: #FFF9F3;
+    border: 2px solid rgba(255, 249, 243, 0.5);
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 17px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-final-secondary:hover {
+    background: rgba(255, 249, 243, 0.1);
+    border-color: #FFF9F3;
+  }
+
+  .final-trust-line {
+    font-size: 14px;
+    color: rgba(255, 249, 243, 0.7);
+    font-style: italic;
+  }
+
+  .final-cta-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .final-cta-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.3));
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @media (max-width: 900px) {
+    .final-cta-container {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .final-cta-content {
+      text-align: center;
+    }
+
+    .final-cta-principles {
+      align-items: center;
+    }
+
+    .final-cta-buttons {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .pdp-final-cta {
+      padding: 80px 5%;
+    }
+
+    .final-cta-headline {
+      font-size: 32px;
+    }
+
+    .final-cta-subline {
+      font-size: 17px;
+    }
+
+    .final-cta-buttons {
+      flex-direction: column;
+    }
+
+    .btn-final-primary,
+    .btn-final-secondary {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Final CTA",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "You don't need willpower."
+    },
+    {
+      "type": "textarea",
+      "id": "subline",
+      "label": "Subline",
+      "default": "You need food that understands your cravings."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_principles",
+      "label": "Show Principles",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Build My Craving Plan"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_cta",
+      "label": "Show Secondary CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "default": "View All Products"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "trust_line",
+      "label": "Trust Line",
+      "default": "🔒 Secure Checkout · ✓ Free Shipping on Orders ₹500+"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visual",
+      "label": "Show Product Visual",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_image",
+      "label": "Visual Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "principle",
+      "name": "Principle",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Principle Text",
+          "default": "No sugar crash"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Final CTA",
+      "blocks": [
+        {
+          "type": "principle",
+          "settings": {
+            "icon": "✓",
+            "text": "No sugar crash"
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "icon": "✓",
+            "text": "Real satiety in every spoon"
+          }
+        },
+        {
+          "type": "principle",
+          "settings": {
+            "icon": "✓",
+            "text": "Built for your 4 PM moment"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

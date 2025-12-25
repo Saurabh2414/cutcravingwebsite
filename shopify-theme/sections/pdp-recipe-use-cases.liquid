@@ -1,0 +1,241 @@
+<section class="recipe-use-cases">
+  <div class="recipe-container">
+    <h2 class="recipe-title">{{ section.settings.title }}</h2>
+    <p class="recipe-subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="recipe-grid">
+      {% for block in section.blocks %}
+        <div class="recipe-card" {{ block.shopify_attributes }}>
+          <div class="recipe-icon">{{ block.settings.icon }}</div>
+          <h3 class="recipe-name">{{ block.settings.name }}</h3>
+          <div class="recipe-time">{{ block.settings.time_moment }}</div>
+          <div class="recipe-ingredients">
+            {{ block.settings.ingredients }}
+          </div>
+          <div class="recipe-outcome">
+            <span class="outcome-label">Outcome:</span>
+            {{ block.settings.outcome }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .recipe-use-cases {
+    padding: 100px 5%;
+    background: #F5EDE4;
+  }
+
+  .recipe-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .recipe-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .recipe-subtitle {
+    font-size: 17px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 60px;
+    text-align: center;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .recipe-card {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  .recipe-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  .recipe-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+  }
+
+  .recipe-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+  }
+
+  .recipe-time {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2D5F3F;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #F5EDE4;
+  }
+
+  .recipe-ingredients {
+    font-size: 15px;
+    color: #2C2416;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .recipe-outcome {
+    font-size: 14px;
+    color: #6B5D4F;
+    background: #FFF9F3;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 3px solid #2D5F3F;
+    line-height: 1.6;
+  }
+
+  .outcome-label {
+    font-weight: 700;
+    color: #2D5F3F;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 900px) {
+    .recipe-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .recipe-use-cases {
+      padding: 60px 5%;
+    }
+
+    .recipe-title {
+      font-size: 28px;
+    }
+
+    .recipe-card {
+      padding: 32px 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "PDP Recipe Use Cases",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "How people actually use this"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Not recipes. Real moments."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recipe_item",
+      "name": "Recipe Use Case",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "⏰"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Recipe Name",
+          "default": "4 PM Rescue Bowl"
+        },
+        {
+          "type": "text",
+          "id": "time_moment",
+          "label": "Time/Moment",
+          "default": "3–5 PM Energy Crash"
+        },
+        {
+          "type": "textarea",
+          "id": "ingredients",
+          "label": "Ingredients/How to Use",
+          "default": "2 tbsp peanut butter + 1 banana + cinnamon"
+        },
+        {
+          "type": "textarea",
+          "id": "outcome",
+          "label": "Outcome",
+          "default": "No 5 PM vending machine run. No dinner binge."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP Recipe Use Cases",
+      "blocks": [
+        {
+          "type": "recipe_item",
+          "settings": {
+            "icon": "⏰",
+            "name": "4 PM Rescue Bowl",
+            "time_moment": "3–5 PM Energy Crash",
+            "ingredients": "2 tbsp peanut butter + 1 banana + cinnamon",
+            "outcome": "No 5 PM vending machine run. No dinner binge."
+          }
+        },
+        {
+          "type": "recipe_item",
+          "settings": {
+            "icon": "🍫",
+            "name": "No-Guilt Dessert Spoon",
+            "time_moment": "Post-Dinner Sweet Tooth",
+            "ingredients": "1 tbsp straight from jar (dark chocolate lovers)",
+            "outcome": "Craving gone in 30 seconds. No ice cream tub opened."
+          }
+        },
+        {
+          "type": "recipe_item",
+          "settings": {
+            "icon": "☀️",
+            "name": "Stay-Full Breakfast",
+            "time_moment": "Morning Routine",
+            "ingredients": "2 tbsp on whole grain toast + berries",
+            "outcome": "No 11 AM hunger. No mid-meeting snack cravings."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
