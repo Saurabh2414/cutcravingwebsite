@@ -1,0 +1,169 @@
+<section class="tea-craving-explanation">
+  <div class="tea-craving-container">
+    <h2 class="tea-craving-title">{{ section.settings.title }}</h2>
+
+    <div class="tea-craving-content">
+      <div class="tea-craving-text">
+        <p class="tea-craving-paragraph">{{ section.settings.explanation }}</p>
+        <p class="tea-craving-solution">{{ section.settings.solution }}</p>
+      </div>
+
+      {% if section.settings.show_visual %}
+        <div class="tea-craving-visual">
+          <img src="{{ section.settings.visual_image | img_url: '300x300' }}" alt="Blue Tea Flower" class="tea-flower-image">
+        </div>
+      {% endif %}
+    </div>
+
+    <p class="tea-craving-insight">{{ section.settings.closing_insight }}</p>
+  </div>
+</section>
+
+<style>
+  .tea-craving-explanation {
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .tea-craving-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .tea-craving-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 50px 0;
+  }
+
+  .tea-craving-content {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .tea-craving-text {
+    flex: 1;
+  }
+
+  .tea-craving-paragraph {
+    font-size: 18px;
+    color: #2C2416;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .tea-craving-solution {
+    font-size: 18px;
+    color: #2C2416;
+    line-height: 1.8;
+    padding-left: 24px;
+    border-left: 4px solid #2D5F3F;
+  }
+
+  .tea-craving-visual {
+    flex-shrink: 0;
+  }
+
+  .tea-flower-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.1));
+  }
+
+  .tea-craving-insight {
+    font-size: 20px;
+    color: #2D5F3F;
+    font-weight: 600;
+    font-style: italic;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .tea-craving-explanation {
+      padding: 60px 5%;
+    }
+
+    .tea-craving-title {
+      font-size: 28px;
+    }
+
+    .tea-craving-content {
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .tea-craving-paragraph,
+    .tea-craving-solution {
+      font-size: 16px;
+    }
+
+    .tea-craving-solution {
+      border-left: none;
+      border-top: 4px solid #2D5F3F;
+      padding-left: 0;
+      padding-top: 20px;
+    }
+
+    .tea-craving-insight {
+      font-size: 18px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Craving Explanation",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "You're not hungry. You're bored, wired, or just need a ritual."
+    },
+    {
+      "type": "textarea",
+      "id": "explanation",
+      "label": "Explanation",
+      "default": "Evening snacking often starts with the mouth — not the stomach."
+    },
+    {
+      "type": "textarea",
+      "id": "solution",
+      "label": "Solution",
+      "default": "Blue Tea gives your hands and senses something to do, without calories or caffeine."
+    },
+    {
+      "type": "text",
+      "id": "closing_insight",
+      "label": "Closing Insight",
+      "default": "That's not a personal failure. That's bad boredom management."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visual",
+      "label": "Show Flower Visual",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "visual_image",
+      "label": "Visual Image (Butterfly Pea Flower)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Craving Explanation"
+    }
+  ]
+}
+{% endschema %}

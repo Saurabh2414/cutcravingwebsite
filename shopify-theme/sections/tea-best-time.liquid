@@ -1,0 +1,253 @@
+<section class="tea-best-time">
+  <div class="tea-time-container">
+    <h2 class="tea-time-title">{{ section.settings.title }}</h2>
+
+    <div class="tea-time-grid">
+      {% for block in section.blocks %}
+        <div class="tea-time-card {% if block.settings.is_ideal %}ideal{% endif %} {% if block.settings.is_optional %}optional{% endif %}" {{ block.shopify_attributes }}>
+          <div class="tea-time-icon">{{ block.settings.icon }}</div>
+          <h3 class="tea-time-name">
+            {{ block.settings.time_name }}
+            {% if block.settings.label %}
+              <span class="tea-time-label">{{ block.settings.label }}</span>
+            {% endif %}
+          </h3>
+          <p class="tea-time-description">{{ block.settings.description }}</p>
+          {% if block.settings.tip %}
+            <div class="tea-time-tip">💡 {{ block.settings.tip }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-best-time {
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .tea-time-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tea-time-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 50px 0;
+    text-align: center;
+  }
+
+  .tea-time-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .tea-time-card {
+    background: white;
+    padding: 36px 28px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+
+  .tea-time-card.ideal {
+    border-color: #2D5F3F;
+    background: linear-gradient(135deg, #F0FFF4 0%, #FFFFFF 100%);
+    transform: scale(1.02);
+    box-shadow: 0 6px 24px rgba(45, 95, 63, 0.15);
+  }
+
+  .tea-time-card.optional {
+    opacity: 0.85;
+  }
+
+  .tea-time-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  .tea-time-card.ideal:hover {
+    transform: scale(1.02) translateY(-4px);
+  }
+
+  .tea-time-icon {
+    font-size: 52px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+  }
+
+  .tea-time-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 12px 0;
+  }
+
+  .tea-time-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2D5F3F;
+    background: rgba(45, 95, 63, 0.1);
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .tea-time-card.optional .tea-time-label {
+    color: #6B5D4F;
+    background: rgba(107, 93, 79, 0.1);
+  }
+
+  .tea-time-description {
+    font-size: 15px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .tea-time-tip {
+    font-size: 13px;
+    color: #2D5F3F;
+    background: rgba(45, 95, 63, 0.05);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  @media (max-width: 900px) {
+    .tea-time-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .tea-time-card.ideal {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-best-time {
+      padding: 60px 5%;
+    }
+
+    .tea-time-title {
+      font-size: 28px;
+    }
+
+    .tea-time-icon {
+      font-size: 44px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Best Time to Use",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Best time to sip Blue Tea:"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "time_slot",
+      "name": "Time Slot",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "🌆"
+        },
+        {
+          "type": "text",
+          "id": "time_name",
+          "label": "Time Name",
+          "default": "5–7 PM"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label (Ideal/Optional)",
+          "default": "Ideal"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_ideal",
+          "label": "Mark as Ideal Time",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "is_optional",
+          "label": "Mark as Optional",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Craving boredom snacking"
+        },
+        {
+          "type": "text",
+          "id": "tip",
+          "label": "Tip (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Best Time to Use",
+      "blocks": [
+        {
+          "type": "time_slot",
+          "settings": {
+            "icon": "🌆",
+            "time_name": "5–7 PM",
+            "label": "Ideal",
+            "is_ideal": true,
+            "description": "Craving boredom snacking",
+            "tip": "Steep for 5-7 minutes in hot water."
+          }
+        },
+        {
+          "type": "time_slot",
+          "settings": {
+            "icon": "🌙",
+            "time_name": "Post-Dinner",
+            "label": "Optional",
+            "is_optional": true,
+            "description": "Steep for 5-7 minutes in hot water."
+          }
+        },
+        {
+          "type": "time_slot",
+          "settings": {
+            "icon": "☀️",
+            "time_name": "Morning",
+            "description": "Dehydration alerts"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

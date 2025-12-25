@@ -1,0 +1,208 @@
+<section class="tea-benefits">
+  <div class="tea-benefits-container">
+    <h2 class="tea-benefits-title">{{ section.settings.title }}</h2>
+    <p class="tea-benefits-subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="tea-benefits-grid">
+      {% for block in section.blocks %}
+        <div class="tea-benefit-card" {{ block.shopify_attributes }}>
+          {% if block.settings.benefit_image %}
+            <div class="tea-benefit-visual">
+              <img src="{{ block.settings.benefit_image | img_url: '400x400' }}" alt="{{ block.settings.benefit_name | escape }}" class="tea-benefit-image">
+            </div>
+          {% endif %}
+          <div class="tea-benefit-content">
+            <h3 class="tea-benefit-name">{{ block.settings.benefit_name }}</h3>
+            <p class="tea-benefit-description">{{ block.settings.benefit_description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-benefits {
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .tea-benefits-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tea-benefits-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .tea-benefits-subtitle {
+    font-size: 17px;
+    color: #6B5D4F;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .tea-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .tea-benefit-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  .tea-benefit-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  .tea-benefit-visual {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+  }
+
+  .tea-benefit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .tea-benefit-card:hover .tea-benefit-image {
+    transform: scale(1.05);
+  }
+
+  .tea-benefit-content {
+    padding: 32px;
+  }
+
+  .tea-benefit-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 12px 0;
+  }
+
+  .tea-benefit-description {
+    font-size: 15px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .tea-benefits {
+      padding: 60px 5%;
+    }
+
+    .tea-benefits-title {
+      font-size: 28px;
+    }
+
+    .tea-benefits-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .tea-benefit-visual {
+      height: 200px;
+    }
+
+    .tea-benefit-content {
+      padding: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Benefits",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "What actually changes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Outcomes, not ingredients."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "benefit_name",
+          "label": "Benefit Name",
+          "default": "Replaces evening snacking"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_description",
+          "label": "Benefit Description",
+          "default": "Your hands and mouth have something to do. The urge to snack fades."
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit_image",
+          "label": "Benefit Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Benefits",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_name": "Replaces evening snacking",
+            "benefit_description": "Your hands and mouth have something to do. The urge to snack fades."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_name": "Calms the urge to munch",
+            "benefit_description": "Sipping creates a sensory moment without adding calories."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_name": "Lets you sip without guilt",
+            "benefit_description": "Zero caffeine, zero sugar, zero calories. Just ritual."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_name": "Adds a sensory pause to your day",
+            "benefit_description": "The color change alone shifts your attention away from cravings."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
