@@ -1,0 +1,205 @@
+<section class="routine-build-cta">
+  <div class="routine-cta-container">
+    <h2 class="routine-cta-headline">{{ section.settings.headline }}</h2>
+    <p class="routine-cta-subline">{{ section.settings.subline }}</p>
+
+    <div class="routine-cta-buttons">
+      <a href="{{ section.settings.primary_cta_link }}" class="btn-build-primary">
+        {{ section.settings.primary_cta_text }}
+      </a>
+    </div>
+
+    {% if section.settings.show_links %}
+      <div class="routine-cta-links">
+        <a href="{{ section.settings.link_1_url }}" class="cta-link">{{ section.settings.link_1_text }}</a>
+        <span class="link-separator">•</span>
+        <a href="{{ section.settings.link_2_url }}" class="cta-link">{{ section.settings.link_2_text }}</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .routine-build-cta {
+    padding: 120px 5%;
+    background: linear-gradient(135deg, #2D5F3F 0%, #234a31 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .routine-build-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 1000px;
+    height: 1000px;
+    background: radial-gradient(circle, rgba(255, 249, 243, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .routine-cta-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .routine-cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: #FFF9F3;
+    line-height: 1.2;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .routine-cta-subline {
+    font-size: 19px;
+    color: rgba(255, 249, 243, 0.9);
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+
+  .routine-cta-buttons {
+    margin-bottom: 28px;
+  }
+
+  .btn-build-primary {
+    display: inline-block;
+    padding: 20px 50px;
+    background: #FFF9F3;
+    color: #2D5F3F;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+  }
+
+  .btn-build-primary:hover {
+    background: #F5EDE4;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .routine-cta-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .cta-link {
+    color: rgba(255, 249, 243, 0.8);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .cta-link:hover {
+    color: #FFF9F3;
+    text-decoration: underline;
+  }
+
+  .link-separator {
+    color: rgba(255, 249, 243, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .routine-build-cta {
+      padding: 80px 5%;
+    }
+
+    .routine-cta-headline {
+      font-size: 32px;
+    }
+
+    .routine-cta-subline {
+      font-size: 17px;
+    }
+
+    .btn-build-primary {
+      width: 100%;
+      padding: 18px 40px;
+    }
+
+    .routine-cta-links {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .link-separator {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Routine Build CTA",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Ready to make this part of your day?"
+    },
+    {
+      "type": "textarea",
+      "id": "subline",
+      "label": "Subline",
+      "default": "No rules. No willpower. Just the right routine."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Build This Routine →"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_links",
+      "label": "Show Secondary Links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "link_1_text",
+      "label": "Link 1 Text",
+      "default": "What's included"
+    },
+    {
+      "type": "url",
+      "id": "link_1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_2_text",
+      "label": "Link 2 Text",
+      "default": "FAQs"
+    },
+    {
+      "type": "url",
+      "id": "link_2_url",
+      "label": "Link 2 URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routine Build CTA"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,228 @@
+<section class="routine-products">
+  <div class="routine-products-container">
+    <h2 class="routine-products-title">{{ section.settings.title }}</h2>
+    <p class="routine-products-subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="routine-products-grid">
+      {% for block in section.blocks %}
+        <div class="routine-product-card" {{ block.shopify_attributes }}>
+          {% if block.settings.product_image %}
+            <div class="routine-product-visual">
+              <img src="{{ block.settings.product_image | img_url: '400x400' }}" alt="{{ block.settings.product_name | escape }}" class="routine-product-image">
+            </div>
+          {% endif %}
+          <div class="routine-product-content">
+            <h3 class="routine-product-name">{{ block.settings.product_name }}</h3>
+            <p class="routine-product-why">{{ block.settings.why_included }}</p>
+            <div class="routine-product-usage">
+              <span class="usage-label">Best way to use:</span>
+              <p>{{ block.settings.best_usage }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .routine-products {
+    padding: 100px 5%;
+    background: #F5EDE4;
+  }
+
+  .routine-products-container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .routine-products-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .routine-products-subtitle {
+    font-size: 17px;
+    color: #6B5D4F;
+    text-align: center;
+    margin-bottom: 60px;
+    font-style: italic;
+  }
+
+  .routine-products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  .routine-product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s;
+  }
+
+  .routine-product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  .routine-product-visual {
+    width: 100%;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFF9F3;
+    overflow: hidden;
+  }
+
+  .routine-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 30px;
+    transition: transform 0.5s;
+  }
+
+  .routine-product-card:hover .routine-product-image {
+    transform: scale(1.05);
+  }
+
+  .routine-product-content {
+    padding: 32px;
+  }
+
+  .routine-product-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 12px 0;
+  }
+
+  .routine-product-why {
+    font-size: 16px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin: 0 0 20px 0;
+  }
+
+  .routine-product-usage {
+    background: rgba(45, 95, 63, 0.05);
+    padding: 16px 20px;
+    border-radius: 8px;
+    border-left: 3px solid #2D5F3F;
+  }
+
+  .usage-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2D5F3F;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .routine-product-usage p {
+    font-size: 14px;
+    color: #2C2416;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .routine-products {
+      padding: 60px 5%;
+    }
+
+    .routine-products-title {
+      font-size: 28px;
+    }
+
+    .routine-products-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .routine-product-visual {
+      height: 240px;
+    }
+
+    .routine-product-content {
+      padding: 24px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Routine Products",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Real-life outcomes"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "No rules. No willpower. Just the right routine."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Routine Product",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product Name",
+          "default": "Chocolate Peanut Butter"
+        },
+        {
+          "type": "textarea",
+          "id": "why_included",
+          "label": "Why It's Included",
+          "default": "Satisfies sweet without sugar crash. Take 3 tbsp at 4 PM."
+        },
+        {
+          "type": "textarea",
+          "id": "best_usage",
+          "label": "Best Way to Use in This Routine",
+          "default": "2 tbsp on whole grain toast or with banana slices"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routine Products",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "product_name": "Chocolate Peanut Butter",
+            "why_included": "Satisfies sweet without sugar crash. Take 3 tbsp at 4 PM.",
+            "best_usage": "2 tbsp on whole grain toast or with banana slices"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

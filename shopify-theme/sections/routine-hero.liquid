@@ -1,0 +1,230 @@
+<section class="routine-hero">
+  <div class="routine-hero-container">
+    <div class="routine-hero-content">
+      <div class="routine-label">{{ section.settings.label }}</div>
+      <h1 class="routine-title">{{ section.settings.title }}</h1>
+      <p class="routine-insight">{{ section.settings.insight }}</p>
+      <p class="routine-explanation">{{ section.settings.explanation }}</p>
+
+      <div class="routine-hero-ctas">
+        <a href="{{ section.settings.primary_cta_link }}" class="btn-routine-primary">
+          {{ section.settings.primary_cta_text }}
+        </a>
+        <button class="btn-routine-secondary" onclick="document.querySelector('.routine-products').scrollIntoView({behavior: 'smooth'})">
+          {{ section.settings.secondary_cta_text }}
+        </button>
+      </div>
+    </div>
+
+    <div class="routine-hero-visual">
+      {% if section.settings.combo_image %}
+        <img src="{{ section.settings.combo_image | img_url: '800x800' }}" alt="{{ section.settings.title | escape }}" loading="eager" class="routine-combo-image">
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .routine-hero {
+    padding: 100px 5% 80px;
+    background: #FFF9F3;
+  }
+
+  .routine-hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .routine-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #6B5D4F;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .routine-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.2;
+    margin: 0 0 28px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .routine-insight {
+    font-size: 19px;
+    color: #2C2416;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .routine-explanation {
+    font-size: 17px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .routine-hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-routine-primary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: #2D5F3F;
+    color: white;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(45, 95, 63, 0.25);
+  }
+
+  .btn-routine-primary:hover {
+    background: #234a31;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 95, 63, 0.35);
+  }
+
+  .btn-routine-secondary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: transparent;
+    color: #6B5D4F;
+    border: none;
+    border-radius: 32px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: underline;
+  }
+
+  .btn-routine-secondary:hover {
+    color: #2C2416;
+  }
+
+  .routine-hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .routine-combo-image {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.12));
+  }
+
+  @media (max-width: 900px) {
+    .routine-hero-container {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+
+    .routine-hero-visual {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .routine-hero {
+      padding: 60px 5% 50px;
+    }
+
+    .routine-title {
+      font-size: 36px;
+    }
+
+    .routine-insight {
+      font-size: 17px;
+    }
+
+    .routine-hero-ctas {
+      flex-direction: column;
+    }
+
+    .btn-routine-primary,
+    .btn-routine-secondary {
+      width: 100%;
+      text-align: center;
+    }
+
+    .routine-combo-image {
+      max-width: 400px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Routine Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Routine Label",
+      "default": "REAL ROUTINE"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Routine Title",
+      "default": "Protein-Packed Start"
+    },
+    {
+      "type": "textarea",
+      "id": "insight",
+      "label": "Insight Line",
+      "default": "This is the trickiest craving of the day. You're not hungry. You're just crashing."
+    },
+    {
+      "type": "textarea",
+      "id": "explanation",
+      "label": "Explanation",
+      "default": "Most mornings start with sugar disguised as breakfast. By 10 AM, you're hungry again."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Build This Routine →"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "default": "View included products"
+    },
+    {
+      "type": "image_picker",
+      "id": "combo_image",
+      "label": "Combo Product Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routine Hero"
+    }
+  ]
+}
+{% endschema %}

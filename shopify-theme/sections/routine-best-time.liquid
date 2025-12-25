@@ -1,0 +1,259 @@
+<section class="routine-best-time">
+  <div class="routine-time-container">
+    <h2 class="routine-time-title">{{ section.settings.title }}</h2>
+
+    <div class="routine-time-content">
+      <div class="time-primary">
+        <div class="time-icon">{{ section.settings.time_icon }}</div>
+        <div class="time-details">
+          <h3 class="time-window">{{ section.settings.time_window }}</h3>
+          <p class="time-frequency">{{ section.settings.frequency }}</p>
+        </div>
+      </div>
+
+      {% if section.blocks.size > 0 %}
+        <div class="time-guidelines">
+          {% for block in section.blocks %}
+            <div class="time-guideline-item" {{ block.shopify_attributes }}>
+              <div class="guideline-icon">{{ block.settings.icon }}</div>
+              <div class="guideline-content">
+                <div class="guideline-label">{{ block.settings.label }}</div>
+                <p class="guideline-text">{{ block.settings.text }}</p>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_skip_note %}
+        <div class="time-skip-note">
+          <div class="skip-icon">⚠️</div>
+          <div class="skip-content">
+            <div class="skip-label">{{ section.settings.skip_label }}</div>
+            <p>{{ section.settings.skip_text }}</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .routine-best-time {
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .routine-time-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .routine-time-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 50px 0;
+    text-align: center;
+  }
+
+  .time-primary {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: white;
+    padding: 36px 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-bottom: 32px;
+  }
+
+  .time-icon {
+    font-size: 64px;
+    flex-shrink: 0;
+  }
+
+  .time-window {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2D5F3F;
+    margin: 0 0 8px 0;
+  }
+
+  .time-frequency {
+    font-size: 16px;
+    color: #6B5D4F;
+    margin: 0;
+  }
+
+  .time-guidelines {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .time-guideline-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px;
+    background: rgba(45, 95, 63, 0.03);
+    border-radius: 12px;
+  }
+
+  .guideline-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .guideline-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #2C2416;
+    margin-bottom: 6px;
+  }
+
+  .guideline-text {
+    font-size: 14px;
+    color: #6B5D4F;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .time-skip-note {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px 28px;
+    background: rgba(211, 47, 47, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #D32F2F;
+  }
+
+  .skip-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .skip-label {
+    font-size: 15px;
+    font-weight: 700;
+    color: #D32F2F;
+    margin-bottom: 8px;
+  }
+
+  .skip-content p {
+    font-size: 14px;
+    color: #2C2416;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .routine-best-time {
+      padding: 60px 5%;
+    }
+
+    .routine-time-title {
+      font-size: 28px;
+    }
+
+    .time-primary {
+      flex-direction: column;
+      text-align: center;
+      padding: 32px 24px;
+    }
+
+    .time-icon {
+      font-size: 52px;
+    }
+
+    .time-window {
+      font-size: 28px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Routine Best Time",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Best time & best way to use"
+    },
+    {
+      "type": "text",
+      "id": "time_icon",
+      "label": "Time Icon (emoji)",
+      "default": "🌅"
+    },
+    {
+      "type": "text",
+      "id": "time_window",
+      "label": "Time Window",
+      "default": "6–8 AM daily"
+    },
+    {
+      "type": "text",
+      "id": "frequency",
+      "label": "Frequency",
+      "default": "Every morning before 9 AM"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_skip_note",
+      "label": "Show 'When to Skip' Note",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "skip_label",
+      "label": "Skip Note Label",
+      "default": "When to skip:"
+    },
+    {
+      "type": "textarea",
+      "id": "skip_text",
+      "label": "Skip Note Text",
+      "default": "Not ideal for real hunger or dehydration. Drink water first."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "guideline",
+      "name": "Usage Guideline",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "✓"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Guideline Label",
+          "default": "Best time: 3-5 PM daily"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Guideline Text",
+          "default": "When energy dips and snack urges start."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routine Best Time"
+    }
+  ]
+}
+{% endschema %}

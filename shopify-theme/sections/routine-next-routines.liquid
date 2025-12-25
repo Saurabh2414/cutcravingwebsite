@@ -1,0 +1,220 @@
+<section class="routine-next-routines">
+  <div class="routine-next-container">
+    <h2 class="routine-next-title">{{ section.settings.title }}</h2>
+    <p class="routine-next-subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="routine-next-grid">
+      {% for block in section.blocks %}
+        <a href="{{ block.settings.routine_link }}" class="routine-next-card" {{ block.shopify_attributes }}>
+          {% if block.settings.routine_image %}
+            <div class="routine-next-visual">
+              <img src="{{ block.settings.routine_image | img_url: '500x500' }}" alt="{{ block.settings.routine_name | escape }}" class="routine-next-image">
+            </div>
+          {% endif %}
+          <div class="routine-next-content">
+            <h3 class="routine-next-name">{{ block.settings.routine_name }}</h3>
+            <p class="routine-next-description">{{ block.settings.routine_description }}</p>
+            <div class="routine-next-arrow">→</div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .routine-next-routines {
+    padding: 100px 5%;
+    background: #F5EDE4;
+  }
+
+  .routine-next-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .routine-next-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+    text-align: center;
+  }
+
+  .routine-next-subtitle {
+    font-size: 17px;
+    color: #6B5D4F;
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .routine-next-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .routine-next-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    text-decoration: none;
+    transition: all 0.3s;
+    display: block;
+  }
+
+  .routine-next-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  }
+
+  .routine-next-visual {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #FFF9F3;
+  }
+
+  .routine-next-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+
+  .routine-next-card:hover .routine-next-image {
+    transform: scale(1.08);
+  }
+
+  .routine-next-content {
+    padding: 28px;
+    position: relative;
+  }
+
+  .routine-next-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 10px 0;
+  }
+
+  .routine-next-description {
+    font-size: 14px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin: 0 0 16px 0;
+  }
+
+  .routine-next-arrow {
+    font-size: 24px;
+    color: #2D5F3F;
+    font-weight: 700;
+    transition: transform 0.3s;
+  }
+
+  .routine-next-card:hover .routine-next-arrow {
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 900px) {
+    .routine-next-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .routine-next-routines {
+      padding: 60px 5%;
+    }
+
+    .routine-next-title {
+      font-size: 28px;
+    }
+
+    .routine-next-visual {
+      height: 200px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Routine Next Routines",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Your day has more than one craving."
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Here's what people usually add next."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "routine",
+      "name": "Next Routine",
+      "settings": [
+        {
+          "type": "text",
+          "id": "routine_name",
+          "label": "Routine Name",
+          "default": "Afternoon Refresh"
+        },
+        {
+          "type": "textarea",
+          "id": "routine_description",
+          "label": "Routine Description",
+          "default": "For 3-5 PM energy dips and mindless snacking"
+        },
+        {
+          "type": "url",
+          "id": "routine_link",
+          "label": "Routine Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "routine_image",
+          "label": "Routine Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Routine Next Routines",
+      "blocks": [
+        {
+          "type": "routine",
+          "settings": {
+            "routine_name": "Afternoon Refresh",
+            "routine_description": "For 3-5 PM energy dips and mindless snacking"
+          }
+        },
+        {
+          "type": "routine",
+          "settings": {
+            "routine_name": "Evening Calm",
+            "routine_description": "For post-dinner sweet tooth and late-night fridge visits"
+          }
+        },
+        {
+          "type": "routine",
+          "settings": {
+            "routine_name": "Screen-Time Sip",
+            "routine_description": "For boredom snacking during work or Netflix"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
