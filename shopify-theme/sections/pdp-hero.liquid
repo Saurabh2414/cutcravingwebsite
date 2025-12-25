@@ -1,7 +1,28 @@
 <section class="pdp-hero">
   <div class="pdp-hero-container">
+    <div class="pdp-hero-visual">
+      {% if section.settings.product_image %}
+        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="pdp-product-image">
+      {% endif %}
+    </div>
+
     <div class="pdp-hero-content">
+      {% if section.settings.eyebrow_text %}
+        <div class="pdp-hero-eyebrow">{{ section.settings.eyebrow_text }}</div>
+      {% endif %}
+
       <h1 class="pdp-hero-headline">{{ section.settings.headline }}</h1>
+
+      <div class="pdp-hero-price-row">
+        <div class="pdp-hero-price">₹{{ section.settings.price }}</div>
+        {% if section.settings.badge_text %}
+          <span class="pdp-hero-badge">{{ section.settings.badge_text }}</span>
+        {% endif %}
+      </div>
+
+      {% if section.settings.subheadline %}
+        <p class="pdp-hero-subheadline">{{ section.settings.subheadline }}</p>
+      {% endif %}
 
       <ul class="pdp-hero-benefits">
         {% if section.settings.benefit_1 %}<li>{{ section.settings.benefit_1 }}</li>{% endif %}
@@ -9,21 +30,14 @@
         {% if section.settings.benefit_3 %}<li>{{ section.settings.benefit_3 }}</li>{% endif %}
       </ul>
 
-      <p class="pdp-hero-micro">{{ section.settings.micro_copy }}</p>
-
       <div class="pdp-hero-ctas">
         <a href="{{ section.settings.primary_cta_link }}" class="btn-primary-pdp">
-          {{ section.settings.primary_cta_text }} →
+          {{ section.settings.primary_cta_text }}
         </a>
-        <button class="btn-secondary-pdp" onclick="document.getElementById('add-to-cart-section').scrollIntoView({behavior: 'smooth'})">
-          {{ section.settings.secondary_cta_text }}
-        </button>
       </div>
-    </div>
 
-    <div class="pdp-hero-visual">
-      {% if section.settings.product_image %}
-        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="pdp-product-image">
+      {% if section.settings.shipping_text %}
+        <div class="pdp-hero-shipping">{{ section.settings.shipping_text }}</div>
       {% endif %}
     </div>
   </div>
@@ -31,103 +45,118 @@
 
 <style>
   .pdp-hero {
-    padding: 100px 5% 80px;
-    background: #F5EDE4;  /* Warm beige like homepage */
+    padding: 80px 5% 60px;
+    background: #FFF9F3;  /* Light cream like reference */
   }
 
   .pdp-hero-container {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
     align-items: center;
+  }
+
+  .pdp-hero-eyebrow {
+    font-size: 14px;
+    color: #6B5D4F;
+    font-weight: 600;
+    margin-bottom: 8px;
   }
 
   .pdp-hero-headline {
     font-family: 'Playfair Display', serif;
-    font-size: 48px;
+    font-size: 42px;
     font-weight: 700;
     color: #2C2416;
-    line-height: 1.3;
-    margin: 0 0 32px 0;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
     letter-spacing: -0.5px;
+  }
+
+  .pdp-hero-price-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .pdp-hero-price {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2C2416;
+  }
+
+  .pdp-hero-badge {
+    font-size: 13px;
+    color: #6B5D4F;
+    font-weight: 600;
+  }
+
+  .pdp-hero-subheadline {
+    font-size: 17px;
+    color: #2C2416;
+    line-height: 1.6;
+    margin-bottom: 24px;
   }
 
   .pdp-hero-benefits {
     list-style: none;
     padding: 0;
-    margin: 0 0 28px 0;
+    margin: 0 0 32px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .pdp-hero-benefits li {
-    font-size: 18px;
+    font-size: 15px;
     color: #2C2416;
     font-weight: 600;
-    margin-bottom: 12px;
-    padding-left: 28px;
-    position: relative;
+    padding: 10px 16px;
+    background: rgba(245, 237, 228, 0.5);
+    border-radius: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
   }
 
   .pdp-hero-benefits li::before {
     content: "✓";
-    position: absolute;
-    left: 0;
     color: #2D5F3F;
     font-weight: 700;
-  }
-
-  .pdp-hero-micro {
-    font-size: 15px;
-    color: #6B5D4F;
-    line-height: 1.7;
-    font-style: italic;
-    margin-bottom: 36px;
-    border-left: 3px solid #2D5F3F;
-    padding-left: 20px;
+    font-size: 16px;
   }
 
   .pdp-hero-ctas {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
+    margin-bottom: 16px;
   }
 
   .btn-primary-pdp {
     display: inline-block;
-    padding: 16px 36px;
+    padding: 18px 48px;
     background: #2D5F3F;
     color: white;
-    border-radius: 6px;
+    border-radius: 32px;
     font-weight: 700;
     font-size: 16px;
     text-decoration: none;
     transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(45, 95, 63, 0.2);
+    box-shadow: 0 4px 16px rgba(45, 95, 63, 0.25);
   }
 
   .btn-primary-pdp:hover {
     background: #234a31;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(45, 95, 63, 0.3);
+    box-shadow: 0 6px 20px rgba(45, 95, 63, 0.35);
   }
 
-  .btn-secondary-pdp {
-    display: inline-block;
-    padding: 16px 36px;
-    background: transparent;
+  .pdp-hero-shipping {
+    font-size: 14px;
     color: #6B5D4F;
-    border: 2px solid #6B5D4F;
-    border-radius: 6px;
     font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .btn-secondary-pdp:hover {
-    background: #6B5D4F;
-    color: white;
   }
 
   .pdp-hero-visual {
@@ -139,44 +168,47 @@
 
   .pdp-product-image {
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     height: auto;
-    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.15));
-    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @media (max-width: 768px) {
-    .pdp-hero {
-      padding: 60px 5%;
-    }
-
+  @media (max-width: 900px) {
     .pdp-hero-container {
       grid-template-columns: 1fr;
       gap: 40px;
     }
 
+    .pdp-hero-visual {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .pdp-hero {
+      padding: 60px 5% 40px;
+    }
+
     .pdp-hero-headline {
       font-size: 32px;
-      margin-bottom: 24px;
+      margin-bottom: 12px;
     }
 
-    .pdp-hero-ctas {
-      flex-direction: column;
+    .pdp-hero-price {
+      font-size: 24px;
     }
 
-    .btn-primary-pdp,
-    .btn-secondary-pdp {
+    .pdp-hero-benefits li {
+      font-size: 14px;
+    }
+
+    .btn-primary-pdp {
       width: 100%;
       text-align: center;
     }
 
     .pdp-product-image {
-      max-width: 350px;
+      max-width: 320px;
     }
   }
 </style>
@@ -186,45 +218,58 @@
   "name": "PDP Hero",
   "settings": [
     {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text (Top Label)",
+      "default": "The Craving Intelligence Choice"
+    },
+    {
       "type": "textarea",
       "id": "headline",
-      "label": "Headline",
-      "default": "When your body craves chocolate at 4 PM, this is what it's asking for."
+      "label": "Product Name (Headline)",
+      "default": "Stone-Ground Chocolate Peanut Butter"
+    },
+    {
+      "type": "text",
+      "id": "price",
+      "label": "Price (without ₹ symbol)",
+      "default": "349"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Fresh batch - Limited stock"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "default": "Designed for sweet cravings — not sugar crashes."
     },
     {
       "type": "text",
       "id": "benefit_1",
       "label": "Benefit 1",
-      "default": "Rich taste"
+      "default": "100% roasted peanuts"
     },
     {
       "type": "text",
       "id": "benefit_2",
       "label": "Benefit 2",
-      "default": "Real satiety"
+      "default": "No refined sugar"
     },
     {
       "type": "text",
       "id": "benefit_3",
       "label": "Benefit 3",
-      "default": "No sugar crash"
-    },
-    {
-      "type": "textarea",
-      "id": "micro_copy",
-      "label": "Micro Copy (Emotional Anchor)",
-      "default": "This is not a late-night snack. This is intelligent satisfaction."
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image",
-      "label": "Product Image"
+      "default": "No palm oil"
     },
     {
       "type": "text",
       "id": "primary_cta_text",
       "label": "Primary CTA Text",
-      "default": "Find My Perfect Portion"
+      "default": "Add to Cart — Get it by Tuesday"
     },
     {
       "type": "url",
@@ -233,9 +278,14 @@
     },
     {
       "type": "text",
-      "id": "secondary_cta_text",
-      "label": "Secondary CTA Text",
-      "default": "Add to Cart"
+      "id": "shipping_text",
+      "label": "Shipping Text",
+      "default": "FREE Shipping on orders above ₹499"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
     }
   ],
   "presets": [

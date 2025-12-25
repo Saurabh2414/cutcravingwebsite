@@ -3,25 +3,29 @@
     <h2 class="portion-title">{{ section.settings.title }}</h2>
 
     <div class="portion-slider-wrapper">
-      <input type="range" min="1" max="3" value="2" class="portion-slider" id="portionSlider">
-
       <div class="portion-display">
         <div class="portion-amount" id="portionAmount">2 tbsp</div>
-        <div class="portion-label" id="portionLabel">Sweet craving</div>
-        <div class="portion-meaning" id="portionMeaning">Ideal default</div>
       </div>
 
-      <div class="portion-markers">
-        <span>1 tbsp</span>
-        <span>2 tbsp</span>
-        <span>3 tbsp</span>
+      <div class="portion-labels">
+        <div class="portion-label-item">
+          <span>Light craving</span>
+        </div>
+        <div class="portion-label-item active" id="label-2">
+          <span>Sweet craving</span>
+        </div>
+        <div class="portion-label-item">
+          <span>Heavy urge</span>
+        </div>
       </div>
+
+      <input type="range" min="1" max="3" value="2" class="portion-slider" id="portionSlider">
     </div>
 
-    <p class="portion-insight">{{ section.settings.insight_text }}</p>
+    <p class="portion-insight">{{ section.settings.insight_line1 }}<br>{{ section.settings.insight_line2 }}</p>
 
     <button class="portion-reset" onclick="resetSlider()">
-      Reset to 2 tbsp (recommended)
+      <span class="reset-icon">↻</span> {{ section.settings.reset_text }}
     </button>
   </div>
 </section>
@@ -29,45 +33,47 @@
 <script>
   const slider = document.getElementById('portionSlider');
   const amount = document.getElementById('portionAmount');
-  const label = document.getElementById('portionLabel');
-  const meaning = document.getElementById('portionMeaning');
 
   const portions = {
-    1: { amount: '1 tbsp', label: 'Light craving', meaning: 'Taste nudge' },
-    2: { amount: '2 tbsp', label: 'Sweet craving', meaning: 'Ideal default' },
-    3: { amount: '3 tbsp', label: 'Heavy urge', meaning: 'Dessert replacement' }
+    1: '1 tbsp',
+    2: '2 tbsp',
+    3: '3 tbsp'
   };
 
   slider.addEventListener('input', (e) => {
     const value = e.target.value;
-    amount.textContent = portions[value].amount;
-    label.textContent = portions[value].label;
-    meaning.textContent = portions[value].meaning;
+    amount.textContent = portions[value];
+
+    // Update active label
+    document.querySelectorAll('.portion-label-item').forEach((item, index) => {
+      item.classList.toggle('active', index + 1 == value);
+    });
   });
 
   function resetSlider() {
     slider.value = 2;
-    amount.textContent = portions[2].amount;
-    label.textContent = portions[2].label;
-    meaning.textContent = portions[2].meaning;
+    amount.textContent = portions[2];
+    document.querySelectorAll('.portion-label-item').forEach((item, index) => {
+      item.classList.toggle('active', index + 1 == 2);
+    });
   }
 </script>
 
 <style>
   .portion-intelligence {
     padding: 100px 5%;
-    background: #F5EDE4;
+    background: #FFF9F3;
   }
 
   .portion-container {
-    max-width: 700px;
+    max-width: 750px;
     margin: 0 auto;
     text-align: center;
   }
 
   .portion-title {
     font-family: 'Playfair Display', serif;
-    font-size: 38px;
+    font-size: 36px;
     font-weight: 700;
     color: #2C2416;
     line-height: 1.3;
@@ -75,20 +81,55 @@
   }
 
   .portion-slider-wrapper {
-    background: white;
-    padding: 50px 40px;
+    background: #F5EDE4;
+    padding: 50px 60px 40px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    margin-bottom: 40px;
+    margin-bottom: 32px;
+  }
+
+  .portion-display {
+    margin-bottom: 30px;
+  }
+
+  .portion-amount {
+    font-size: 52px;
+    font-weight: 800;
+    color: #2D5F3F;
+    margin-bottom: 0;
+  }
+
+  .portion-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .portion-label-item {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 15px;
+    color: #6B5D4F;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+
+  .portion-label-item.active {
+    color: #2C2416;
+    font-weight: 700;
   }
 
   .portion-slider {
     width: 100%;
-    height: 8px;
-    background: #E5DDD4;
+    height: 10px;
+    background: linear-gradient(to right,
+      #2D5F3F 0%,
+      #2D5F3F 50%,
+      #E5DDD4 50%,
+      #E5DDD4 100%
+    );
     border-radius: 10px;
     outline: none;
-    margin: 30px 0;
     cursor: pointer;
     -webkit-appearance: none;
   }
@@ -96,79 +137,52 @@
   .portion-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #2D5F3F;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(45, 95, 63, 0.3);
+    box-shadow: 0 3px 10px rgba(45, 95, 63, 0.4);
+    border: 4px solid white;
   }
 
   .portion-slider::-moz-range-thumb {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #2D5F3F;
     cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 8px rgba(45, 95, 63, 0.3);
-  }
-
-  .portion-display {
-    margin-bottom: 20px;
-  }
-
-  .portion-amount {
-    font-size: 42px;
-    font-weight: 800;
-    color: #2D5F3F;
-    margin-bottom: 10px;
-  }
-
-  .portion-label {
-    font-size: 20px;
-    font-weight: 600;
-    color: #2C2416;
-    margin-bottom: 8px;
-  }
-
-  .portion-meaning {
-    font-size: 15px;
-    color: #6B5D4F;
-    font-style: italic;
-  }
-
-  .portion-markers {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: #6B5D4F;
-    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(45, 95, 63, 0.4);
+    border: 4px solid white;
   }
 
   .portion-insight {
     font-size: 17px;
     color: #2C2416;
-    line-height: 1.7;
-    margin-bottom: 30px;
-    font-style: italic;
+    line-height: 1.8;
+    margin-bottom: 24px;
   }
 
   .portion-reset {
     background: transparent;
-    border: 2px solid #2D5F3F;
-    color: #2D5F3F;
-    padding: 12px 28px;
-    border-radius: 6px;
+    border: none;
+    color: #6B5D4F;
+    padding: 8px 0;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
   .portion-reset:hover {
-    background: #2D5F3F;
-    color: white;
+    color: #2D5F3F;
+  }
+
+  .reset-icon {
+    font-size: 16px;
   }
 
   @media (max-width: 768px) {
@@ -181,11 +195,15 @@
     }
 
     .portion-slider-wrapper {
-      padding: 40px 24px;
+      padding: 40px 32px 32px;
     }
 
     .portion-amount {
-      font-size: 32px;
+      font-size: 40px;
+    }
+
+    .portion-label-item {
+      font-size: 13px;
     }
   }
 </style>
@@ -201,10 +219,22 @@
       "default": "How much satisfaction do you actually need?"
     },
     {
-      "type": "textarea",
-      "id": "insight_text",
-      "label": "Insight Text",
-      "default": "Most people don't need more food. They need the right dose."
+      "type": "text",
+      "id": "insight_line1",
+      "label": "Insight Line 1",
+      "default": "Most people don't need more food."
+    },
+    {
+      "type": "text",
+      "id": "insight_line2",
+      "label": "Insight Line 2",
+      "default": "They need the right dose."
+    },
+    {
+      "type": "text",
+      "id": "reset_text",
+      "label": "Reset Button Text",
+      "default": "Reset to 2 tbsp (recommended)"
     }
   ],
   "presets": [
