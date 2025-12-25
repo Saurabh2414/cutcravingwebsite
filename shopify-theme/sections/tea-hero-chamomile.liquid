@@ -1,0 +1,247 @@
+<section class="tea-hero tea-hero-chamomile">
+  <div class="tea-hero-container">
+    <div class="tea-hero-content">
+      {% if section.settings.eyebrow_text %}
+        <div class="tea-hero-eyebrow">{{ section.settings.eyebrow_text }}</div>
+      {% endif %}
+
+      <h1 class="tea-hero-headline">{{ section.settings.headline }}</h1>
+
+      <p class="tea-hero-subline">{{ section.settings.subline }}</p>
+
+      <div class="tea-hero-ctas">
+        <a href="{{ section.settings.primary_cta_link }}" class="btn-tea-primary">
+          {{ section.settings.primary_cta_text }}
+        </a>
+        {% if section.settings.show_secondary_cta %}
+          <a href="{{ section.settings.secondary_cta_link }}" class="btn-tea-secondary">
+            {{ section.settings.secondary_cta_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="tea-hero-visual">
+      {% if section.settings.hero_image %}
+        <img src="{{ section.settings.hero_image | img_url: '1000x1000' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="tea-hero-image">
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-hero-chamomile {
+    padding: 100px 5% 80px;
+    background: linear-gradient(135deg, #FFF9E8 0%, #FFF4E0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tea-hero-chamomile::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(255, 235, 156, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .tea-hero-chamomile .tea-hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tea-hero-chamomile .tea-hero-eyebrow {
+    font-size: 13px;
+    color: #B8860B;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .tea-hero-chamomile .tea-hero-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.2;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .tea-hero-chamomile .tea-hero-subline {
+    font-size: 19px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+
+  .tea-hero-chamomile .tea-hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .tea-hero-chamomile .btn-tea-primary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: #D4A017;
+    color: white;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(212, 160, 23, 0.25);
+  }
+
+  .tea-hero-chamomile .btn-tea-primary:hover {
+    background: #B8860B;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35);
+  }
+
+  .tea-hero-chamomile .btn-tea-secondary {
+    display: inline-block;
+    padding: 18px 42px;
+    background: transparent;
+    color: #D4A017;
+    border: 2px solid #D4A017;
+    border-radius: 32px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .tea-hero-chamomile .btn-tea-secondary:hover {
+    background: rgba(212, 160, 23, 0.1);
+  }
+
+  .tea-hero-chamomile .tea-hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tea-hero-chamomile .tea-hero-image {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    filter: drop-shadow(0 12px 32px rgba(0,0,0,0.15));
+  }
+
+  @media (max-width: 900px) {
+    .tea-hero-chamomile .tea-hero-container {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+
+    .tea-hero-chamomile .tea-hero-visual {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-hero-chamomile {
+      padding: 60px 5% 50px;
+    }
+
+    .tea-hero-chamomile .tea-hero-headline {
+      font-size: 36px;
+    }
+
+    .tea-hero-chamomile .tea-hero-subline {
+      font-size: 17px;
+    }
+
+    .tea-hero-chamomile .tea-hero-ctas {
+      flex-direction: column;
+    }
+
+    .tea-hero-chamomile .btn-tea-primary,
+    .tea-hero-chamomile .btn-tea-secondary {
+      width: 100%;
+      text-align: center;
+    }
+
+    .tea-hero-chamomile .tea-hero-image {
+      max-width: 400px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Hero - Chamomile",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow Text",
+      "default": "Chamomile Tea"
+    },
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "When you want something to sip—not something to snack."
+    },
+    {
+      "type": "textarea",
+      "id": "subline",
+      "label": "Subline",
+      "default": "A calming ritual for bored mouths and restless evenings."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary CTA Text",
+      "default": "Start a Calm Ritual →"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_cta",
+      "label": "Show Secondary CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Hero - Chamomile"
+    }
+  ]
+}
+{% endschema %}
