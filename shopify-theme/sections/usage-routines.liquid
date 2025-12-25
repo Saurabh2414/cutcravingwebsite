@@ -128,8 +128,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 40px;
+    padding: 0;  /* Remove padding to let image fill space */
     position: relative;
+    min-height: 500px;  /* Ensure minimum height */
   }
 
   .routine-visual.evening-visual {
@@ -146,15 +147,18 @@
 
   .visual-peanut {
     font-size: 120px;
-    margin-bottom: 20px;
     filter: drop-shadow(0 4px 16px rgba(0,0,0,0.15));
+    position: relative;  /* Keep centered with flexbox parent */
+    z-index: 1;
   }
 
   .routine-visual-image {
     width: 100%;
-    max-width: 200px;
-    height: auto;
-    margin-bottom: 20px;
+    height: 100%;
+    object-fit: cover;  /* Cover the entire visual area */
+    position: absolute;  /* Position absolutely to fill parent */
+    top: 0;
+    left: 0;
   }
 
   .visual-label {
@@ -162,6 +166,11 @@
     font-weight: 700;
     color: white;
     text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    position: absolute;  /* Position over the image */
+    bottom: 30px;  /* Position at bottom */
+    left: 50%;
+    transform: translateX(-50%);  /* Center horizontally */
+    z-index: 2;  /* Ensure it's above the image */
   }
 
   .routine-content {
@@ -313,7 +322,8 @@
     }
 
     .routine-visual {
-      padding: 30px;
+      padding: 0;  /* Keep full-cover on mobile too */
+      min-height: 300px;  /* Smaller min-height for mobile */
     }
 
     .visual-peanut {
