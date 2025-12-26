@@ -1,0 +1,126 @@
+<style>
+  /* Global Animation Utilities for PDP */
+
+  /* Fade-up animation for sections */
+  .animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-fade-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered animations for cards/items */
+  .animate-stagger {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-stagger.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Delay classes for stagger effect */
+  .delay-1 { transition-delay: 80ms; }
+  .delay-2 { transition-delay: 160ms; }
+  .delay-3 { transition-delay: 240ms; }
+  .delay-4 { transition-delay: 320ms; }
+  .delay-5 { transition-delay: 400ms; }
+  .delay-6 { transition-delay: 480ms; }
+
+  /* SVG stroke animation */
+  .animate-draw {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-draw.in-view {
+    stroke-dashoffset: 0;
+  }
+
+  /* Progress bar fill animation */
+  .animate-fill {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .animate-fill.in-view {
+    transform: scaleX(1);
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-stagger,
+    .animate-draw,
+    .animate-fill {
+      opacity: 1 !important;
+      transform: none !important;
+      stroke-dashoffset: 0 !important;
+      transition: none !important;
+    }
+
+    .delay-1, .delay-2, .delay-3,
+    .delay-4, .delay-5, .delay-6 {
+      transition-delay: 0ms !important;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    'use strict';
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      // Skip all animations
+      document.querySelectorAll('.animate-fade-up, .animate-stagger, .animate-draw, .animate-fill').forEach(el => {
+        el.classList.add('in-view');
+      });
+      return;
+    }
+
+    // Intersection Observer for scroll-triggered animations
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -100px 0px', // Trigger slightly before element enters viewport
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+
+          // For one-time animations, stop observing after triggered
+          if (!entry.target.hasAttribute('data-repeat-animation')) {
+            observer.unobserve(entry.target);
+          }
+        } else if (entry.target.hasAttribute('data-repeat-animation')) {
+          // Remove class if element leaves viewport and should repeat
+          entry.target.classList.remove('in-view');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const animatedElements = document.querySelectorAll(
+        '.animate-fade-up, .animate-stagger, .animate-draw, .animate-fill'
+      );
+
+      animatedElements.forEach(el => observer.observe(el));
+    });
+  })();
+</script>

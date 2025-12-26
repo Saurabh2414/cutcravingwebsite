@@ -1,17 +1,19 @@
+{% render 'pdp-animations' %}
+
 <section class="craving-explanation">
   <div class="craving-container">
-    <h2 class="craving-title">{{ section.settings.title }}</h2>
+    <h2 class="craving-title animate-fade-up">{{ section.settings.title }}</h2>
 
-    <p class="craving-subtext">{{ section.settings.subtext }}</p>
+    <p class="craving-subtext animate-fade-up delay-1">{{ section.settings.subtext }}</p>
 
     <div class="craving-flow">
-      <div class="flow-word">SPIKE</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-word">CRASH</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-word">CRAVE</div>
-      <div class="flow-arrow">→</div>
-      <div class="flow-word">REPEAT</div>
+      <div class="flow-word animate-stagger delay-1">SPIKE</div>
+      <div class="flow-arrow animate-stagger delay-2">→</div>
+      <div class="flow-word animate-stagger delay-3">CRASH</div>
+      <div class="flow-arrow animate-stagger delay-4">→</div>
+      <div class="flow-word animate-stagger delay-5">CRAVE</div>
+      <div class="flow-arrow animate-stagger delay-6">→</div>
+      <div class="flow-word animate-stagger delay-6">REPEAT</div>
     </div>
   </div>
 </section>

@@ -1,17 +1,19 @@
+{% render 'pdp-animations' %}
+
 <section class="protein-comparison">
   <div class="protein-container">
-    <h2 class="protein-title">{{ section.settings.title }}</h2>
-    <p class="protein-subtitle">{{ section.settings.subtitle }}</p>
+    <h2 class="protein-title animate-fade-up">{{ section.settings.title }}</h2>
+    <p class="protein-subtitle animate-fade-up delay-1">{{ section.settings.subtitle }}</p>
 
     <div class="protein-grid">
       {% for block in section.blocks %}
-        <div class="protein-card {% if block.settings.is_featured %}protein-featured{% endif %}" {{ block.shopify_attributes }}>
+        <div class="protein-card animate-stagger delay-{{ forloop.index }} {% if block.settings.is_featured %}protein-featured{% endif %}" {{ block.shopify_attributes }}>
           <div class="protein-source">{{ block.settings.source }}</div>
           <div class="protein-amount">{{ block.settings.protein_amount }}</div>
           <div class="protein-label">{{ block.settings.label }}</div>
           <div class="protein-satisfaction">
             <div class="satisfaction-bar">
-              <div class="satisfaction-fill" style="width: {{ block.settings.satisfaction_level }}%;"></div>
+              <div class="satisfaction-fill animate-fill" data-width="{{ block.settings.satisfaction_level }}"></div>
             </div>
             <div class="satisfaction-text">{{ block.settings.satisfaction_text }}</div>
           </div>
@@ -22,7 +24,7 @@
       {% endfor %}
     </div>
 
-    <p class="protein-insight">{{ section.settings.closing_insight }}</p>
+    <p class="protein-insight animate-fade-up">{{ section.settings.closing_insight }}</p>
   </div>
 </section>
 
@@ -133,7 +135,7 @@
     height: 100%;
     background: #2D5F3F;
     border-radius: 10px;
-    transition: width 0.6s ease;
+    width: 100%;
   }
 
   .protein-card.protein-featured .satisfaction-fill {
@@ -182,6 +184,34 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    // Animate satisfaction bars when they come into view
+    const bars = document.querySelectorAll('.satisfaction-fill[data-width]');
+
+    bars.forEach(bar => {
+      const targetWidth = bar.getAttribute('data-width');
+
+      // Use MutationObserver to detect when animate-fill gets in-view class
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'class') {
+            if (bar.classList.contains('in-view')) {
+              // Animate to target width
+              setTimeout(() => {
+                bar.style.transform = `scaleX(${targetWidth / 100})`;
+              }, 100);
+              observer.disconnect();
+            }
+          }
+        });
+      });
+
+      observer.observe(bar, { attributes: true });
+    });
+  })();
+</script>
 
 {% schema %}
 {

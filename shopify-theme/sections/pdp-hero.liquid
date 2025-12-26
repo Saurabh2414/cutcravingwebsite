@@ -1,8 +1,18 @@
 <section class="pdp-hero">
   <div class="pdp-hero-container">
-    <div class="pdp-hero-visual">
-      {% if section.settings.product_image %}
-        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="pdp-product-image">
+    <div class="pdp-hero-visual" id="productRotation">
+      {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+          <img
+            src="{{ block.settings.image | img_url: '800x800' }}"
+            alt="{{ block.settings.alt_text | default: section.settings.headline | escape }}"
+            loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            class="pdp-product-image {% if forloop.first %}active{% endif %}"
+            data-rotation-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}>
+        {% endfor %}
+      {% elsif section.settings.product_image %}
+        <img src="{{ section.settings.product_image | img_url: '800x800' }}" alt="{{ section.settings.headline | escape }}" loading="eager" class="pdp-product-image active">
       {% endif %}
     </div>
 
@@ -32,7 +42,8 @@
 
       <div class="pdp-hero-ctas">
         <a href="{{ section.settings.primary_cta_link }}" class="btn-primary-pdp">
-          {{ section.settings.primary_cta_text }}
+          <span class="btn-text">{{ section.settings.primary_cta_text }}</span>
+          <span class="btn-arrow">→</span>
         </a>
       </div>
 
@@ -151,7 +162,9 @@
   }
 
   .btn-primary-pdp {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 18px 48px;
     background: #2D5F3F;
     color: white;
@@ -159,14 +172,46 @@
     font-weight: 700;
     font-size: 16px;
     text-decoration: none;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     box-shadow: 0 4px 16px rgba(45, 95, 63, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary-pdp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-primary-pdp:hover::before {
+    opacity: 1;
   }
 
   .btn-primary-pdp:hover {
     background: #234a31;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(45, 95, 63, 0.35);
+    box-shadow: 0 8px 24px rgba(45, 95, 63, 0.4);
+  }
+
+  .btn-arrow {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    display: inline-block;
+  }
+
+  .btn-primary-pdp:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  .btn-primary-pdp:active {
+    transform: scale(0.97) translateY(-1px);
   }
 
   .pdp-hero-shipping {
@@ -180,6 +225,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 520px;
   }
 
   .pdp-product-image {
@@ -188,11 +234,33 @@
     height: auto;
     filter: drop-shadow(0 16px 40px rgba(44, 36, 22, 0.15))
             drop-shadow(0 4px 12px rgba(44, 36, 22, 0.08));
-    transition: transform 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    cursor: zoom-in;
+  }
+
+  .pdp-product-image.active {
+    opacity: 1;
   }
 
   .pdp-product-image:hover {
-    transform: translateY(-8px);
+    transform: translate(-50%, -50%) rotateY(2deg) translateY(-8px);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .pdp-product-image {
+      transition: none;
+      opacity: 1 !important;
+    }
+
+    .pdp-product-image:hover {
+      transform: translate(-50%, -50%);
+    }
   }
 
   @media (max-width: 900px) {
@@ -234,6 +302,55 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    const rotationContainer = document.getElementById('productRotation');
+    if (!rotationContainer) return;
+
+    const images = rotationContainer.querySelectorAll('.pdp-product-image');
+    if (images.length <= 1) return;
+
+    let currentIndex = 0;
+    let rotationInterval;
+
+    // Check if user prefers reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReducedMotion) {
+      // Show only first image, no rotation
+      return;
+    }
+
+    function rotateToNext() {
+      // Fade out current
+      images[currentIndex].classList.remove('active');
+
+      // Move to next
+      currentIndex = (currentIndex + 1) % images.length;
+
+      // Fade in next
+      images[currentIndex].classList.add('active');
+    }
+
+    // Auto-rotate every 3.5 seconds
+    function startRotation() {
+      rotationInterval = setInterval(rotateToNext, 3500);
+    }
+
+    // Pause on hover (optional enhancement)
+    rotationContainer.addEventListener('mouseenter', function() {
+      clearInterval(rotationInterval);
+    });
+
+    rotationContainer.addEventListener('mouseleave', function() {
+      startRotation();
+    });
+
+    // Start rotation after page load
+    setTimeout(startRotation, 2000);
+  })();
+</script>
 
 {% schema %}
 {
@@ -307,12 +424,45 @@
     {
       "type": "image_picker",
       "id": "product_image",
-      "label": "Product Image"
+      "label": "Product Image (Fallback - use blocks instead)"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "rotation_image",
+      "name": "Product Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text (Optional)",
+          "info": "Leave blank to use product headline"
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "PDP Hero"
+      "name": "PDP Hero",
+      "blocks": [
+        {
+          "type": "rotation_image"
+        },
+        {
+          "type": "rotation_image"
+        },
+        {
+          "type": "rotation_image"
+        },
+        {
+          "type": "rotation_image"
+        }
+      ]
     }
   ]
 }
