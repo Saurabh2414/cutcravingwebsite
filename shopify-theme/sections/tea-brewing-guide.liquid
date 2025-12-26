@@ -1,0 +1,344 @@
+{% render 'pdp-animations' %}
+
+<section class="tea-brewing-guide">
+  <div class="brewing-container">
+    <div class="brewing-header">
+      <span class="brewing-badge">☕ {{ section.settings.badge_text }}</span>
+      <h2 class="brewing-title animate-fade-up">{{ section.settings.title }}</h2>
+      <p class="brewing-subtitle animate-fade-up delay-1">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="brewing-steps">
+      {% for block in section.blocks %}
+        <div class="step-card animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <div class="step-image-wrapper">
+            <div class="step-number">{{ forloop.index }}</div>
+            {% if block.settings.image %}
+              <img
+                src="{{ block.settings.image | img_url: '600x600' }}"
+                alt="Step {{ forloop.index }}"
+                loading="lazy"
+                class="step-image">
+            {% endif %}
+            {% if block.settings.icon %}
+              <div class="step-icon-overlay">{{ block.settings.icon }}</div>
+            {% endif %}
+          </div>
+
+          <div class="step-content">
+            <h3 class="step-title">{{ block.settings.step_title }}</h3>
+            <p class="step-description">{{ block.settings.step_description }}</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-brewing-guide {
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .brewing-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .brewing-header {
+    text-align: center;
+    margin-bottom: 70px;
+  }
+
+  .brewing-badge {
+    display: inline-block;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #D4A017 0%, #E8B84D 100%);
+    color: white;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brewing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 16px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .brewing-subtitle {
+    font-size: 18px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .brewing-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  .step-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+  }
+
+  .step-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  .step-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 100%);
+  }
+
+  .step-number {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 48px;
+    height: 48px;
+    background: #2C2416;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(44, 36, 22, 0.3);
+  }
+
+  .step-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .step-card:hover .step-image {
+    transform: scale(1.08);
+  }
+
+  .step-icon-overlay {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    font-size: 40px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+  }
+
+  .step-content {
+    padding: 24px;
+  }
+
+  .step-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2C2416;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+  }
+
+  .step-description {
+    font-size: 14px;
+    color: #6B5D4F;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Step-specific accents */
+  .step-card:nth-child(1) .step-image-wrapper {
+    background: linear-gradient(135deg, #FFF9E8 0%, #FFF4E0 100%);
+  }
+
+  .step-card:nth-child(2) .step-image-wrapper {
+    background: linear-gradient(135deg, #E8F4FF 0%, #DDE8FF 100%);
+  }
+
+  .step-card:nth-child(3) .step-image-wrapper {
+    background: linear-gradient(135deg, #D4A017 0.2, #E8B84D 100%);
+  }
+
+  .step-card:nth-child(4) .step-image-wrapper {
+    background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 100%);
+  }
+
+  @media (max-width: 1024px) {
+    .brewing-steps {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-brewing-guide {
+      padding: 70px 5%;
+    }
+
+    .brewing-title {
+      font-size: 32px;
+    }
+
+    .brewing-subtitle {
+      font-size: 16px;
+    }
+
+    .brewing-header {
+      margin-bottom: 50px;
+    }
+
+    .brewing-steps {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .step-image-wrapper {
+      height: 240px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+    .step-content {
+      padding: 20px;
+    }
+
+    .step-title {
+      font-size: 16px;
+    }
+
+    .step-description {
+      font-size: 13px;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .step-card:hover {
+      transform: none;
+    }
+
+    .step-card:hover .step-image {
+      transform: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Brewing Guide",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "PERFECT BREW"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Your Perfect Cup of Blue Tea: A Step-by-Step Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover the simple process of brewing the perfect cup of Blue Tea. From selecting the finest tea leaves to adding a touch of lemon, follow these four easy steps to enjoy a refreshing, vibrant cup. Delicious, healthy, and ready in minutes!"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Brewing Step",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image"
+        },
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon (emoji or SVG)",
+          "default": "🫖"
+        },
+        {
+          "type": "text",
+          "id": "step_title",
+          "label": "Step Title",
+          "default": "Take 1 teaspoon of Blue Tea flowers"
+        },
+        {
+          "type": "textarea",
+          "id": "step_description",
+          "label": "Step Description",
+          "default": "Measure one teaspoon of dried Blue Tea flowers for the perfect flavor balance."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Brewing Guide",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "icon": "🥄",
+            "step_title": "Take 1 teaspoon of Blue Tea flowers",
+            "step_description": "Measure one teaspoon of dried Blue Tea flowers for the perfect flavor balance."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "💧",
+            "step_title": "Add Blue Tea to 1 cup of hot water",
+            "step_description": "Pour hot water over the Blue Tea flowers in your favorite cup or teapot."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "⏱️",
+            "step_title": "Steep 5-7 min",
+            "step_description": "Let it steep for 5-7 minutes to extract the full flavor and color."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "😊",
+            "step_title": "Enjoy your cup of Blue Tea",
+            "step_description": "Strain and enjoy your delicious, healthy blue tea. Add lemon if desired!"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

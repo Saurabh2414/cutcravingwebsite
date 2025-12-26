@@ -1,0 +1,277 @@
+{% render 'pdp-animations' %}
+
+<section class="tea-benefits-section">
+  <div class="tea-benefits-container">
+    <h2 class="benefits-main-title animate-fade-up">{{ section.settings.title }}</h2>
+
+    <div class="benefits-grid">
+      {% for block in section.blocks %}
+        <div class="benefit-card animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          <div class="benefit-image-wrapper">
+            {% if block.settings.image %}
+              <img
+                src="{{ block.settings.image | img_url: '600x600' }}"
+                alt="{{ block.settings.benefit_title }}"
+                loading="lazy"
+                class="benefit-image">
+            {% endif %}
+            {% if block.settings.overlay_text %}
+              <div class="benefit-overlay">
+                <p class="overlay-text">{{ block.settings.overlay_text }}</p>
+              </div>
+            {% endif %}
+          </div>
+          <h3 class="benefit-title">{{ block.settings.benefit_title }}</h3>
+          {% if block.settings.benefit_description %}
+            <p class="benefit-description">{{ block.settings.benefit_description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-benefits-section {
+    padding: 100px 5%;
+    background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 100%);
+  }
+
+  .tea-benefits-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .benefits-main-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #2C2416;
+    text-align: center;
+    margin: 0 0 60px 0;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .benefit-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .benefit-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  }
+
+  .benefit-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    overflow: hidden;
+  }
+
+  .benefit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .benefit-card:hover .benefit-image {
+    transform: scale(1.05);
+  }
+
+  .benefit-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(44, 36, 22, 0) 0%,
+      rgba(44, 36, 22, 0.3) 60%,
+      rgba(44, 36, 22, 0.7) 100%
+    );
+    display: flex;
+    align-items: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .benefit-card:hover .benefit-overlay {
+    opacity: 1;
+  }
+
+  .overlay-text {
+    color: white;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+    transform: translateY(10px);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .benefit-card:hover .overlay-text {
+    transform: translateY(0);
+  }
+
+  .benefit-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #2C2416;
+    padding: 24px 24px 12px;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .benefit-description {
+    font-size: 15px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    padding: 0 24px 24px;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .benefits-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .benefit-image-wrapper {
+      height: 280px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-benefits-section {
+      padding: 70px 5%;
+    }
+
+    .benefits-main-title {
+      font-size: 32px;
+      margin-bottom: 40px;
+    }
+
+    .benefit-title {
+      font-size: 22px;
+      padding: 20px 20px 10px;
+    }
+
+    .benefit-description {
+      font-size: 14px;
+      padding: 0 20px 20px;
+    }
+
+    .benefit-image-wrapper {
+      height: 240px;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .benefit-card:hover {
+      transform: none;
+    }
+
+    .benefit-card:hover .benefit-image {
+      transform: none;
+    }
+
+    .benefit-overlay {
+      opacity: 1;
+    }
+
+    .overlay-text {
+      transform: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tea Benefits - Blue",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Blue Tea - Benefits"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Benefit Image"
+        },
+        {
+          "type": "text",
+          "id": "benefit_title",
+          "label": "Benefit Title",
+          "default": "Calm Without Drowsiness"
+        },
+        {
+          "type": "textarea",
+          "id": "benefit_description",
+          "label": "Description (Optional)",
+          "info": "Brief explanation of the benefit"
+        },
+        {
+          "type": "textarea",
+          "id": "overlay_text",
+          "label": "Overlay Text (Hover)",
+          "info": "Text that appears on image hover"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Benefits - Blue",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_title": "Calm Without Drowsiness",
+            "benefit_description": "Natural compounds that ease anxiety without making you sleepy",
+            "overlay_text": "caffeine-free comfort for restful evenings"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_title": "Visible Magic",
+            "benefit_description": "Watch it change color — a sensory ritual, not just hydration",
+            "overlay_text": "color-changing ritual in every sip"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "benefit_title": "Evening Urge Replacement",
+            "benefit_description": "Occupy your hands and mind when boredom triggers eating",
+            "overlay_text": "stress relief in every sip"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
