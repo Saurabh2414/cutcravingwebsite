@@ -1,0 +1,242 @@
+{% render 'pdp-animations' %}
+
+<section class="tea-final-cta">
+  <div class="final-cta-container">
+    <div class="final-cta-content animate-fade-up">
+      <h2 class="final-cta-headline">{{ section.settings.headline }}</h2>
+      <p class="final-cta-subtext">{{ section.settings.subtext }}</p>
+
+      <a href="{{ section.settings.cta_link }}" class="final-cta-button">
+        <span class="cta-button-text">{{ section.settings.cta_text | remove: '→' | strip }}</span>
+        <span class="cta-button-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-final-cta {
+    padding: 120px 5%;
+    background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 50%, #E8F4FF 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .final-cta-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .final-cta-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.2;
+    margin: 0 0 24px 0;
+    letter-spacing: -1px;
+  }
+
+  .final-cta-subtext {
+    font-size: 20px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .final-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 22px 50px;
+    background: #2D5F3F;
+    color: white;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 18px;
+    text-decoration: none;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 6px 24px rgba(45, 95, 63, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Glow overlay */
+  .final-cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .final-cta-button:hover::before {
+    opacity: 1;
+  }
+
+  .final-cta-button:hover {
+    background: #234a31;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(45, 95, 63, 0.5);
+  }
+
+  .cta-button-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-button-arrow {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    display: inline-block;
+  }
+
+  .final-cta-button:hover .cta-button-arrow {
+    transform: translateX(4px);
+  }
+
+  /* Click/Active State */
+  .final-cta-button:active {
+    transform: scale(0.96) translateY(-1px);
+    box-shadow: 0 4px 16px rgba(45, 95, 63, 0.3);
+  }
+
+  .final-cta-button.preparing .cta-button-text::before {
+    content: 'Preparing your ritual…';
+  }
+
+  .final-cta-button.preparing .cta-button-text,
+  .final-cta-button.preparing .cta-button-arrow {
+    opacity: 0;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .tea-final-cta {
+      animation: none;
+      background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 100%);
+    }
+
+    .final-cta-button {
+      transition: opacity 0.2s;
+    }
+
+    .final-cta-button:hover {
+      transform: none;
+    }
+
+    .final-cta-button:active {
+      transform: none;
+    }
+
+    .cta-button-arrow {
+      transition: none;
+    }
+
+    .final-cta-button:hover .cta-button-arrow {
+      transform: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-final-cta {
+      padding: 80px 5%;
+    }
+
+    .final-cta-headline {
+      font-size: 36px;
+      letter-spacing: -0.5px;
+    }
+
+    .final-cta-subtext {
+      font-size: 18px;
+      margin-bottom: 36px;
+    }
+
+    .final-cta-button {
+      width: 100%;
+      justify-content: center;
+      padding: 20px 40px;
+      font-size: 16px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const ctaButton = document.querySelector('.final-cta-button');
+
+    if (!ctaButton) return;
+
+    ctaButton.addEventListener('click', function(e) {
+      // Add preparing state for visual feedback
+      this.classList.add('preparing');
+
+      // Remove preparing state after navigation starts
+      setTimeout(() => {
+        this.classList.remove('preparing');
+      }, 1500);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Tea Final CTA",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Turn your evenings blue"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Not a fix. Not a hack. Just a calmer way to end the day."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Start Your Ritual →"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Final CTA"
+    }
+  ]
+}
+{% endschema %}

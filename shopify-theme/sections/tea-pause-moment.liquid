@@ -1,0 +1,195 @@
+{% render 'pdp-animations' %}
+
+<section class="tea-pause-section">
+  <div class="pause-container">
+    <h2 class="pause-headline animate-fade-up">{{ section.settings.headline }}</h2>
+
+    <p class="pause-subtext animate-fade-up delay-1">{{ section.settings.subtext }}</p>
+
+    <!-- Floating Emoji Urges (that fade away) -->
+    <div class="urge-emojis">
+      <span class="urge-emoji urge-1">😰</span>
+      <span class="urge-emoji urge-2">🍪</span>
+      <span class="urge-emoji urge-3">😣</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tea-pause-section {
+    padding: 120px 5%;
+    background: linear-gradient(135deg, #F0F8FF 0%, #E8F4FF 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pause-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+
+  .pause-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 46px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 24px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .pause-subtext {
+    font-size: 19px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Floating Urge Emojis */
+  .urge-emojis {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  .urge-emoji {
+    position: absolute;
+    font-size: 32px;
+    opacity: 0;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+  }
+
+  .urge-1 {
+    top: 30%;
+    left: 15%;
+  }
+
+  .urge-2 {
+    top: 50%;
+    right: 20%;
+  }
+
+  .urge-3 {
+    top: 60%;
+    left: 25%;
+  }
+
+  /* Trigger emoji float animation when section is in view */
+  .pause-container.in-view .urge-emoji {
+    animation: urgeFloatAway 4s ease-out forwards;
+  }
+
+  .pause-container.in-view .urge-1 {
+    animation-delay: 0.5s;
+  }
+
+  .pause-container.in-view .urge-2 {
+    animation-delay: 1s;
+  }
+
+  .pause-container.in-view .urge-3 {
+    animation-delay: 1.5s;
+  }
+
+  @keyframes urgeFloatAway {
+    0% {
+      transform: translateY(0);
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-60px);
+      opacity: 0;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .urge-emoji {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .tea-pause-section {
+      padding: 80px 5%;
+    }
+
+    .pause-headline {
+      font-size: 32px;
+    }
+
+    .pause-subtext {
+      font-size: 17px;
+    }
+
+    .urge-emoji {
+      font-size: 24px;
+    }
+
+    @keyframes urgeFloatAway {
+      100% {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    // Observe pause container for emoji animation trigger
+    const pauseContainer = document.querySelector('.pause-container');
+
+    if (!pauseContainer) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !pauseContainer.classList.contains('in-view')) {
+          pauseContainer.classList.add('in-view');
+          // Disconnect after first trigger (emojis only float once)
+          observer.disconnect();
+        }
+      });
+    }, {
+      threshold: 0.3
+    });
+
+    observer.observe(pauseContainer);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Tea Pause Moment",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "You're not hungry. You're looking for something to do."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Blue tea gives your hands and mouth a calming ritual—without the crash, without the calories."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tea Pause Moment"
+    }
+  ]
+}
+{% endschema %}

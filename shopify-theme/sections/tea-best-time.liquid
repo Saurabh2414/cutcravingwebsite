@@ -1,10 +1,15 @@
+{% render 'pdp-animations' %}
+
 <section class="tea-best-time">
   <div class="tea-time-container">
-    <h2 class="tea-time-title">{{ section.settings.title }}</h2>
+    <h2 class="tea-time-title animate-fade-up">{{ section.settings.title }}</h2>
+    {% if section.settings.subtitle %}
+      <p class="tea-time-subtitle animate-fade-up delay-1">{{ section.settings.subtitle }}</p>
+    {% endif %}
 
     <div class="tea-time-grid">
       {% for block in section.blocks %}
-        <div class="tea-time-card {% if block.settings.is_ideal %}ideal{% endif %} {% if block.settings.is_optional %}optional{% endif %}" {{ block.shopify_attributes }}>
+        <div class="tea-time-card {% if block.settings.is_ideal %}ideal active{% endif %} {% if block.settings.is_optional %}optional{% endif %} animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
           <div class="tea-time-icon">{{ block.settings.icon }}</div>
           <h3 class="tea-time-name">
             {{ block.settings.time_name }}
@@ -35,11 +40,23 @@
 
   .tea-time-title {
     font-family: 'Playfair Display', serif;
-    font-size: 38px;
+    font-size: 42px;
     font-weight: 700;
     color: #2C2416;
-    line-height: 1.3;
-    margin: 0 0 50px 0;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .tea-time-subtitle {
+    font-size: 18px;
+    color: #6B5D4F;
+    line-height: 1.7;
+    margin-bottom: 60px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
   }
 
@@ -51,45 +68,97 @@
 
   .tea-time-card {
     background: white;
-    padding: 36px 28px;
+    padding: 40px 28px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     text-align: center;
-    transition: all 0.3s;
-    border: 2px solid transparent;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    border: 3px solid transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    position: relative;
+    overflow: hidden;
   }
 
+  /* Background tint overlay */
+  .tea-time-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(173, 216, 230, 0.08) 0%, rgba(100, 149, 237, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Active Card - Border Glow */
+  .tea-time-card.active {
+    opacity: 1;
+    border-color: rgba(173, 216, 230, 0.8);
+    box-shadow:
+      0 0 0 1px rgba(173, 216, 230, 0.3),
+      0 0 24px rgba(173, 216, 230, 0.4),
+      0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  .tea-time-card.active::before {
+    opacity: 1;
+  }
+
+  /* Ideal card styling (legacy support) */
   .tea-time-card.ideal {
-    border-color: #2D5F3F;
-    background: linear-gradient(135deg, #F0FFF4 0%, #FFFFFF 100%);
-    transform: scale(1.02);
-    box-shadow: 0 6px 24px rgba(45, 95, 63, 0.15);
+    opacity: 1;
   }
 
-  .tea-time-card.optional {
-    opacity: 0.85;
+  /* Optional/Inactive cards */
+  .tea-time-card:not(.active) {
+    opacity: 0.5;
   }
 
+  /* Hover State */
   .tea-time-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+    opacity: 1;
+    transform: translateY(-6px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
   }
 
-  .tea-time-card.ideal:hover {
-    transform: scale(1.02) translateY(-4px);
-  }
-
+  /* Icon Pulse on Hover */
   .tea-time-icon {
-    font-size: 52px;
+    font-size: 56px;
     margin-bottom: 20px;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .tea-time-card:hover .tea-time-icon {
+    animation: iconPulse 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes iconPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   .tea-time-name {
-    font-size: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
     font-weight: 700;
     color: #2C2416;
     margin: 0 0 12px 0;
+    position: relative;
+    z-index: 1;
   }
 
   .tea-time-label {
@@ -115,6 +184,8 @@
     color: #6B5D4F;
     line-height: 1.7;
     margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
   }
 
   .tea-time-tip {
@@ -125,6 +196,8 @@
     border-radius: 8px;
     font-weight: 600;
     text-align: left;
+    position: relative;
+    z-index: 1;
   }
 
   @media (max-width: 900px) {
@@ -140,18 +213,70 @@
 
   @media (max-width: 768px) {
     .tea-best-time {
-      padding: 60px 5%;
+      padding: 70px 5%;
     }
 
     .tea-time-title {
-      font-size: 28px;
+      font-size: 32px;
+    }
+
+    .tea-time-subtitle {
+      font-size: 16px;
+      margin-bottom: 40px;
     }
 
     .tea-time-icon {
-      font-size: 44px;
+      font-size: 48px;
+    }
+
+    .tea-time-name {
+      font-size: 22px;
+    }
+
+    .tea-time-description {
+      font-size: 14px;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .tea-time-card {
+      transition: opacity 0.2s;
+    }
+
+    .tea-time-card:hover {
+      transform: none;
+    }
+
+    .tea-time-card:hover .tea-time-icon {
+      animation: none;
+    }
+
+    .tea-time-icon {
+      transition: none;
+    }
+
+    .tea-time-card::before {
+      transition: none;
     }
   }
 </style>
+
+<script>
+  (function() {
+    const timeCards = document.querySelectorAll('.tea-time-card');
+
+    timeCards.forEach(card => {
+      card.addEventListener('click', function() {
+        // Remove active class from all cards
+        timeCards.forEach(c => c.classList.remove('active'));
+
+        // Add active class to clicked card
+        this.classList.add('active');
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -161,7 +286,13 @@
       "type": "textarea",
       "id": "title",
       "label": "Section Title",
-      "default": "Best time to sip Blue Tea:"
+      "default": "When to reach for Blue Tea"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle (Optional)",
+      "default": "Not a morning drink. Not a meal replacement. This is for the in-between moments."
     }
   ],
   "blocks": [

@@ -12,7 +12,15 @@
       {% for block in section.blocks %}
         <div class="step-card animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
           <div class="step-image-wrapper">
-            <div class="step-number">{{ forloop.index }}</div>
+            <!-- Animated Step Number with SVG Stroke Fill -->
+            <div class="step-number-container">
+              <svg class="step-number-svg" width="48" height="48" viewBox="0 0 48 48">
+                <circle cx="24" cy="24" r="22" fill="#2C2416" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                <circle class="step-circle-progress" cx="24" cy="24" r="22" fill="none" stroke="white" stroke-width="3" stroke-dasharray="138.23" stroke-dashoffset="138.23"/>
+              </svg>
+              <span class="step-number-text">{{ forloop.index }}</span>
+            </div>
+
             {% if block.settings.image %}
               <img
                 src="{{ block.settings.image | img_url: '600x600' }}"
@@ -20,6 +28,15 @@
                 loading="lazy"
                 class="step-image">
             {% endif %}
+
+            <!-- COLOR BLOOM: Step 2 Water Animation -->
+            {% if forloop.index == 2 %}
+              <div class="color-bloom-container">
+                <div class="water-clear"></div>
+                <div class="water-blue"></div>
+              </div>
+            {% endif %}
+
             {% if block.settings.icon %}
               <div class="step-icon-overlay">{{ block.settings.icon }}</div>
             {% endif %}
@@ -110,22 +127,43 @@
     background: linear-gradient(135deg, #E8F4FF 0%, #F0E8FF 100%);
   }
 
-  .step-number {
+  /* Animated Step Number */
+  .step-number-container {
     position: absolute;
     top: 16px;
     left: 16px;
     width: 48px;
     height: 48px;
-    background: #2C2416;
+    z-index: 2;
+  }
+
+  .step-number-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: drop-shadow(0 4px 12px rgba(44, 36, 22, 0.3));
+  }
+
+  .step-circle-progress {
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Trigger stroke animation when card is in view */
+  .step-card.in-view .step-circle-progress {
+    stroke-dashoffset: 0;
+  }
+
+  .step-number-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 20px;
     font-weight: 800;
-    z-index: 2;
-    box-shadow: 0 4px 12px rgba(44, 36, 22, 0.3);
+    z-index: 1;
   }
 
   .step-image {
@@ -145,6 +183,72 @@
     right: 16px;
     font-size: 40px;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2));
+    z-index: 3;
+  }
+
+  /* COLOR BLOOM Animation - Signature Moment */
+  .color-bloom-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .water-clear,
+  .water-blue {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+
+  .water-clear {
+    background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+    opacity: 1;
+  }
+
+  .water-blue {
+    background: radial-gradient(circle, rgba(173, 216, 230, 0.9) 0%, rgba(100, 149, 237, 0.6) 40%, transparent 70%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+
+  /* Trigger COLOR BLOOM when step 2 comes into view */
+  .step-card:nth-child(2).in-view .water-blue {
+    animation: colorBloom 2.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  }
+
+  .step-card:nth-child(2).in-view .water-clear {
+    animation: clearFade 2.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  }
+
+  @keyframes colorBloom {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.3);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(2.5);
+    }
+  }
+
+  @keyframes clearFade {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .step-content {
@@ -216,10 +320,24 @@
       height: 240px;
     }
 
-    .step-number {
+    .step-number-container {
       width: 40px;
       height: 40px;
+    }
+
+    .step-number-svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .step-number-text {
       font-size: 18px;
+    }
+
+    .water-clear,
+    .water-blue {
+      width: 80px;
+      height: 80px;
     }
 
     .step-content {
@@ -243,6 +361,23 @@
 
     .step-card:hover .step-image {
       transform: none;
+    }
+
+    .step-circle-progress {
+      transition: none;
+    }
+
+    .step-card.in-view .step-circle-progress {
+      stroke-dashoffset: 0;
+    }
+
+    .step-card:nth-child(2).in-view .water-blue,
+    .step-card:nth-child(2).in-view .water-clear {
+      animation: none;
+    }
+
+    .color-bloom-container {
+      display: none;
     }
   }
 </style>
