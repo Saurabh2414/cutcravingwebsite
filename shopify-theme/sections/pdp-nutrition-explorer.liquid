@@ -4,20 +4,41 @@
 
     <div class="nutrition-grid">
       {% for block in section.blocks %}
-        <div class="nutrition-item {% if block.type == 'excluded_item' %}excluded{% endif %}" {{ block.shopify_attributes }}>
-          <div class="nutrition-icon-wrapper">
+        {% if block.type == 'inside_item' %}
+          <div class="nutrition-item" {{ block.shopify_attributes }}>
             <div class="nutrition-icon">{{ block.settings.icon }}</div>
-            {% if block.type == 'excluded_item' %}
-              <div class="nutrition-cross">×</div>
+            <div class="nutrition-name">{{ block.settings.name }}</div>
+            {% if block.settings.why %}
+              <div class="nutrition-why">{{ block.settings.why }}</div>
             {% endif %}
           </div>
-          <div class="nutrition-name">{{ block.settings.name }}</div>
-          {% if block.settings.why %}
-            <div class="nutrition-why">{{ block.settings.why }}</div>
-          {% endif %}
-        </div>
+        {% endif %}
       {% endfor %}
     </div>
+
+    {% assign has_excluded = false %}
+    {% for block in section.blocks %}
+      {% if block.type == 'excluded_item' %}
+        {% assign has_excluded = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_excluded %}
+      <div class="nutrition-excluded-strip">
+        <div class="excluded-label">What's NOT inside:</div>
+        <div class="excluded-items">
+          {% for block in section.blocks %}
+            {% if block.type == 'excluded_item' %}
+              <div class="excluded-item" {{ block.shopify_attributes }}>
+                <span class="excluded-cross">×</span>
+                <span class="excluded-name">{{ block.settings.name }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
 
     {% if section.settings.show_full_table_toggle %}
       <button class="nutrition-toggle" onclick="toggleNutritionTable()">
@@ -58,72 +79,88 @@
 
   .nutrition-title {
     font-family: 'Playfair Display', serif;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 700;
     color: #2C2416;
     line-height: 1.3;
     margin: 0 0 50px 0;
+    letter-spacing: -0.5px;
   }
 
   .nutrition-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 32px;
-    margin-bottom: 50px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 32px;
     background: white;
-    padding: 50px 40px;
+    padding: 56px 44px;
     border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    box-shadow: 0 6px 28px rgba(0,0,0,0.08);
   }
 
   .nutrition-item {
     text-align: center;
   }
 
-  .nutrition-icon-wrapper {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 16px;
-  }
-
   .nutrition-icon {
-    font-size: 48px;
+    font-size: 52px;
+    margin-bottom: 16px;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
   }
 
-  .nutrition-cross {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 72px;
-    font-weight: 300;
-    color: #D32F2F;
-    opacity: 0.9;
-    pointer-events: none;
-  }
-
-  .nutrition-item.excluded .nutrition-icon {
-    opacity: 0.4;
-    filter: grayscale(50%) drop-shadow(0 2px 8px rgba(0,0,0,0.1));
-  }
-
   .nutrition-name {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     color: #2C2416;
-    margin-bottom: 6px;
-  }
-
-  .nutrition-item.excluded .nutrition-name {
-    color: #6B5D4F;
-    text-decoration: line-through;
+    margin-bottom: 8px;
   }
 
   .nutrition-why {
-    font-size: 13px;
+    font-size: 14px;
     color: #6B5D4F;
-    line-height: 1.5;
+    line-height: 1.6;
+  }
+
+  .nutrition-excluded-strip {
+    background: rgba(211, 47, 47, 0.04);
+    padding: 20px 28px;
+    border-radius: 12px;
+    border-left: 3px solid rgba(211, 47, 47, 0.3);
+    margin-bottom: 40px;
+  }
+
+  .excluded-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B5D4F;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .excluded-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 20px;
+    justify-content: center;
+  }
+
+  .excluded-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #6B5D4F;
+  }
+
+  .excluded-cross {
+    color: #D32F2F;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .excluded-name {
+    text-decoration: line-through;
   }
 
   .nutrition-toggle {
@@ -160,29 +197,34 @@
   @media (max-width: 900px) {
     .nutrition-grid {
       grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
+      gap: 32px;
     }
   }
 
   @media (max-width: 768px) {
     .nutrition-explorer {
-      padding: 60px 5%;
+      padding: 70px 5%;
     }
 
     .nutrition-title {
-      font-size: 28px;
+      font-size: 32px;
     }
 
     .nutrition-grid {
-      padding: 40px 24px;
+      padding: 44px 28px;
+      gap: 28px;
     }
 
     .nutrition-icon {
-      font-size: 40px;
+      font-size: 44px;
     }
 
-    .nutrition-cross {
-      font-size: 60px;
+    .excluded-items {
+      gap: 12px 16px;
+    }
+
+    .excluded-item {
+      font-size: 13px;
     }
   }
 </style>
@@ -269,7 +311,7 @@
           "settings": {
             "icon": "💪",
             "name": "Protein",
-            "why": "Triggers satiety hormones"
+            "why": "Tells your brain 'we're fed.'"
           }
         },
         {
@@ -277,7 +319,7 @@
           "settings": {
             "icon": "🥜",
             "name": "Healthy fats",
-            "why": "Slow digestion"
+            "why": "Keep you full for hours — not minutes."
           }
         },
         {
@@ -285,7 +327,7 @@
           "settings": {
             "icon": "✓",
             "name": "No refined sugar",
-            "why": "No crash"
+            "why": "No spike. No crash."
           }
         },
         {

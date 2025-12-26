@@ -2,129 +2,104 @@
   <div class="craving-container">
     <h2 class="craving-title">{{ section.settings.title }}</h2>
 
-    <p class="craving-explanation">{{ section.settings.explanation }}</p>
+    <p class="craving-subtext">{{ section.settings.subtext }}</p>
 
-    <div class="craving-diagram">
-      <div class="diagram-step">
-        <div class="diagram-icon">📈</div>
-        <div class="diagram-label">Spike</div>
-      </div>
-      <div class="diagram-arrow">→</div>
-      <div class="diagram-step">
-        <div class="diagram-icon">📉</div>
-        <div class="diagram-label">Crash</div>
-      </div>
-      <div class="diagram-arrow">→</div>
-      <div class="diagram-step">
-        <div class="diagram-icon">🍫</div>
-        <div class="diagram-label">Crave</div>
-      </div>
-      <div class="diagram-arrow">→</div>
-      <div class="diagram-step">
-        <div class="diagram-icon">🔄</div>
-        <div class="diagram-label">Repeat</div>
-      </div>
+    <div class="craving-flow">
+      <div class="flow-word">SPIKE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-word">CRASH</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-word">CRAVE</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-word">REPEAT</div>
     </div>
-
-    <p class="craving-closing">{{ section.settings.closing_line }}</p>
   </div>
 </section>
 
 <style>
   .craving-explanation {
     padding: 100px 5%;
-    background: #FFF9F3;
+    background: linear-gradient(135deg, #EDE3D5 0%, #E8DCC9 100%);
   }
 
   .craving-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     text-align: center;
   }
 
   .craving-title {
     font-family: 'Playfair Display', serif;
-    font-size: 42px;
+    font-size: 52px;
     font-weight: 700;
     color: #2C2416;
-    line-height: 1.3;
-    margin: 0 0 32px 0;
-    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin: 0 0 28px 0;
+    letter-spacing: -1px;
   }
 
-  .craving-explanation {
-    font-size: 18px;
+  .craving-subtext {
+    font-size: 19px;
     color: #2C2416;
-    line-height: 1.8;
-    margin-bottom: 50px;
+    line-height: 1.6;
+    margin-bottom: 70px;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
-  .craving-diagram {
+  .craving-flow {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    margin: 60px 0;
+    gap: 32px;
+    margin: 70px 0 0 0;
     flex-wrap: wrap;
   }
 
-  .diagram-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+  .flow-word {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: #2C2416;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    text-shadow: 0 2px 12px rgba(44, 36, 22, 0.08);
   }
 
-  .diagram-icon {
-    font-size: 48px;
-    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
-  }
-
-  .diagram-label {
-    font-size: 14px;
-    font-weight: 700;
-    color: #6B5D4F;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .diagram-arrow {
-    font-size: 24px;
-    color: #D4A574;
-    font-weight: 700;
-  }
-
-  .craving-closing {
-    font-size: 16px;
-    color: #2D5F3F;
-    font-weight: 600;
-    font-style: italic;
-    margin-top: 40px;
+  .flow-arrow {
+    font-size: 42px;
+    color: rgba(44, 36, 22, 0.3);
+    font-weight: 300;
   }
 
   @media (max-width: 768px) {
     .craving-explanation {
-      padding: 60px 5%;
+      padding: 70px 5%;
     }
 
     .craving-title {
-      font-size: 28px;
+      font-size: 34px;
+      letter-spacing: -0.5px;
     }
 
-    .craving-explanation {
-      font-size: 16px;
+    .craving-subtext {
+      font-size: 17px;
+      margin-bottom: 50px;
     }
 
-    .diagram-icon {
+    .craving-flow {
+      gap: 20px;
+      margin: 50px 0 0 0;
+    }
+
+    .flow-word {
       font-size: 36px;
+      letter-spacing: 1px;
     }
 
-    .diagram-arrow {
-      display: none;
-    }
-
-    .craving-diagram {
-      gap: 30px;
+    .flow-arrow {
+      font-size: 28px;
     }
   }
 </style>
@@ -141,15 +116,9 @@
     },
     {
       "type": "textarea",
-      "id": "explanation",
-      "label": "Explanation Text",
-      "default": "Between 3–5 PM, your blood sugar dips. Your brain asks for something sweet and rich. Most snacks spike you again. We designed this not to."
-    },
-    {
-      "type": "text",
-      "id": "closing_line",
-      "label": "Closing Line",
-      "default": "That's not a personal failure. That's bad food design."
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Most snacks spike you again. We designed this to stop the loop."
     }
   ],
   "presets": [

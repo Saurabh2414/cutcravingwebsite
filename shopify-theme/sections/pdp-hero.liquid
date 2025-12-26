@@ -45,17 +45,33 @@
 
 <style>
   .pdp-hero {
-    padding: 80px 5% 60px;
-    background: #FFF9F3;  /* Light cream like reference */
+    padding: 100px 5% 80px;
+    background: #FFF9F3;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Premium contrast band behind product */
+  .pdp-hero::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(135deg, #F5EDE4 0%, #EDE3D5 100%);
+    z-index: 0;
   }
 
   .pdp-hero-container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 60px;
+    gap: 80px;
     align-items: center;
+    position: relative;
+    z-index: 1;
   }
 
   .pdp-hero-eyebrow {
@@ -168,9 +184,15 @@
 
   .pdp-product-image {
     width: 100%;
-    max-width: 450px;
+    max-width: 520px;  /* Increased by ~15% */
     height: auto;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
+    filter: drop-shadow(0 16px 40px rgba(44, 36, 22, 0.15))
+            drop-shadow(0 4px 12px rgba(44, 36, 22, 0.08));
+    transition: transform 0.4s ease;
+  }
+
+  .pdp-product-image:hover {
+    transform: translateY(-8px);
   }
 
   @media (max-width: 900px) {
@@ -245,7 +267,7 @@
       "type": "textarea",
       "id": "subheadline",
       "label": "Subheadline",
-      "default": "Designed for sweet cravings — not sugar crashes."
+      "default": "For sweet cravings that don't betray you later."
     },
     {
       "type": "text",

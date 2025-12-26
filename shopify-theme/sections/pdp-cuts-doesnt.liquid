@@ -1,49 +1,82 @@
 <section class="cuts-doesnt-section">
-  <div class="cuts-container">
-    <div class="cuts-card cuts-positive">
-      <h3 class="cuts-card-title">{{ section.settings.cuts_title }}</h3>
-      <ul class="cuts-list">
-        {% for block in section.blocks %}
-          {% if block.type == 'cuts_item' %}
-            <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
+  <div class="cuts-outer-container">
+    <h2 class="cuts-section-title">{{ section.settings.section_title }}</h2>
+    <p class="cuts-section-subtitle">{{ section.settings.section_subtitle }}</p>
 
-    <div class="cuts-card cuts-negative">
-      <h3 class="cuts-card-title">{{ section.settings.doesnt_title }}</h3>
-      <ul class="cuts-list">
-        {% for block in section.blocks %}
-          {% if block.type == 'doesnt_item' %}
-            <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
-          {% endif %}
-        {% endfor %}
-      </ul>
+    <div class="cuts-container">
+      <div class="cuts-card cuts-positive">
+        <h3 class="cuts-card-title">{{ section.settings.cuts_title }}</h3>
+        <ul class="cuts-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'cuts_item' %}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="cuts-card cuts-negative">
+        <h3 class="cuts-card-title">{{ section.settings.doesnt_title }}</h3>
+        <ul class="cuts-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'doesnt_item' %}
+              <li {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .cuts-doesnt-section {
-    padding: 80px 5%;
-    background: #FFF9F3;  /* Cream-light background */
+    padding: 100px 5%;
+    background: #FFF9F3;
+  }
+
+  .cuts-outer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cuts-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.3;
+    margin: 0 0 16px 0;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .cuts-section-subtitle {
+    font-size: 18px;
+    color: #6B5D4F;
+    text-align: center;
+    margin-bottom: 60px;
+    line-height: 1.6;
   }
 
   .cuts-container {
-    max-width: 1000px;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 32px;
   }
 
   .cuts-card {
     background: white;
-    padding: 40px 32px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    border-top: 4px solid transparent;
+    padding: 44px 36px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border-top: 5px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .cuts-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
   }
 
   .cuts-positive {
@@ -56,10 +89,10 @@
 
   .cuts-card-title {
     font-family: 'Playfair Display', serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
     color: #2C2416;
-    margin: 0 0 24px 0;
+    margin: 0 0 28px 0;
   }
 
   .cuts-list {
@@ -71,10 +104,14 @@
   .cuts-list li {
     font-size: 16px;
     color: #2C2416;
-    margin-bottom: 14px;
-    padding-left: 28px;
+    margin-bottom: 16px;
+    padding-left: 36px;
     position: relative;
     line-height: 1.6;
+  }
+
+  .cuts-list li:last-child {
+    margin-bottom: 0;
   }
 
   .cuts-positive .cuts-list li::before {
@@ -82,8 +119,9 @@
     position: absolute;
     left: 0;
     color: #2D5F3F;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1;
   }
 
   .cuts-negative .cuts-list li::before {
@@ -91,13 +129,23 @@
     position: absolute;
     left: 0;
     color: #6B5D4F;
-    font-weight: 700;
-    font-size: 20px;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1;
   }
 
   @media (max-width: 768px) {
     .cuts-doesnt-section {
-      padding: 60px 5%;
+      padding: 70px 5%;
+    }
+
+    .cuts-section-title {
+      font-size: 30px;
+    }
+
+    .cuts-section-subtitle {
+      font-size: 16px;
+      margin-bottom: 40px;
     }
 
     .cuts-container {
@@ -106,7 +154,15 @@
     }
 
     .cuts-card {
-      padding: 32px 24px;
+      padding: 36px 28px;
+    }
+
+    .cuts-positive .cuts-list li::before {
+      font-size: 24px;
+    }
+
+    .cuts-negative .cuts-list li::before {
+      font-size: 28px;
     }
   }
 </style>
@@ -115,6 +171,18 @@
 {
   "name": "PDP Cuts / Doesn't",
   "settings": [
+    {
+      "type": "textarea",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "What this does (and doesn't)"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Be clear about what this solves — and what it doesn't."
+    },
     {
       "type": "text",
       "id": "cuts_title",
@@ -165,19 +233,13 @@
         {
           "type": "cuts_item",
           "settings": {
-            "text": "3–4 PM energy slumps"
+            "text": "3–5 PM energy slumps"
           }
         },
         {
           "type": "cuts_item",
           "settings": {
-            "text": "Dessert binges"
-          }
-        },
-        {
-          "type": "cuts_item",
-          "settings": {
-            "text": "Texture cravings for richness"
+            "text": "Post-meal dessert urges"
           }
         },
         {

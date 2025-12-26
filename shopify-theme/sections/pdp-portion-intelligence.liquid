@@ -1,6 +1,7 @@
 <section class="portion-intelligence">
   <div class="portion-container">
     <h2 class="portion-title">{{ section.settings.title }}</h2>
+    <p class="portion-intro">{{ section.settings.intro_line }}</p>
 
     <div class="portion-slider-wrapper">
       <div class="portion-display">
@@ -22,7 +23,9 @@
       <input type="range" min="1" max="3" value="2" class="portion-slider" id="portionSlider">
     </div>
 
-    <p class="portion-insight">{{ section.settings.insight_line1 }}<br>{{ section.settings.insight_line2 }}</p>
+    {% if section.settings.show_insight %}
+      <p class="portion-insight">{{ section.settings.insight_text }}</p>
+    {% endif %}
 
     <button class="portion-reset" onclick="resetSlider()">
       <span class="reset-icon">↻</span> {{ section.settings.reset_text }}
@@ -66,69 +69,84 @@
   }
 
   .portion-container {
-    max-width: 750px;
+    max-width: 800px;
     margin: 0 auto;
     text-align: center;
   }
 
   .portion-title {
     font-family: 'Playfair Display', serif;
-    font-size: 36px;
+    font-size: 42px;
     font-weight: 700;
     color: #2C2416;
     line-height: 1.3;
-    margin: 0 0 50px 0;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.5px;
+  }
+
+  .portion-intro {
+    font-size: 19px;
+    color: #6B5D4F;
+    margin-bottom: 50px;
+    line-height: 1.5;
+    font-style: italic;
   }
 
   .portion-slider-wrapper {
-    background: #F5EDE4;
-    padding: 50px 60px 40px;
+    background: white;
+    padding: 60px 70px 50px;
     border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
     margin-bottom: 32px;
   }
 
   .portion-display {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 
   .portion-amount {
-    font-size: 52px;
-    font-weight: 800;
+    font-size: 82px;
+    font-weight: 900;
     color: #2D5F3F;
     margin-bottom: 0;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 8px rgba(45, 95, 63, 0.1);
   }
 
   .portion-labels {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    gap: 12px;
   }
 
   .portion-label-item {
     flex: 1;
     text-align: center;
-    padding: 8px;
+    padding: 10px;
     font-size: 15px;
     color: #6B5D4F;
     font-weight: 600;
     transition: all 0.3s;
+    border-radius: 8px;
   }
 
   .portion-label-item.active {
-    color: #2C2416;
-    font-weight: 700;
+    color: #2D5F3F;
+    font-weight: 800;
+    background: rgba(45, 95, 63, 0.05);
   }
 
   .portion-slider {
     width: 100%;
-    height: 10px;
+    height: 12px;
     background: linear-gradient(to right,
       #2D5F3F 0%,
       #2D5F3F 50%,
       #E5DDD4 50%,
       #E5DDD4 100%
     );
-    border-radius: 10px;
+    border-radius: 12px;
     outline: none;
     cursor: pointer;
     -webkit-appearance: none;
@@ -137,29 +155,39 @@
   .portion-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: #2D5F3F;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(45, 95, 63, 0.4);
-    border: 4px solid white;
+    box-shadow: 0 4px 16px rgba(45, 95, 63, 0.5);
+    border: 5px solid white;
+    transition: all 0.2s;
+  }
+
+  .portion-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
   }
 
   .portion-slider::-moz-range-thumb {
-    width: 34px;
-    height: 34px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: #2D5F3F;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(45, 95, 63, 0.4);
-    border: 4px solid white;
+    box-shadow: 0 4px 16px rgba(45, 95, 63, 0.5);
+    border: 5px solid white;
+    transition: all 0.2s;
+  }
+
+  .portion-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
   }
 
   .portion-insight {
-    font-size: 17px;
-    color: #2C2416;
-    line-height: 1.8;
+    font-size: 16px;
+    color: #6B5D4F;
+    line-height: 1.6;
     margin-bottom: 24px;
   }
 
@@ -187,23 +215,39 @@
 
   @media (max-width: 768px) {
     .portion-intelligence {
-      padding: 60px 5%;
+      padding: 70px 5%;
     }
 
     .portion-title {
-      font-size: 28px;
+      font-size: 32px;
+    }
+
+    .portion-intro {
+      font-size: 17px;
+      margin-bottom: 40px;
     }
 
     .portion-slider-wrapper {
-      padding: 40px 32px 32px;
+      padding: 44px 32px 40px;
     }
 
     .portion-amount {
-      font-size: 40px;
+      font-size: 56px;
     }
 
     .portion-label-item {
       font-size: 13px;
+      padding: 8px 4px;
+    }
+
+    .portion-slider::-webkit-slider-thumb {
+      width: 36px;
+      height: 36px;
+    }
+
+    .portion-slider::-moz-range-thumb {
+      width: 36px;
+      height: 36px;
     }
   }
 </style>
@@ -220,15 +264,21 @@
     },
     {
       "type": "text",
-      "id": "insight_line1",
-      "label": "Insight Line 1",
-      "default": "Most people don't need more food."
+      "id": "intro_line",
+      "label": "Intro Line",
+      "default": "Satisfaction is not unlimited. It's precise."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_insight",
+      "label": "Show Insight Text",
+      "default": false
     },
     {
       "type": "text",
-      "id": "insight_line2",
-      "label": "Insight Line 2",
-      "default": "They need the right dose."
+      "id": "insight_text",
+      "label": "Insight Text",
+      "default": "Most people don't need more food. They need the right dose."
     },
     {
       "type": "text",
