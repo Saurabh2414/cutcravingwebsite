@@ -432,55 +432,137 @@
     }
   }
 
-  /* Benefit Tiles Grid */
+  /* Benefit Tiles Grid - PREMIUM DESIGN */
   .benefit-tiles-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    max-width: 1100px;
+    gap: 32px;
+    max-width: 1140px;
     margin: 0 auto;
+    padding: 20px 0;
   }
 
   .benefit-tile {
-    background: white;
-    padding: 40px 32px;
-    border-radius: 16px;
+    background: linear-gradient(135deg, #FFFBF7 0%, #FFF9F3 100%);
+    padding: 48px 36px;
+    border-radius: 20px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    border-top: 4px solid #2D5F3F;
+    box-shadow:
+      0 2px 8px rgba(45, 95, 63, 0.04),
+      0 8px 24px rgba(45, 95, 63, 0.06),
+      0 16px 48px rgba(0, 0, 0, 0.04);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    border-left: 5px solid #2D5F3F;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Premium subtle background pattern */
+  .benefit-tile::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(45, 95, 63, 0.03) 0%, transparent 70%);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .benefit-tile:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+      0 4px 16px rgba(45, 95, 63, 0.08),
+      0 16px 40px rgba(45, 95, 63, 0.12),
+      0 24px 64px rgba(0, 0, 0, 0.08);
+    border-left-color: #3D7F5F;
   }
 
+  .benefit-tile:hover::before {
+    top: -20%;
+    right: -20%;
+    transform: scale(1.3);
+  }
+
+  /* Circular icon badge - PREMIUM TREATMENT */
   .benefit-icon {
-    font-size: 56px;
-    margin-bottom: 24px;
-    display: inline-block;
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    background: linear-gradient(135deg, #2D5F3F 0%, #3D7F5F 100%);
+    border-radius: 50%;
+    box-shadow:
+      0 4px 16px rgba(45, 95, 63, 0.2),
+      inset 0 2px 8px rgba(255, 255, 255, 0.2);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Glow effect behind icon */
+  .benefit-icon::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    background: radial-gradient(circle, rgba(45, 95, 63, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .benefit-tile:hover .benefit-icon {
-    transform: scale(1.1);
+    transform: scale(1.12) rotate(5deg);
+    box-shadow:
+      0 8px 24px rgba(45, 95, 63, 0.3),
+      inset 0 2px 12px rgba(255, 255, 255, 0.3);
   }
 
+  .benefit-tile:hover .benefit-icon::before {
+    opacity: 1;
+  }
+
+  /* Premium typography */
   .benefit-title {
     font-family: 'Playfair Display', serif;
-    font-size: 22px;
+    font-size: 26px;
     font-weight: 700;
     color: #2C2416;
-    margin: 0 0 12px 0;
+    margin: 0 0 16px 0;
     line-height: 1.3;
+    letter-spacing: -0.02em;
   }
 
   .benefit-description {
-    font-size: 15px;
-    color: #6B5D4F;
-    line-height: 1.7;
+    font-size: 16px;
+    color: #5A4D3F;
+    line-height: 1.75;
     margin: 0;
+    font-weight: 400;
+  }
+
+  /* Staggered entrance animations */
+  .benefit-tile.animate-stagger {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: benefitReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .benefit-tile.delay-1 { animation-delay: 2.3s; }
+  .benefit-tile.delay-2 { animation-delay: 2.45s; }
+  .benefit-tile.delay-3 { animation-delay: 2.6s; }
+  .benefit-tile.delay-4 { animation-delay: 2.75s; }
+  .benefit-tile.delay-5 { animation-delay: 2.9s; }
+  .benefit-tile.delay-6 { animation-delay: 3.05s; }
+
+  @keyframes benefitReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (max-width: 768px) {
@@ -542,24 +624,30 @@
 
     .benefit-tiles-grid {
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 28px;
+      padding: 10px 0;
     }
 
     .benefit-tile {
-      padding: 32px 24px;
+      padding: 40px 28px;
+      border-radius: 18px;
     }
 
     .benefit-icon {
-      font-size: 48px;
-      margin-bottom: 20px;
+      width: 76px;
+      height: 76px;
+      font-size: 38px;
+      margin-bottom: 24px;
     }
 
     .benefit-title {
-      font-size: 20px;
+      font-size: 23px;
+      margin-bottom: 14px;
     }
 
     .benefit-description {
-      font-size: 14px;
+      font-size: 15px;
+      line-height: 1.65;
     }
   }
 
@@ -604,11 +692,21 @@
       transition: none;
     }
 
+    .benefit-tile.animate-stagger {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
     .benefit-tile:hover {
       transform: none;
     }
 
     .benefit-icon {
+      transition: none;
+    }
+
+    .benefit-icon::before {
       transition: none;
     }
 
