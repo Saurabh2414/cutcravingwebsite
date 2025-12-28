@@ -50,6 +50,7 @@
     <div class="cuts-container">
       <div class="cuts-card cuts-positive animate-stagger delay-1">
         <h3 class="cuts-card-title">{{ section.settings.cuts_title }}</h3>
+        <p class="cuts-card-description">{{ section.settings.cuts_description }}</p>
         <ul class="cuts-list">
           {% for block in section.blocks %}
             {% if block.type == 'cuts_item' %}
@@ -61,6 +62,7 @@
 
       <div class="cuts-card cuts-negative animate-stagger delay-2">
         <h3 class="cuts-card-title">{{ section.settings.doesnt_title }}</h3>
+        <p class="cuts-card-description">{{ section.settings.doesnt_description }}</p>
         <ul class="cuts-list">
           {% for block in section.blocks %}
             {% if block.type == 'doesnt_item' %}
@@ -434,6 +436,13 @@
     font-size: 26px;
     font-weight: 700;
     color: #2C2416;
+    margin: 0 0 16px 0;
+  }
+
+  .cuts-card-description {
+    font-size: 15px;
+    color: #6B5D4F;
+    line-height: 1.7;
     margin: 0 0 28px 0;
   }
 
@@ -644,25 +653,37 @@
       "type": "textarea",
       "id": "section_title",
       "label": "Section Title",
-      "default": "Your Craving Intelligence Solution"
+      "default": "What you get instead"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "section_subtitle",
       "label": "Section Subtitle",
-      "default": "Understanding the psychology behind your cravings — and what this product specifically targets."
+      "default": "When you remove the craving triggers, your body responds differently."
     },
     {
       "type": "text",
       "id": "cuts_title",
-      "label": "What It Cuts - Title",
-      "default": "Scientifically targets these cravings"
+      "label": "Left Card - Title",
+      "default": "What changes"
+    },
+    {
+      "type": "textarea",
+      "id": "cuts_description",
+      "label": "Left Card - Description",
+      "default": "Without sugar spikes, palm oil inflammation, and excess salt—your body finally gets what it actually needs."
     },
     {
       "type": "text",
       "id": "doesnt_title",
-      "label": "What It Doesn't - Title",
-      "default": "Not designed for these situations"
+      "label": "Right Card - Title",
+      "default": "What stays the same"
+    },
+    {
+      "type": "textarea",
+      "id": "doesnt_description",
+      "label": "Right Card - Description",
+      "default": "This isn't magic. It won't solve every craving or fix habits unrelated to ingredient manipulation."
     }
   ],
   "blocks": [
@@ -696,43 +717,43 @@
         {
           "type": "cuts_item",
           "settings": {
-            "text": "Mid-afternoon energy crashes that trigger chocolate cravings"
+            "text": "No sugar crash—protein keeps energy stable for 3-4 hours"
           }
         },
         {
           "type": "cuts_item",
           "settings": {
-            "text": "Post-meal dessert urges driven by incomplete satiation"
+            "text": "Satiety signals actually work—you feel full, not tricked"
           }
         },
         {
           "type": "cuts_item",
           "settings": {
-            "text": "Blood sugar spikes that create rebound sweet cravings"
+            "text": "Cravings stop cycling—no rebound hunger 90 minutes later"
           }
         },
         {
           "type": "cuts_item",
           "settings": {
-            "text": "Protein deficiency masquerading as chocolate desires"
+            "text": "Real nutrition—your body gets what it's actually asking for"
           }
         },
         {
           "type": "doesnt_item",
           "settings": {
-            "text": "Emotional eating triggered by stress or anxiety"
+            "text": "Emotional eating—this targets physiology, not psychology"
           }
         },
         {
           "type": "doesnt_item",
           "settings": {
-            "text": "Habitual late-night snacking patterns"
+            "text": "Habitual snacking—you still need to break the pattern"
           }
         },
         {
           "type": "doesnt_item",
           "settings": {
-            "text": "Dehydration mistaken for hunger signals"
+            "text": "Dehydration hunger—drink water first, always"
           }
         }
       ]
