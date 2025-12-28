@@ -7,15 +7,21 @@
       <div class="sabotage-ingredients-horizontal">
         <div class="sabotage-item" data-delay="0">
           <span class="ingredient-name">{{ section.settings.sabotage_1 | default: "Sugar" }}</span>
-          <div class="strikethrough-bold"></div>
+          <div class="danger-glow"></div>
+          <div class="strikethrough-bold strike-1"></div>
+          <div class="strikethrough-bold strike-2"></div>
         </div>
         <div class="sabotage-item" data-delay="300">
           <span class="ingredient-name">{{ section.settings.sabotage_2 | default: "Palm Oil" }}</span>
-          <div class="strikethrough-bold"></div>
+          <div class="danger-glow"></div>
+          <div class="strikethrough-bold strike-1"></div>
+          <div class="strikethrough-bold strike-2"></div>
         </div>
         <div class="sabotage-item" data-delay="600">
           <span class="ingredient-name">{{ section.settings.sabotage_3 | default: "Salt" }}</span>
-          <div class="strikethrough-bold"></div>
+          <div class="danger-glow"></div>
+          <div class="strikethrough-bold strike-1"></div>
+          <div class="strikethrough-bold strike-2"></div>
         </div>
       </div>
 
@@ -135,9 +141,24 @@
     display: block;
     opacity: 0.3;
     text-transform: uppercase;
+    position: relative;
+    z-index: 1;
   }
 
-  /* BOLD Strikethrough - Much More Visible */
+  /* DANGER GLOW - Red highlight appears first */
+  .danger-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 120%;
+    background: radial-gradient(ellipse, rgba(184, 56, 61, 0.15) 0%, transparent 70%);
+    opacity: 0;
+    z-index: 0;
+  }
+
+  /* DOUBLE STRIKETHROUGH - Hand-drawn aggressive crossing out */
   .strikethrough-bold {
     position: absolute;
     top: 50%;
@@ -149,6 +170,14 @@
     transform-origin: left;
     box-shadow: 0 2px 8px rgba(184, 56, 61, 0.4);
     border-radius: 4px;
+    z-index: 2;
+  }
+
+  /* Second strike at slight angle (aggressive double-cross) */
+  .strike-2 {
+    transform: translateY(-50%) rotate(-2deg) scaleX(0);
+    height: 7px;
+    opacity: 0.85;
   }
 
   .sabotage-provocation {
@@ -217,16 +246,57 @@
     animation-delay: 0.9s;
   }
 
-  .sabotage-item[data-delay="0"] .strikethrough-bold {
-    animation: strikethroughSlash 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+  /* DRAMATIC MULTI-LAYER ANIMATION SEQUENCE */
+
+  /* Item 1: Sugar */
+  .sabotage-item[data-delay="0"] .danger-glow {
+    animation: dangerPulse 0.6s ease-out 0.4s forwards;
   }
 
-  .sabotage-item[data-delay="300"] .strikethrough-bold {
-    animation: strikethroughSlash 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+  .sabotage-item[data-delay="0"] .ingredient-name {
+    animation: wordShake 0.3s ease-out 0.45s;
   }
 
-  .sabotage-item[data-delay="600"] .strikethrough-bold {
-    animation: strikethroughSlash 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+  .sabotage-item[data-delay="0"] .strike-1 {
+    animation: strikethroughSlash 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+  }
+
+  .sabotage-item[data-delay="0"] .strike-2 {
+    animation: strikethroughSlash 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards;
+  }
+
+  /* Item 2: Palm Oil */
+  .sabotage-item[data-delay="300"] .danger-glow {
+    animation: dangerPulse 0.6s ease-out 0.7s forwards;
+  }
+
+  .sabotage-item[data-delay="300"] .ingredient-name {
+    animation: wordShake 0.3s ease-out 0.75s;
+  }
+
+  .sabotage-item[data-delay="300"] .strike-1 {
+    animation: strikethroughSlash 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards;
+  }
+
+  .sabotage-item[data-delay="300"] .strike-2 {
+    animation: strikethroughSlash 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.05s forwards;
+  }
+
+  /* Item 3: Salt */
+  .sabotage-item[data-delay="600"] .danger-glow {
+    animation: dangerPulse 0.6s ease-out 1.0s forwards;
+  }
+
+  .sabotage-item[data-delay="600"] .ingredient-name {
+    animation: wordShake 0.3s ease-out 1.05s;
+  }
+
+  .sabotage-item[data-delay="600"] .strike-1 {
+    animation: strikethroughSlash 0.5s cubic-bezier(0.22, 1, 0.36, 1) 1.15s forwards;
+  }
+
+  .sabotage-item[data-delay="600"] .strike-2 {
+    animation: strikethroughSlash 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.35s forwards;
   }
 
   .sabotage-provocation {
@@ -248,9 +318,49 @@
     }
   }
 
+  /* Danger glow pulses in and stays */
+  @keyframes dangerPulse {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  /* Word shakes when being attacked */
+  @keyframes wordShake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-3px);
+    }
+    75% {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Strikethrough slashes across */
   @keyframes strikethroughSlash {
     to {
       transform: translateY(-50%) scaleX(1);
+    }
+  }
+
+  /* Second strike keeps its rotation */
+  .strike-2 {
+    animation-name: strikethroughSlashAngled !important;
+  }
+
+  @keyframes strikethroughSlashAngled {
+    to {
+      transform: translateY(-50%) rotate(-2deg) scaleX(1);
     }
   }
 
@@ -406,9 +516,22 @@
       transform: none;
     }
 
+    .danger-glow {
+      animation: none;
+      opacity: 0.6;
+    }
+
+    .ingredient-name {
+      animation: none;
+    }
+
     .strikethrough-bold {
       animation: none;
       transform: translateY(-50%) scaleX(1);
+    }
+
+    .strike-2 {
+      transform: translateY(-50%) rotate(-2deg) scaleX(1);
     }
 
     .bridge-arrow {
