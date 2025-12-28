@@ -1,10 +1,39 @@
+{% render 'pdp-animations' %}
+
 <section class="cuts-doesnt-section">
   <div class="cuts-outer-container">
-    <h2 class="cuts-section-title">{{ section.settings.section_title }}</h2>
-    <p class="cuts-section-subtitle">{{ section.settings.section_subtitle }}</p>
+    <!-- INGREDIENT SABOTAGE REVEAL - Visual Interrupt -->
+    <div class="ingredient-sabotage animate-fade-up">
+      <div class="sabotage-ingredients">
+        <div class="sabotage-item animate-stagger delay-1">
+          <span class="ingredient-name">{{ section.settings.sabotage_1 | default: "Sugar" }}</span>
+          <span class="strikethrough"></span>
+        </div>
+        <div class="sabotage-item animate-stagger delay-2">
+          <span class="ingredient-name">{{ section.settings.sabotage_2 | default: "Palm Oil" }}</span>
+          <span class="strikethrough"></span>
+        </div>
+        <div class="sabotage-item animate-stagger delay-3">
+          <span class="ingredient-name">{{ section.settings.sabotage_3 | default: "Salt" }}</span>
+          <span class="strikethrough"></span>
+        </div>
+      </div>
+
+      <p class="sabotage-provocation animate-fade-up delay-4">
+        {{ section.settings.sabotage_provocation | default: "These are why most peanut butters never satisfy." }}
+      </p>
+
+      <h2 class="sabotage-question animate-fade-up delay-5">
+        {{ section.settings.sabotage_question | default: "What happens when you remove them?" }}
+      </h2>
+    </div>
+
+    <!-- Original Section (Now Acts as Answer) -->
+    <h2 class="cuts-section-title animate-fade-up delay-6">{{ section.settings.section_title }}</h2>
+    <p class="cuts-section-subtitle animate-fade-up delay-7">{{ section.settings.section_subtitle }}</p>
 
     <div class="cuts-container">
-      <div class="cuts-card cuts-positive">
+      <div class="cuts-card cuts-positive animate-stagger delay-1">
         <h3 class="cuts-card-title">{{ section.settings.cuts_title }}</h3>
         <ul class="cuts-list">
           {% for block in section.blocks %}
@@ -15,7 +44,7 @@
         </ul>
       </div>
 
-      <div class="cuts-card cuts-negative">
+      <div class="cuts-card cuts-negative animate-stagger delay-2">
         <h3 class="cuts-card-title">{{ section.settings.doesnt_title }}</h3>
         <ul class="cuts-list">
           {% for block in section.blocks %}
@@ -57,6 +86,82 @@
     text-align: center;
     margin-bottom: 60px;
     line-height: 1.6;
+  }
+
+  /* INGREDIENT SABOTAGE - Visual Interrupt */
+  .ingredient-sabotage {
+    text-align: center;
+    margin-bottom: 80px;
+    padding: 60px 5%;
+    background: linear-gradient(135deg, #FFF4E8 0%, #FFE8E8 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sabotage-ingredients {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .sabotage-item {
+    position: relative;
+    display: inline-block;
+  }
+
+  .ingredient-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: #6B5D4F;
+    line-height: 1;
+    letter-spacing: -1px;
+    display: inline-block;
+    opacity: 0.4;
+  }
+
+  .strikethrough {
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    right: -10%;
+    height: 4px;
+    background: #B8383D;
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Trigger strikethrough animation when in view */
+  .sabotage-item.in-view .strikethrough {
+    transform: translateY(-50%) scaleX(1);
+  }
+
+  .sabotage-provocation {
+    font-size: 22px;
+    color: #2C2416;
+    font-weight: 600;
+    margin: 0 0 32px 0;
+    line-height: 1.5;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sabotage-question {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #2C2416;
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -1px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .cuts-container {
@@ -139,6 +244,28 @@
       padding: 70px 5%;
     }
 
+    .ingredient-sabotage {
+      margin-bottom: 60px;
+      padding: 40px 5%;
+    }
+
+    .ingredient-name {
+      font-size: 36px;
+    }
+
+    .strikethrough {
+      height: 3px;
+    }
+
+    .sabotage-provocation {
+      font-size: 18px;
+      margin-bottom: 24px;
+    }
+
+    .sabotage-question {
+      font-size: 32px;
+    }
+
     .cuts-section-title {
       font-size: 30px;
     }
@@ -165,12 +292,69 @@
       font-size: 28px;
     }
   }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .strikethrough {
+      transition: none;
+    }
+
+    .sabotage-item.in-view .strikethrough {
+      transform: translateY(-50%) scaleX(1);
+    }
+
+    .cuts-card {
+      transition: none;
+    }
+
+    .cuts-card:hover {
+      transform: none;
+    }
+  }
 </style>
 
 {% schema %}
 {
   "name": "PDP Cuts / Doesn't",
   "settings": [
+    {
+      "type": "header",
+      "content": "Ingredient Sabotage (Visual Interrupt)"
+    },
+    {
+      "type": "text",
+      "id": "sabotage_1",
+      "label": "Sabotage Ingredient 1",
+      "default": "Sugar"
+    },
+    {
+      "type": "text",
+      "id": "sabotage_2",
+      "label": "Sabotage Ingredient 2",
+      "default": "Palm Oil"
+    },
+    {
+      "type": "text",
+      "id": "sabotage_3",
+      "label": "Sabotage Ingredient 3",
+      "default": "Salt"
+    },
+    {
+      "type": "textarea",
+      "id": "sabotage_provocation",
+      "label": "Provocation Line",
+      "default": "These are why most peanut butters never satisfy."
+    },
+    {
+      "type": "textarea",
+      "id": "sabotage_question",
+      "label": "Bridge Question",
+      "default": "What happens when you remove them?"
+    },
+    {
+      "type": "header",
+      "content": "Does / Doesn't Cards"
+    },
     {
       "type": "textarea",
       "id": "section_title",
