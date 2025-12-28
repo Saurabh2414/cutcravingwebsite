@@ -48,15 +48,58 @@
       <p class="cuts-section-subtitle animate-fade-up delay-7">{{ section.settings.section_subtitle }}</p>
 
       <div class="benefit-tiles-grid">
+        {% assign benefit_tiles_count = 0 %}
         {% for block in section.blocks %}
           {% if block.type == 'benefit_tile' %}
+            {% assign benefit_tiles_count = benefit_tiles_count | plus: 1 %}
             <div class="benefit-tile animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
               <div class="benefit-icon">{{ block.settings.icon }}</div>
               <h3 class="benefit-title">{{ block.settings.title }}</h3>
               <p class="benefit-description">{{ block.settings.description }}</p>
             </div>
+          {% elsif block.type == 'cuts_item' %}
+            {% assign benefit_tiles_count = benefit_tiles_count | plus: 1 %}
+            <div class="benefit-tile animate-stagger delay-{{ forloop.index }}" {{ block.shopify_attributes }}>
+              <div class="benefit-icon">✓</div>
+              <h3 class="benefit-title">Benefit</h3>
+              <p class="benefit-description">{{ block.settings.text }}</p>
+            </div>
           {% endif %}
         {% endfor %}
+
+        {% if benefit_tiles_count == 0 %}
+          <!-- Default tiles when no blocks configured -->
+          <div class="benefit-tile">
+            <div class="benefit-icon">⚡</div>
+            <h3 class="benefit-title">Stable energy</h3>
+            <p class="benefit-description">Protein keeps you full for 3-4 hours—no sugar crash</p>
+          </div>
+          <div class="benefit-tile">
+            <div class="benefit-icon">🎯</div>
+            <h3 class="benefit-title">Real satiety</h3>
+            <p class="benefit-description">Your body's fullness signals actually work—you feel satisfied, not tricked</p>
+          </div>
+          <div class="benefit-tile">
+            <div class="benefit-icon">🔄</div>
+            <h3 class="benefit-title">Cravings stop</h3>
+            <p class="benefit-description">No rebound hunger 90 minutes later—the cycle breaks</p>
+          </div>
+          <div class="benefit-tile">
+            <div class="benefit-icon">🧬</div>
+            <h3 class="benefit-title">Real nutrition</h3>
+            <p class="benefit-description">Your body gets what it's actually asking for, not empty calories</p>
+          </div>
+          <div class="benefit-tile">
+            <div class="benefit-icon">🧘</div>
+            <h3 class="benefit-title">Calm, not chaos</h3>
+            <p class="benefit-description">No inflammatory ingredients means your gut and brain stay balanced</p>
+          </div>
+          <div class="benefit-tile">
+            <div class="benefit-icon">💪</div>
+            <h3 class="benefit-title">Protein power</h3>
+            <p class="benefit-description">24g per serving—supports muscle, metabolism, and mood</p>
+          </div>
+        {% endif %}
       </div>
     </div> <!-- Close answer-section -->
   </div>
