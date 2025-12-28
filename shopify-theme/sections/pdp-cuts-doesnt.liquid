@@ -1,5 +1,3 @@
-{% render 'pdp-animations' %}
-
 <section class="cuts-doesnt-section">
   <div class="cuts-outer-container">
     <!-- INGREDIENT SABOTAGE REVEAL - Visual Interrupt -->
@@ -565,6 +563,23 @@
     }
   }
 
+  /* Fade-up animation for titles */
+  .animate-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .animate-fade-up.delay-6 { animation-delay: 2.2s; }
+  .animate-fade-up.delay-7 { animation-delay: 2.35s; }
+
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   @media (max-width: 768px) {
     .cuts-doesnt-section {
       padding: 70px 5%;
@@ -656,7 +671,8 @@
     .sabotage-item,
     .sabotage-provocation,
     .sabotage-question,
-    .visual-bridge {
+    .visual-bridge,
+    .animate-fade-up {
       animation: none;
       opacity: 1;
       transform: none;
