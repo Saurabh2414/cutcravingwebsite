@@ -33,17 +33,19 @@
         {{ section.settings.sabotage_question | default: "What happens when you remove them?" }}
       </h2>
 
-      <!-- Visual Bridge Arrow -->
+      <!-- Visual Bridge Arrow - Extended -->
       <div class="visual-bridge">
-        <svg class="bridge-arrow" width="60" height="80" viewBox="0 0 60 80" fill="none">
-          <path d="M30 0 L30 60 M15 45 L30 60 L45 45" stroke="#2C2416" stroke-width="3" stroke-linecap="round"/>
+        <svg class="bridge-arrow" width="4" height="120" viewBox="0 0 4 120" fill="none">
+          <line x1="2" y1="0" x2="2" y2="100" stroke="#2C2416" stroke-width="3" stroke-dasharray="6 4"/>
+          <path d="M2 100 L2 115 M-8 105 L2 115 L12 105" stroke="#2C2416" stroke-width="3" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
     </div>
 
-    <!-- Original Section (Now Acts as Answer) -->
-    <h2 class="cuts-section-title animate-fade-up delay-6">{{ section.settings.section_title }}</h2>
-    <p class="cuts-section-subtitle animate-fade-up delay-7">{{ section.settings.section_subtitle }}</p>
+    <!-- Answer Section - Seamlessly Connected -->
+    <div class="answer-section">
+      <h2 class="cuts-section-title animate-fade-up delay-6">{{ section.settings.section_title }}</h2>
+      <p class="cuts-section-subtitle animate-fade-up delay-7">{{ section.settings.section_subtitle }}</p>
 
     <div class="cuts-container">
       <div class="cuts-card cuts-positive animate-stagger delay-1">
@@ -68,6 +70,7 @@
         </ul>
       </div>
     </div>
+    </div> <!-- Close answer-section -->
   </div>
 </section>
 
@@ -104,13 +107,21 @@
   /* INGREDIENT SABOTAGE - Visual Interrupt (AGGRESSIVE) */
   .ingredient-sabotage {
     text-align: center;
-    margin-bottom: 60px;
-    padding: 80px 5% 60px;
+    margin-bottom: 0;
+    padding: 80px 5% 80px;
     background: linear-gradient(135deg, #FFE8E8 0%, #FFD4D4 100%);
-    border-radius: 24px;
+    border-radius: 24px 24px 0 0;
     position: relative;
     overflow: visible;
     box-shadow: 0 12px 48px rgba(184, 56, 61, 0.15);
+  }
+
+  /* Answer Section - Seamless Connection */
+  .answer-section {
+    background: linear-gradient(180deg, rgba(255, 232, 232, 0.3) 0%, #FFF9F3 20%);
+    padding: 60px 0 0 0;
+    margin-top: -40px;
+    position: relative;
   }
 
   /* HORIZONTAL Layout - More Impact */
@@ -208,16 +219,42 @@
     transform: translateY(15px);
   }
 
-  /* Visual Bridge Arrow */
+  /* Visual Bridge Arrow - Extended Dashed Line */
   .visual-bridge {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
     opacity: 0;
     transform: translateY(-10px);
+    position: relative;
+    z-index: 10;
   }
 
   .bridge-arrow {
-    animation: arrowBounce 2s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  /* Animated dash drawing */
+  .bridge-arrow line {
+    stroke-dasharray: 6 4;
+    stroke-dashoffset: 100;
+    animation: dashDraw 1.5s ease-out 2.3s forwards;
+  }
+
+  .bridge-arrow path {
+    opacity: 0;
+    animation: arrowheadAppear 0.4s ease-out 3.5s forwards, arrowBounce 2s ease-in-out 3.9s infinite;
+  }
+
+  @keyframes dashDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes arrowheadAppear {
+    to {
+      opacity: 1;
+    }
   }
 
   @keyframes arrowBounce {
@@ -225,7 +262,7 @@
       transform: translateY(0);
     }
     50% {
-      transform: translateY(8px);
+      transform: translateY(6px);
     }
   }
 
@@ -445,8 +482,17 @@
     }
 
     .ingredient-sabotage {
-      margin-bottom: 50px;
-      padding: 50px 5% 40px;
+      margin-bottom: 0;
+      padding: 50px 5% 60px;
+    }
+
+    .answer-section {
+      padding: 40px 0 0 0;
+      margin-top: -30px;
+    }
+
+    .bridge-arrow {
+      height: 80px;
     }
 
     .sabotage-ingredients-horizontal {
@@ -534,8 +580,12 @@
       transform: translateY(-50%) rotate(-2deg) scaleX(1);
     }
 
-    .bridge-arrow {
+    .bridge-arrow,
+    .bridge-arrow line,
+    .bridge-arrow path {
       animation: none;
+      opacity: 1;
+      stroke-dashoffset: 0;
     }
 
     .cuts-card {
