@@ -465,8 +465,14 @@
 
   /* =======================================
      STICKY MOBILE CTA
+     CSS vars must be redeclared here because
+     this element lives outside #hero-craving.
      ======================================= */
   #sticky-cta-{{ section.id }} {
+    --hc-btn-start: {{ btn_color_start }};
+    --hc-btn-end: {{ btn_color_end }};
+    --hc-btn-text: {{ btn_text_color }};
+    --hc-sec-btn: {{ sec_btn_color }};
     position: fixed;
     bottom: 16px;
     left: 16px;
@@ -806,7 +812,6 @@
 {% schema %}
 {
   "name": "Hero - Craving Intelligence",
-  "tag": "section",
   "class": "section-hero-craving",
   "limit": 1,
   "settings": [
