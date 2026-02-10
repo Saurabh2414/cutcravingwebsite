@@ -1,0 +1,1063 @@
+{% comment %}
+  ============================================================
+  CutCraving Hero Section - Craving Intelligence
+  ============================================================
+  Version: 1.0
+  Author: CutCraving Dev Team
+  Description: Conversion-optimized, fully customizable hero
+               section for working professionals (25-45).
+
+  Features:
+  - Fully customizable via Shopify theme editor
+  - Separate desktop & mobile images
+  - Responsive mobile-first design
+  - Sticky mobile CTA on scroll
+  - Dynamic urgency counter
+  - WCAG AA accessible
+  - No external JS dependencies
+
+  Usage:
+  - Drop into your Shopify theme's sections/ folder
+  - Add to a template via theme editor or JSON template
+  ============================================================
+{% endcomment %}
+
+{%- comment -%} ---- Assign schema settings to local variables ---- {%- endcomment -%}
+{%- assign headline          = section.settings.headline -%}
+{%- assign subline           = section.settings.subline -%}
+{%- assign primary_cta_text  = section.settings.primary_cta_text -%}
+{%- assign primary_cta_link  = section.settings.primary_cta_link -%}
+{%- assign secondary_cta_text = section.settings.secondary_cta_text -%}
+{%- assign secondary_cta_link = section.settings.secondary_cta_link -%}
+{%- assign desktop_image     = section.settings.desktop_image -%}
+{%- assign mobile_image      = section.settings.mobile_image -%}
+{%- assign image_alt         = section.settings.image_alt -%}
+{%- assign trust_1_text      = section.settings.trust_1_text -%}
+{%- assign trust_2_text      = section.settings.trust_2_text -%}
+{%- assign trust_3_text      = section.settings.trust_3_text -%}
+{%- assign trust_1_icon      = section.settings.trust_1_icon -%}
+{%- assign trust_2_icon      = section.settings.trust_2_icon -%}
+{%- assign trust_3_icon      = section.settings.trust_3_icon -%}
+{%- assign urgency_mode      = section.settings.urgency_mode -%}
+{%- assign urgency_text      = section.settings.urgency_text -%}
+{%- assign urgency_count     = section.settings.urgency_count -%}
+{%- assign bg_color_center   = section.settings.bg_color_center -%}
+{%- assign bg_color_edge     = section.settings.bg_color_edge -%}
+{%- assign btn_color_start   = section.settings.btn_color_start -%}
+{%- assign btn_color_end     = section.settings.btn_color_end -%}
+{%- assign btn_text_color    = section.settings.btn_text_color -%}
+{%- assign sec_btn_color     = section.settings.sec_btn_color -%}
+{%- assign headline_color    = section.settings.headline_color -%}
+{%- assign subline_color     = section.settings.subline_color -%}
+{%- assign enable_sticky_cta = section.settings.enable_sticky_cta -%}
+{%- assign sticky_cta_text   = section.settings.sticky_cta_text -%}
+{%- assign sticky_cta_link   = section.settings.sticky_cta_link -%}
+
+{%- comment -%} ---- Dynamic urgency text ---- {%- endcomment -%}
+{%- case urgency_mode -%}
+  {%- when 'static' -%}
+    {%- assign urgency_display = urgency_text -%}
+  {%- when 'inventory' -%}
+    {%- if urgency_count > 0 -%}
+      {%- assign urgency_display = urgency_count | append: ' jars left — order before midnight' -%}
+    {%- else -%}
+      {%- assign urgency_display = urgency_text -%}
+    {%- endif -%}
+  {%- when 'time_based' -%}
+    {%- comment -%} JS will override this with time-based logic {%- endcomment -%}
+    {%- assign urgency_display = urgency_text -%}
+  {%- else -%}
+    {%- assign urgency_display = urgency_text -%}
+{%- endcase -%}
+
+{%- comment -%}
+  ============================================================
+  SECTION-SCOPED CSS
+  All styles are scoped to #hero-craving-{{ section.id }}
+  to avoid conflicts with any theme.
+  ============================================================
+{%- endcomment -%}
+{%- style -%}
+  /* ---- CSS Custom Properties (theming) ---- */
+  #hero-craving-{{ section.id }} {
+    --hc-bg-center: {{ bg_color_center }};
+    --hc-bg-edge: {{ bg_color_edge }};
+    --hc-btn-start: {{ btn_color_start }};
+    --hc-btn-end: {{ btn_color_end }};
+    --hc-btn-text: {{ btn_text_color }};
+    --hc-sec-btn: {{ sec_btn_color }};
+    --hc-headline: {{ headline_color }};
+    --hc-subline: {{ subline_color }};
+  }
+
+  /* ---- Base / Container ---- */
+  #hero-craving-{{ section.id }} {
+    background: radial-gradient(circle at 50% 45%, var(--hc-bg-center) 0%, var(--hc-bg-edge) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__container {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 24px;
+    gap: 16px;
+  }
+
+  /* ---- Image ---- */
+  #hero-craving-{{ section.id }} .hero-craving__image {
+    order: -1;
+    margin: -40px -24px 0 -24px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__image-desktop {
+    display: none;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__image-mobile {
+    display: block;
+    width: 100%;
+    height: 480px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ---- Headline ---- */
+  #hero-craving-{{ section.id }} .hero-craving__headline {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--hc-headline);
+    line-height: 1.13;
+    letter-spacing: -0.015em;
+    max-width: 100%;
+    margin-top: 16px;
+    text-align: left;
+  }
+
+  /* ---- Subline ---- */
+  #hero-craving-{{ section.id }} .hero-craving__subline {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--hc-subline);
+    line-height: 1.5;
+    max-width: 100%;
+    margin-top: 18px;
+  }
+
+  /* ---- CTA Container ---- */
+  #hero-craving-{{ section.id }} .hero-craving__ctas {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 100%;
+    margin-top: 32px;
+  }
+
+  /* ---- Primary Button ---- */
+  #hero-craving-{{ section.id }} .hero-craving__btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--hc-btn-start) 0%, var(--hc-btn-end) 100%);
+    color: var(--hc-btn-text);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    height: 52px;
+    width: 100%;
+    border-radius: 26px;
+    border: none;
+    box-shadow: 0 4px 14px rgba(107, 68, 35, 0.28);
+    cursor: pointer;
+    transition: all 250ms ease-out;
+    text-decoration: none;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* ---- Secondary Button ---- */
+  #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 2px solid var(--hc-sec-btn);
+    color: var(--hc-sec-btn);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    height: 52px;
+    width: 100%;
+    border-radius: 26px;
+    cursor: pointer;
+    transition: all 250ms ease-out;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 18px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  /* ---- Focus styles (accessibility) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__btn-primary:focus-visible,
+  #hero-craving-{{ section.id }} .hero-craving__btn-secondary:focus-visible {
+    outline: 3px solid var(--hc-sec-btn);
+    outline-offset: 2px;
+  }
+
+  /* ---- Trust Bar ---- */
+  #hero-craving-{{ section.id }} .hero-craving__trust {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    margin-top: 26px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Hide third trust item on mobile */
+  #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
+    display: none;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-icon--primary {
+    width: 32px;
+    height: 32px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-text {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3a3a3a;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-text--primary {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* ---- Urgency ---- */
+  #hero-craving-{{ section.id }} .hero-craving__urgency {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #777777;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__urgency-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #E8A849;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* =======================================
+     TABLET LAYOUT (768px - 1279px)
+     ======================================= */
+  @media screen and (min-width: 768px) {
+    #hero-craving-{{ section.id }} .hero-craving__container {
+      padding: 60px 40px;
+      gap: 32px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__image {
+      margin: -60px -40px 0 -40px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__image-mobile {
+      height: 520px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__headline {
+      font-size: 56px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__subline {
+      font-size: 18px;
+      max-width: 600px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__ctas {
+      max-width: 420px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust {
+      flex-direction: row;
+      padding: 20px 28px;
+      gap: 32px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-item {
+      padding: 0;
+      border-bottom: none;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
+      display: flex;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__urgency {
+      justify-content: flex-start;
+    }
+  }
+
+  /* =======================================
+     DESKTOP LAYOUT (1280px and above)
+     ======================================= */
+  @media screen and (min-width: 1280px) {
+    #hero-craving-{{ section.id }} .hero-craving__container {
+      display: grid;
+      grid-template-columns: 60fr 40fr;
+      gap: 60px;
+      padding: 80px 80px;
+      min-height: 680px;
+      align-items: center;
+    }
+
+    /* On desktop, image comes second (right column) */
+    #hero-craving-{{ section.id }} .hero-craving__image {
+      order: 0;
+      margin: 0;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__image-mobile {
+      display: none;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__image-desktop {
+      display: block;
+      width: 100%;
+      max-width: 750px;
+      height: auto;
+      object-fit: contain;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__headline {
+      font-size: 84px;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      max-width: 680px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__subline {
+      font-size: 19px;
+      line-height: 1.6;
+      max-width: 600px;
+      margin-top: 0;
+      margin-bottom: 40px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__ctas {
+      gap: 20px;
+      max-width: 380px;
+      margin-top: 0;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__btn-primary {
+      height: 56px;
+      border-radius: 28px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
+      height: 56px;
+      border-radius: 28px;
+      margin-top: 0;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 620px;
+      margin-top: 44px;
+      padding: 22px 32px;
+      border-radius: 18px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+      gap: 44px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-item {
+      padding: 0;
+      border-bottom: none;
+      gap: 12px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
+      display: flex;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-text {
+      font-size: 14px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__trust-text--primary {
+      font-size: 16px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__urgency {
+      font-size: 13px;
+      margin-top: 20px;
+      justify-content: flex-start;
+    }
+
+    /* Desktop hover states (only on devices that support hover) */
+    @media (hover: hover) {
+      #hero-craving-{{ section.id }} .hero-craving__btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 22px rgba(107, 68, 35, 0.38);
+      }
+      #hero-craving-{{ section.id }} .hero-craving__btn-primary:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(107, 68, 35, 0.25);
+      }
+
+      #hero-craving-{{ section.id }} .hero-craving__btn-secondary:hover {
+        background: rgba(107, 68, 35, 0.08);
+        border-width: 2.5px;
+      }
+    }
+  }
+
+  /* =======================================
+     STICKY MOBILE CTA
+     ======================================= */
+  #sticky-cta-{{ section.id }} {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    width: calc(100vw - 32px);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 300ms ease-in-out, visibility 300ms ease-in-out;
+    pointer-events: none;
+  }
+
+  #sticky-cta-{{ section.id }}.hero-craving__sticky-cta--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  #sticky-cta-{{ section.id }} .hero-craving__sticky-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--hc-btn-start) 0%, var(--hc-btn-end) 100%);
+    color: var(--hc-btn-text);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    height: 56px;
+    width: 100%;
+    border-radius: 28px;
+    border: none;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #sticky-cta-{{ section.id }} .hero-craving__sticky-btn:focus-visible {
+    outline: 3px solid var(--hc-sec-btn);
+    outline-offset: 2px;
+  }
+
+  /* Hide sticky CTA on desktop */
+  @media screen and (min-width: 768px) {
+    #sticky-cta-{{ section.id }} {
+      display: none !important;
+    }
+  }
+{%- endstyle -%}
+
+{%- comment -%}
+  ============================================================
+  SECTION MARKUP
+  ============================================================
+{%- endcomment -%}
+<section
+  class="hero-craving"
+  id="hero-craving-{{ section.id }}"
+  aria-label="Hero — {{ headline | strip_html | escape }}"
+>
+  <div class="hero-craving__container">
+
+    {%- comment -%} ---- Left column: text content ---- {%- endcomment -%}
+    <div class="hero-craving__content">
+
+      {%- comment -%} Headline {%- endcomment -%}
+      <h1 class="hero-craving__headline">{{ headline }}</h1>
+
+      {%- comment -%} Subline {%- endcomment -%}
+      <p class="hero-craving__subline">{{ subline }}</p>
+
+      {%- comment -%} CTAs {%- endcomment -%}
+      <div class="hero-craving__ctas">
+        {%- if primary_cta_text != blank -%}
+          <a
+            href="{{ primary_cta_link }}"
+            class="hero-craving__btn-primary"
+            aria-label="{{ primary_cta_text | escape }}"
+          >
+            {{- primary_cta_text | escape -}}
+          </a>
+        {%- endif -%}
+
+        {%- if secondary_cta_text != blank -%}
+          <a
+            href="{{ secondary_cta_link }}"
+            class="hero-craving__btn-secondary"
+            aria-label="{{ secondary_cta_text | escape }}"
+          >
+            {{- secondary_cta_text | escape -}}
+          </a>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Trust Bar {%- endcomment -%}
+      {%- if trust_1_text != blank or trust_2_text != blank or trust_3_text != blank -%}
+        <ul class="hero-craving__trust" role="list">
+          {%- if trust_1_text != blank -%}
+            <li class="hero-craving__trust-item">
+              {%- if trust_1_icon != blank -%}
+                <img
+                  class="hero-craving__trust-icon hero-craving__trust-icon--primary"
+                  src="{{ trust_1_icon | image_url: width: 64 }}"
+                  alt=""
+                  width="32"
+                  height="32"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <svg class="hero-craving__trust-icon hero-craving__trust-icon--primary" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <circle cx="16" cy="16" r="15" stroke="#6B4423" stroke-width="2"/>
+                  <path d="M10 16.5L14 20.5L22 12.5" stroke="#6B4423" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              {%- endif -%}
+              <span class="hero-craving__trust-text hero-craving__trust-text--primary">{{ trust_1_text | escape }}</span>
+            </li>
+          {%- endif -%}
+
+          {%- if trust_2_text != blank -%}
+            <li class="hero-craving__trust-item">
+              {%- if trust_2_icon != blank -%}
+                <img
+                  class="hero-craving__trust-icon"
+                  src="{{ trust_2_icon | image_url: width: 48 }}"
+                  alt=""
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <svg class="hero-craving__trust-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2L14.9 8.6L22 9.3L16.9 13.8L18.4 21L12 17.3L5.6 21L7.1 13.8L2 9.3L9.1 8.6L12 2Z" fill="#D4A574" stroke="#D4A574" stroke-width="1"/>
+                </svg>
+              {%- endif -%}
+              <span class="hero-craving__trust-text">{{ trust_2_text | escape }}</span>
+            </li>
+          {%- endif -%}
+
+          {%- if trust_3_text != blank -%}
+            <li class="hero-craving__trust-item hero-craving__trust-item--third">
+              {%- if trust_3_icon != blank -%}
+                <img
+                  class="hero-craving__trust-icon"
+                  src="{{ trust_3_icon | image_url: width: 48 }}"
+                  alt=""
+                  width="24"
+                  height="24"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <svg class="hero-craving__trust-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#2D5F3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              {%- endif -%}
+              <span class="hero-craving__trust-text">{{ trust_3_text | escape }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} Urgency element {%- endcomment -%}
+      {%- if urgency_display != blank -%}
+        <div
+          class="hero-craving__urgency"
+          {% if urgency_mode == 'time_based' %}aria-live="polite"{% endif %}
+          id="urgency-{{ section.id }}"
+        >
+          <span class="hero-craving__urgency-dot" aria-hidden="true"></span>
+          <span class="hero-craving__urgency-text">{{ urgency_display | escape }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ---- Right column: product image ---- {%- endcomment -%}
+    <div class="hero-craving__image">
+      {%- if desktop_image != blank -%}
+        <img
+          class="hero-craving__image-desktop"
+          src="{{ desktop_image | image_url: width: 1500 }}"
+          srcset="
+            {{ desktop_image | image_url: width: 750 }} 750w,
+            {{ desktop_image | image_url: width: 1125 }} 1125w,
+            {{ desktop_image | image_url: width: 1500 }} 1500w
+          "
+          sizes="(min-width: 1280px) 40vw, 0px"
+          alt="{{ image_alt | escape }}"
+          width="{{ desktop_image.width }}"
+          height="{{ desktop_image.height }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-desktop' }}
+      {%- endif -%}
+
+      {%- if mobile_image != blank -%}
+        <img
+          class="hero-craving__image-mobile"
+          src="{{ mobile_image | image_url: width: 800 }}"
+          srcset="
+            {{ mobile_image | image_url: width: 400 }} 400w,
+            {{ mobile_image | image_url: width: 600 }} 600w,
+            {{ mobile_image | image_url: width: 800 }} 800w,
+            {{ mobile_image | image_url: width: 1200 }} 1200w
+          "
+          sizes="100vw"
+          alt="{{ image_alt | escape }}"
+          width="{{ mobile_image.width }}"
+          height="{{ mobile_image.height }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- elsif desktop_image != blank -%}
+        {%- comment -%} Fall back to desktop image on mobile if no mobile image set {%- endcomment -%}
+        <img
+          class="hero-craving__image-mobile"
+          src="{{ desktop_image | image_url: width: 800 }}"
+          srcset="
+            {{ desktop_image | image_url: width: 400 }} 400w,
+            {{ desktop_image | image_url: width: 600 }} 600w,
+            {{ desktop_image | image_url: width: 800 }} 800w
+          "
+          sizes="100vw"
+          alt="{{ image_alt | escape }}"
+          width="{{ desktop_image.width }}"
+          height="{{ desktop_image.height }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-mobile' }}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{%- comment -%} ---- Sticky Mobile CTA ---- {%- endcomment -%}
+{%- if enable_sticky_cta -%}
+  <div
+    class="hero-craving__sticky-cta"
+    id="sticky-cta-{{ section.id }}"
+    aria-hidden="true"
+  >
+    <a
+      href="{{ sticky_cta_link | default: primary_cta_link }}"
+      class="hero-craving__sticky-btn"
+      tabindex="-1"
+      aria-label="{{ sticky_cta_text | default: primary_cta_text | escape }}"
+    >
+      {{- sticky_cta_text | default: primary_cta_text | escape -}}
+    </a>
+  </div>
+{%- endif -%}
+
+{%- comment -%}
+  ============================================================
+  JAVASCRIPT - Vanilla, no dependencies
+  Handles: sticky CTA, time-based urgency, tap states
+  ============================================================
+{%- endcomment -%}
+<script>
+  (function() {
+    'use strict';
+
+    var SECTION_ID = '{{ section.id }}';
+
+    /* ---- Sticky Mobile CTA ---- */
+    {% if enable_sticky_cta %}
+    (function initStickyCTA() {
+      var stickyEl = document.getElementById('sticky-cta-' + SECTION_ID);
+      if (!stickyEl) return;
+
+      var SCROLL_THRESHOLD = 200;
+      var isVisible = false;
+      var ticking = false;
+
+      function onScroll() {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(function() {
+            var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            var shouldShow = scrollY > SCROLL_THRESHOLD && window.innerWidth < 768;
+
+            if (shouldShow !== isVisible) {
+              isVisible = shouldShow;
+              if (isVisible) {
+                stickyEl.classList.add('hero-craving__sticky-cta--visible');
+                stickyEl.setAttribute('aria-hidden', 'false');
+                stickyEl.querySelector('a').setAttribute('tabindex', '0');
+              } else {
+                stickyEl.classList.remove('hero-craving__sticky-cta--visible');
+                stickyEl.setAttribute('aria-hidden', 'true');
+                stickyEl.querySelector('a').setAttribute('tabindex', '-1');
+              }
+            }
+            ticking = false;
+          });
+        }
+      }
+
+      /* Debounced scroll listener using rAF */
+      window.addEventListener('scroll', onScroll, { passive: true });
+      /* Also check on resize in case user rotates device */
+      window.addEventListener('resize', onScroll, { passive: true });
+      /* Initial check */
+      onScroll();
+    })();
+    {% endif %}
+
+    /* ---- Time-based urgency counter ---- */
+    {% if urgency_mode == 'time_based' %}
+    (function initTimeBased() {
+      var urgencyEl = document.querySelector('#urgency-' + SECTION_ID + ' .hero-craving__urgency-text');
+      if (!urgencyEl) return;
+
+      var now = new Date();
+      var hour = now.getHours();
+      var text;
+
+      if (hour >= 6 && hour < 12) {
+        text = '{{ section.settings.urgency_morning | default: "47 jars left — order before midnight" | escape }}';
+      } else if (hour >= 12 && hour < 18) {
+        text = '{{ section.settings.urgency_afternoon | default: "32 jars left — selling fast today" | escape }}';
+      } else {
+        text = '{{ section.settings.urgency_evening | default: "23 jars left — last chance today" | escape }}';
+      }
+      urgencyEl.textContent = text;
+    })();
+    {% endif %}
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero - Craving Intelligence",
+  "tag": "section",
+  "class": "section-hero-craving",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Outsmart Your Cravings"
+    },
+    {
+      "type": "textarea",
+      "id": "subline",
+      "label": "Subline",
+      "default": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals who want to stay sharp, not snack-trapped."
+    },
+    {
+      "type": "header",
+      "content": "Primary CTA"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_text",
+      "label": "Primary button text",
+      "default": "Take the 30-Second Quiz"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary CTA"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary button text",
+      "default": "View Curated Bundles"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image (recommended 1500×900)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image (recommended 800×960)",
+      "info": "If not set, the desktop image is used for both."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "CutCraving chocolate peanut butter jar and herbal tea"
+    },
+    {
+      "type": "header",
+      "content": "Trust indicators"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_text",
+      "label": "Trust indicator 1 (primary)",
+      "default": "1000+ working professionals"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_1_icon",
+      "label": "Trust indicator 1 icon (optional)",
+      "info": "32×32px recommended. Leave empty for default checkmark."
+    },
+    {
+      "type": "text",
+      "id": "trust_2_text",
+      "label": "Trust indicator 2",
+      "default": "Zero artificial ingredients"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_2_icon",
+      "label": "Trust indicator 2 icon (optional)",
+      "info": "24×24px recommended. Leave empty for default star."
+    },
+    {
+      "type": "text",
+      "id": "trust_3_text",
+      "label": "Trust indicator 3",
+      "default": "Made fresh weekly"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_3_icon",
+      "label": "Trust indicator 3 icon (optional)",
+      "info": "24×24px recommended. Leave empty for default shield."
+    },
+    {
+      "type": "header",
+      "content": "Urgency element"
+    },
+    {
+      "type": "select",
+      "id": "urgency_mode",
+      "label": "Urgency mode",
+      "options": [
+        { "value": "static", "label": "Static text" },
+        { "value": "inventory", "label": "Inventory count" },
+        { "value": "time_based", "label": "Time-based (morning / afternoon / evening)" }
+      ],
+      "default": "static",
+      "info": "Static = fixed text. Inventory = uses count below. Time-based = changes text by time of day."
+    },
+    {
+      "type": "text",
+      "id": "urgency_text",
+      "label": "Urgency text (static / fallback)",
+      "default": "47 jars left — order before midnight"
+    },
+    {
+      "type": "range",
+      "id": "urgency_count",
+      "label": "Urgency inventory count",
+      "min": 0,
+      "max": 500,
+      "step": 1,
+      "default": 47,
+      "info": "Used when urgency mode is 'Inventory count'."
+    },
+    {
+      "type": "text",
+      "id": "urgency_morning",
+      "label": "Urgency text — morning (6 AM–12 PM)",
+      "default": "47 jars left — order before midnight"
+    },
+    {
+      "type": "text",
+      "id": "urgency_afternoon",
+      "label": "Urgency text — afternoon (12 PM–6 PM)",
+      "default": "32 jars left — selling fast today"
+    },
+    {
+      "type": "text",
+      "id": "urgency_evening",
+      "label": "Urgency text — evening (6 PM–6 AM)",
+      "default": "23 jars left — last chance today"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_center",
+      "label": "Background — center",
+      "default": "#F5F1E8"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_edge",
+      "label": "Background — edge",
+      "default": "#E3D5B8"
+    },
+    {
+      "type": "color",
+      "id": "headline_color",
+      "label": "Headline color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subline_color",
+      "label": "Subline color",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "btn_color_start",
+      "label": "Primary button — gradient start",
+      "default": "#7A5230"
+    },
+    {
+      "type": "color",
+      "id": "btn_color_end",
+      "label": "Primary button — gradient end",
+      "default": "#5B3A1F"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Primary button — text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "sec_btn_color",
+      "label": "Secondary button — border & text",
+      "default": "#6B4423"
+    },
+    {
+      "type": "header",
+      "content": "Sticky mobile CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_cta",
+      "label": "Enable sticky CTA on mobile",
+      "default": true,
+      "info": "Shows a floating CTA at the bottom of the screen after scrolling 200px. Only visible on mobile (< 768px)."
+    },
+    {
+      "type": "text",
+      "id": "sticky_cta_text",
+      "label": "Sticky CTA text (optional)",
+      "info": "Defaults to primary CTA text if empty."
+    },
+    {
+      "type": "url",
+      "id": "sticky_cta_link",
+      "label": "Sticky CTA link (optional)",
+      "info": "Defaults to primary CTA link if empty."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero - Craving Intelligence",
+      "settings": {
+        "headline": "Outsmart Your Cravings",
+        "subline": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals who want to stay sharp, not snack-trapped.",
+        "primary_cta_text": "Take the 30-Second Quiz",
+        "secondary_cta_text": "View Curated Bundles",
+        "trust_1_text": "1000+ working professionals",
+        "trust_2_text": "Zero artificial ingredients",
+        "trust_3_text": "Made fresh weekly",
+        "urgency_text": "47 jars left — order before midnight",
+        "enable_sticky_cta": true
+      }
+    }
+  ]
+}
+{% endschema %}
