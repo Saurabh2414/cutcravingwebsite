@@ -59,7 +59,7 @@
     {%- assign urgency_display = urgency_text -%}
   {%- when 'inventory' -%}
     {%- if urgency_count > 0 -%}
-      {%- assign urgency_display = urgency_count | append: ' jars left — order before midnight' -%}
+      {%- assign urgency_display = urgency_count | append: ' jars available this week' -%}
     {%- else -%}
       {%- assign urgency_display = urgency_text -%}
     {%- endif -%}
@@ -135,6 +135,7 @@
     max-width: 100%;
     margin-top: 16px;
     text-align: left;
+    order: 1;
   }
 
   /* ---- Subline ---- */
@@ -146,15 +147,23 @@
     line-height: 1.5;
     max-width: 100%;
     margin-top: 18px;
+    order: 2;
   }
 
-  /* ---- CTA Container ---- */
+  /* ---- Content column: flex for mobile order control ---- */
+  #hero-craving-{{ section.id }} .hero-craving__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- CTA Container (primary CTA only) ---- */
   #hero-craving-{{ section.id }} .hero-craving__ctas {
     display: flex;
     flex-direction: column;
     gap: 0;
     max-width: 100%;
     margin-top: 32px;
+    order: 3;
   }
 
   /* ---- Primary Button ---- */
@@ -183,7 +192,7 @@
     transform: scale(0.98);
   }
 
-  /* ---- Secondary Button ---- */
+  /* ---- Secondary Button (direct child of __content for mobile reorder) ---- */
   #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -201,8 +210,9 @@
     transition: all 250ms ease-out;
     text-decoration: none;
     text-align: center;
-    margin-top: 18px;
+    margin-top: 40px;
     -webkit-tap-highlight-color: transparent;
+    order: 5;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__btn-secondary:active {
@@ -228,6 +238,7 @@
     padding: 0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     margin-top: 26px;
+    order: 4;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__trust-item {
@@ -271,13 +282,14 @@
     color: #1a1a1a;
   }
 
-  /* ---- Urgency ---- */
+  /* ---- Urgency (informational, not aggressive) ---- */
   #hero-craving-{{ section.id }} .hero-craving__urgency {
     font-family: "Inter", system-ui, sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: #777777;
-    margin-top: 16px;
+    color: #888888;
+    margin-top: 20px;
+    order: 6;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -286,10 +298,10 @@
   }
 
   #hero-craving-{{ section.id }} .hero-craving__urgency-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    background: #E8A849;
+    background: #888888;
     display: inline-block;
     flex-shrink: 0;
   }
@@ -403,10 +415,17 @@
       border-radius: 28px;
     }
 
+    /* Desktop: reset all mobile order values */
+    #hero-craving-{{ section.id }} .hero-craving__headline { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__subline { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__ctas { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__btn-secondary { order: 0; margin-top: 20px; }
+    #hero-craving-{{ section.id }} .hero-craving__trust { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__urgency { order: 0; }
+
     #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
       height: 56px;
       border-radius: 28px;
-      margin-top: 0;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust {
@@ -539,12 +558,12 @@
     <div class="hero-craving__content">
 
       {%- comment -%} Headline {%- endcomment -%}
-      <h1 class="hero-craving__headline">{{ headline }}</h1>
+      <h1 class="hero-craving__headline">{{ headline | newline_to_br }}</h1>
 
       {%- comment -%} Subline {%- endcomment -%}
       <p class="hero-craving__subline">{{ subline }}</p>
 
-      {%- comment -%} CTAs {%- endcomment -%}
+      {%- comment -%} Primary CTA {%- endcomment -%}
       <div class="hero-craving__ctas">
         {%- if primary_cta_text != blank -%}
           <a
@@ -555,19 +574,9 @@
             {{- primary_cta_text | escape -}}
           </a>
         {%- endif -%}
-
-        {%- if secondary_cta_text != blank -%}
-          <a
-            href="{{ secondary_cta_link }}"
-            class="hero-craving__btn-secondary"
-            aria-label="{{ secondary_cta_text | escape }}"
-          >
-            {{- secondary_cta_text | escape -}}
-          </a>
-        {%- endif -%}
       </div>
 
-      {%- comment -%} Trust Bar {%- endcomment -%}
+      {%- comment -%} Trust Bar — on mobile appears between primary & secondary CTA {%- endcomment -%}
       {%- if trust_1_text != blank or trust_2_text != blank or trust_3_text != blank -%}
         <ul class="hero-craving__trust" role="list">
           {%- if trust_1_text != blank -%}
@@ -631,6 +640,17 @@
             </li>
           {%- endif -%}
         </ul>
+      {%- endif -%}
+
+      {%- comment -%} Secondary CTA — separate sibling for mobile reorder {%- endcomment -%}
+      {%- if secondary_cta_text != blank -%}
+        <a
+          href="{{ secondary_cta_link }}"
+          class="hero-craving__btn-secondary"
+          aria-label="{{ secondary_cta_text | escape }}"
+        >
+          {{- secondary_cta_text | escape -}}
+        </a>
       {%- endif -%}
 
       {%- comment -%} Urgency element {%- endcomment -%}
@@ -797,11 +817,11 @@
       var text;
 
       if (hour >= 6 && hour < 12) {
-        text = '{{ section.settings.urgency_morning | default: "47 jars left — order before midnight" | escape }}';
+        text = '{{ section.settings.urgency_morning | default: "47 jars available this week" | escape }}';
       } else if (hour >= 12 && hour < 18) {
-        text = '{{ section.settings.urgency_afternoon | default: "32 jars left — selling fast today" | escape }}';
+        text = '{{ section.settings.urgency_afternoon | default: "32 jars available this week" | escape }}';
       } else {
-        text = '{{ section.settings.urgency_evening | default: "23 jars left — last chance today" | escape }}';
+        text = '{{ section.settings.urgency_evening | default: "23 jars available this week" | escape }}';
       }
       urgencyEl.textContent = text;
     })();
@@ -823,13 +843,13 @@
       "type": "textarea",
       "id": "headline",
       "label": "Headline",
-      "default": "Outsmart Your Cravings"
+      "default": "When Cravings Hit,\nDon't Let Them Decide"
     },
     {
       "type": "textarea",
       "id": "subline",
       "label": "Subline",
-      "default": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals who want to stay sharp, not snack-trapped."
+      "default": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals managing stress, sugar urges, and late-night cravings."
     },
     {
       "type": "header",
@@ -942,7 +962,7 @@
       "type": "text",
       "id": "urgency_text",
       "label": "Urgency text (static / fallback)",
-      "default": "47 jars left — order before midnight"
+      "default": "47 jars available this week"
     },
     {
       "type": "range",
@@ -958,19 +978,19 @@
       "type": "text",
       "id": "urgency_morning",
       "label": "Urgency text — morning (6 AM–12 PM)",
-      "default": "47 jars left — order before midnight"
+      "default": "47 jars available this week"
     },
     {
       "type": "text",
       "id": "urgency_afternoon",
       "label": "Urgency text — afternoon (12 PM–6 PM)",
-      "default": "32 jars left — selling fast today"
+      "default": "32 jars available this week"
     },
     {
       "type": "text",
       "id": "urgency_evening",
       "label": "Urgency text — evening (6 PM–6 AM)",
-      "default": "23 jars left — last chance today"
+      "default": "23 jars available this week"
     },
     {
       "type": "header",
@@ -1052,14 +1072,14 @@
     {
       "name": "Hero - Craving Intelligence",
       "settings": {
-        "headline": "Outsmart Your Cravings",
-        "subline": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals who want to stay sharp, not snack-trapped.",
+        "headline": "When Cravings Hit,\nDon't Let Them Decide",
+        "subline": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals managing stress, sugar urges, and late-night cravings.",
         "primary_cta_text": "Take the 30-Second Quiz",
         "secondary_cta_text": "View Curated Bundles",
         "trust_1_text": "1000+ working professionals",
         "trust_2_text": "Zero artificial ingredients",
         "trust_3_text": "Made fresh weekly",
-        "urgency_text": "47 jars left — order before midnight",
+        "urgency_text": "47 jars available this week",
         "enable_sticky_cta": true
       }
     }
