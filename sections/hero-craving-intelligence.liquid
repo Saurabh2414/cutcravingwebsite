@@ -97,19 +97,33 @@
     overflow: hidden;
   }
 
+  /*
+   * ==========================================
+   * MOBILE BASE (375px target, mobile-first)
+   * Above fold: Image → Headline → Primary CTA
+   * Below fold: Subline → Trust → Secondary → Urgency
+   * ==========================================
+   */
+
   #hero-craving-{{ section.id }} .hero-craving__container {
     max-width: 1440px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 40px 24px;
-    gap: 16px;
+    padding: 0 24px 40px;
+    gap: 0;
   }
 
-  /* ---- Image ---- */
+  /* ---- Content column: flex for mobile order control ---- */
+  #hero-craving-{{ section.id }} .hero-craving__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ---- Image (above fold, ~60% of viewport) ---- */
   #hero-craving-{{ section.id }} .hero-craving__image {
     order: -1;
-    margin: -40px -24px 0 -24px;
+    margin: 0 -24px;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__image-desktop {
@@ -124,49 +138,31 @@
     object-position: center;
   }
 
-  /* ---- Headline ---- */
+  /* ---- Headline (above fold, order 1) ---- */
   #hero-craving-{{ section.id }} .hero-craving__headline {
     font-family: "Inter", system-ui, -apple-system, sans-serif;
-    font-size: 42px;
+    font-size: 44px;
     font-weight: 800;
-    color: var(--hc-headline);
-    line-height: 1.13;
-    letter-spacing: -0.015em;
-    max-width: 100%;
-    margin-top: 16px;
+    color: #000000;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    max-width: 90%;
+    margin-top: 20px;
     text-align: left;
     order: 1;
   }
 
-  /* ---- Subline ---- */
-  #hero-craving-{{ section.id }} .hero-craving__subline {
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--hc-subline);
-    line-height: 1.5;
-    max-width: 100%;
-    margin-top: 18px;
-    order: 2;
-  }
-
-  /* ---- Content column: flex for mobile order control ---- */
-  #hero-craving-{{ section.id }} .hero-craving__content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ---- CTA Container (primary CTA only) ---- */
+  /* ---- Primary CTA wrapper (above fold, order 2) ---- */
   #hero-craving-{{ section.id }} .hero-craving__ctas {
     display: flex;
     flex-direction: column;
     gap: 0;
     max-width: 100%;
     margin-top: 32px;
-    order: 3;
+    order: 2;
   }
 
-  /* ---- Primary Button ---- */
+  /* ---- Primary Button (above fold, prominent) ---- */
   #hero-craving-{{ section.id }} .hero-craving__btn-primary {
     display: inline-flex;
     align-items: center;
@@ -174,13 +170,13 @@
     background: linear-gradient(180deg, var(--hc-btn-start) 0%, var(--hc-btn-end) 100%);
     color: var(--hc-btn-text);
     font-family: "Inter", system-ui, sans-serif;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 600;
-    height: 52px;
+    height: 56px;
     width: 100%;
-    border-radius: 26px;
+    border-radius: 28px;
     border: none;
-    box-shadow: 0 4px 14px rgba(107, 68, 35, 0.28);
+    box-shadow: 0 6px 16px rgba(107, 68, 35, 0.32);
     cursor: pointer;
     transition: all 250ms ease-out;
     text-decoration: none;
@@ -192,25 +188,93 @@
     transform: scale(0.98);
   }
 
-  /* ---- Secondary Button (direct child of __content for mobile reorder) ---- */
+  /* ---- Subline (below fold, order 3) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__subline {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #3a3a3a;
+    line-height: 1.5;
+    max-width: 100%;
+    margin-top: 24px;
+    order: 3;
+  }
+
+  /* ---- Trust Bar (below fold, order 4) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__trust {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: #FFFFFF;
+    border: 2px solid rgba(107, 68, 35, 0.12);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-top: 32px;
+    order: 4;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-item:last-child {
+    border-bottom: none;
+  }
+
+  /* Hide third trust item on mobile */
+  #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
+    display: none;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-icon--primary {
+    width: 26px;
+    height: 26px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-text {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3a3a3a;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__trust-text--primary {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  /* ---- Secondary Button (below fold, order 5, de-emphasized) ---- */
   #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 2px solid var(--hc-sec-btn);
+    border: 1.5px solid var(--hc-sec-btn);
     color: var(--hc-sec-btn);
     font-family: "Inter", system-ui, sans-serif;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 500;
-    height: 52px;
+    height: 50px;
     width: 100%;
-    border-radius: 26px;
+    border-radius: 25px;
     cursor: pointer;
     transition: all 250ms ease-out;
     text-decoration: none;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 32px;
     -webkit-tap-highlight-color: transparent;
     order: 5;
   }
@@ -226,63 +290,7 @@
     outline-offset: 2px;
   }
 
-  /* ---- Trust Bar ---- */
-  #hero-craving-{{ section.id }} .hero-craving__trust {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background: #FFFFFF;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 14px;
-    padding: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    margin-top: 26px;
-    order: 4;
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-item:last-child {
-    border-bottom: none;
-  }
-
-  /* Hide third trust item on mobile */
-  #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
-    display: none;
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-icon {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-icon--primary {
-    width: 32px;
-    height: 32px;
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-text {
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: #3a3a3a;
-  }
-
-  #hero-craving-{{ section.id }} .hero-craving__trust-text--primary {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a1a1a;
-  }
-
-  /* ---- Urgency (informational, not aggressive) ---- */
+  /* ---- Urgency (below fold, order 6) ---- */
   #hero-craving-{{ section.id }} .hero-craving__urgency {
     font-family: "Inter", system-ui, sans-serif;
     font-size: 12px;
@@ -306,14 +314,46 @@
     flex-shrink: 0;
   }
 
+  /*
+   * ==========================================
+   * SMALL MOBILE (320px - 374px)
+   * Tighter image + smaller headline to keep
+   * primary CTA above fold on small devices
+   * ==========================================
+   */
+  @media screen and (max-width: 374px) {
+    #hero-craving-{{ section.id }} .hero-craving__image-mobile {
+      height: 440px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__headline {
+      font-size: 38px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__btn-primary {
+      height: 52px;
+      font-size: 16px;
+    }
+  }
+
   /* =======================================
      TABLET LAYOUT (768px - 1279px)
+     Reset mobile-specific overrides,
+     show all elements above fold.
      ======================================= */
   @media screen and (min-width: 768px) {
     #hero-craving-{{ section.id }} .hero-craving__container {
       padding: 60px 40px;
       gap: 32px;
     }
+
+    /* Reset all mobile order values */
+    #hero-craving-{{ section.id }} .hero-craving__headline { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__subline { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__ctas { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__trust { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__btn-secondary { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__urgency { order: 0; }
 
     #hero-craving-{{ section.id }} .hero-craving__image {
       margin: -60px -40px 0 -40px;
@@ -325,21 +365,49 @@
 
     #hero-craving-{{ section.id }} .hero-craving__headline {
       font-size: 56px;
+      color: var(--hc-headline);
+      line-height: 1.13;
+      letter-spacing: -0.015em;
+      max-width: 100%;
+      margin-top: 16px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__subline {
       font-size: 18px;
+      color: var(--hc-subline);
       max-width: 600px;
+      margin-top: 18px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__ctas {
       max-width: 420px;
+      margin-top: 32px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__btn-primary {
+      font-size: 16px;
+      height: 52px;
+      border-radius: 26px;
+      box-shadow: 0 4px 14px rgba(107, 68, 35, 0.28);
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
+      font-size: 16px;
+      font-weight: 500;
+      height: 52px;
+      border: 2px solid var(--hc-sec-btn);
+      border-radius: 26px;
+      margin-top: 18px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust {
       flex-direction: row;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 14px;
       padding: 20px 28px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       gap: 32px;
+      margin-top: 26px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-item {
@@ -351,8 +419,14 @@
       display: flex;
     }
 
+    #hero-craving-{{ section.id }} .hero-craving__trust-icon { width: 24px; height: 24px; }
+    #hero-craving-{{ section.id }} .hero-craving__trust-icon--primary { width: 32px; height: 32px; }
+    #hero-craving-{{ section.id }} .hero-craving__trust-text { font-size: 13px; }
+    #hero-craving-{{ section.id }} .hero-craving__trust-text--primary { font-size: 14px; }
+
     #hero-craving-{{ section.id }} .hero-craving__urgency {
       justify-content: flex-start;
+      margin-top: 16px;
     }
   }
 
@@ -415,17 +489,10 @@
       border-radius: 28px;
     }
 
-    /* Desktop: reset all mobile order values */
-    #hero-craving-{{ section.id }} .hero-craving__headline { order: 0; }
-    #hero-craving-{{ section.id }} .hero-craving__subline { order: 0; }
-    #hero-craving-{{ section.id }} .hero-craving__ctas { order: 0; }
-    #hero-craving-{{ section.id }} .hero-craving__btn-secondary { order: 0; margin-top: 20px; }
-    #hero-craving-{{ section.id }} .hero-craving__trust { order: 0; }
-    #hero-craving-{{ section.id }} .hero-craving__urgency { order: 0; }
-
     #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
       height: 56px;
       border-radius: 28px;
+      margin-top: 20px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust {
@@ -436,8 +503,9 @@
       margin-top: 44px;
       padding: 22px 32px;
       border-radius: 18px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-      gap: 44px;
+      gap: 48px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-item {
