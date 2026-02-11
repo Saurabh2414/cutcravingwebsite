@@ -24,6 +24,7 @@
 
 {%- comment -%} ---- Assign schema settings to local variables ---- {%- endcomment -%}
 {%- assign headline          = section.settings.headline -%}
+{%- assign connector_text    = section.settings.connector_text -%}
 {%- assign subline           = section.settings.subline -%}
 {%- assign primary_cta_text  = section.settings.primary_cta_text -%}
 {%- assign primary_cta_link  = section.settings.primary_cta_link -%}
@@ -152,14 +153,25 @@
     order: 1;
   }
 
-  /* ---- Primary CTA wrapper (above fold, order 2) ---- */
+  /* ---- Connector (above fold, bridges headline → CTA) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__connector {
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #444444;
+    line-height: 1.4;
+    margin-top: 14px;
+    order: 2;
+  }
+
+  /* ---- Primary CTA wrapper (above fold, order 3) ---- */
   #hero-craving-{{ section.id }} .hero-craving__ctas {
     display: flex;
     flex-direction: column;
     gap: 0;
     max-width: 100%;
-    margin-top: 32px;
-    order: 2;
+    margin-top: 24px;
+    order: 3;
   }
 
   /* ---- Primary Button (above fold, prominent) ---- */
@@ -188,7 +200,7 @@
     transform: scale(0.98);
   }
 
-  /* ---- Subline (below fold, order 3) ---- */
+  /* ---- Subline (below fold, order 4) ---- */
   #hero-craving-{{ section.id }} .hero-craving__subline {
     font-family: "Inter", system-ui, sans-serif;
     font-size: 15px;
@@ -197,7 +209,7 @@
     line-height: 1.5;
     max-width: 100%;
     margin-top: 24px;
-    order: 3;
+    order: 4;
   }
 
   /* ---- Trust Bar (below fold, order 4) ---- */
@@ -212,7 +224,7 @@
     padding: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     margin-top: 32px;
-    order: 4;
+    order: 5;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__trust-item {
@@ -276,7 +288,7 @@
     text-align: center;
     margin-top: 32px;
     -webkit-tap-highlight-color: transparent;
-    order: 5;
+    order: 6;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__btn-secondary:active {
@@ -297,7 +309,7 @@
     font-weight: 400;
     color: #888888;
     margin-top: 20px;
-    order: 6;
+    order: 7;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -349,6 +361,7 @@
 
     /* Reset all mobile order values */
     #hero-craving-{{ section.id }} .hero-craving__headline { order: 0; }
+    #hero-craving-{{ section.id }} .hero-craving__connector { order: 0; display: none; }
     #hero-craving-{{ section.id }} .hero-craving__subline { order: 0; }
     #hero-craving-{{ section.id }} .hero-craving__ctas { order: 0; }
     #hero-craving-{{ section.id }} .hero-craving__trust { order: 0; }
@@ -627,6 +640,11 @@
 
       {%- comment -%} Headline {%- endcomment -%}
       <h1 class="hero-craving__headline">{{ headline | newline_to_br }}</h1>
+
+      {%- comment -%} Connector — bridges headline to CTA (mobile only, hidden on desktop) {%- endcomment -%}
+      {%- if connector_text != blank -%}
+        <p class="hero-craving__connector">{{ connector_text | escape }}</p>
+      {%- endif -%}
 
       {%- comment -%} Subline {%- endcomment -%}
       <p class="hero-craving__subline">{{ subline }}</p>
@@ -914,6 +932,13 @@
       "default": "When Cravings Hit,\nDon't Let Them Decide"
     },
     {
+      "type": "text",
+      "id": "connector_text",
+      "label": "Connector line (mobile only)",
+      "default": "We built the solution. Find yours.",
+      "info": "Short bridge between headline and CTA. Shown on mobile only — desktop uses the subline instead."
+    },
+    {
       "type": "textarea",
       "id": "subline",
       "label": "Subline",
@@ -1141,6 +1166,7 @@
       "name": "Hero - Craving Intelligence",
       "settings": {
         "headline": "When Cravings Hit,\nDon't Let Them Decide",
+        "connector_text": "We built the solution. Find yours.",
         "subline": "India's first craving intelligence brand. Chocolate peanut butter & herbal teas designed for working professionals managing stress, sugar urges, and late-night cravings.",
         "primary_cta_text": "Take the 30-Second Quiz",
         "secondary_cta_text": "View Curated Bundles",
