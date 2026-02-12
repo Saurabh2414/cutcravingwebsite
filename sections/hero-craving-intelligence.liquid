@@ -2,23 +2,27 @@
   ============================================================
   CutCraving Hero Section - Craving Intelligence
   ============================================================
-  Version: 1.0
+  Version: 2.0
   Author: CutCraving Dev Team
   Description: Conversion-optimized, fully customizable hero
                section for working professionals (25-45).
 
   Features:
   - Fully customizable via Shopify theme editor
-  - Separate desktop & mobile images
+  - Multi-image carousel with separate desktop & mobile images
+  - Crossfade transitions with Ken Burns movement
+  - Staggered entrance animations for pattern break
   - Responsive mobile-first design
   - Sticky mobile CTA on scroll
   - Dynamic urgency counter
-  - WCAG AA accessible
+  - Touch/swipe support on carousel
+  - WCAG AA accessible (prefers-reduced-motion respected)
   - No external JS dependencies
 
   Usage:
   - Drop into your Shopify theme's sections/ folder
   - Add to a template via theme editor or JSON template
+  - Add slides via the "Add block" button in the customizer
   ============================================================
 {% endcomment %}
 
@@ -30,9 +34,6 @@
 {%- assign primary_cta_link  = section.settings.primary_cta_link -%}
 {%- assign secondary_cta_text = section.settings.secondary_cta_text -%}
 {%- assign secondary_cta_link = section.settings.secondary_cta_link -%}
-{%- assign desktop_image     = section.settings.desktop_image -%}
-{%- assign mobile_image      = section.settings.mobile_image -%}
-{%- assign image_alt         = section.settings.image_alt -%}
 {%- assign trust_1_text      = section.settings.trust_1_text -%}
 {%- assign trust_2_text      = section.settings.trust_2_text -%}
 {%- assign trust_3_text      = section.settings.trust_3_text -%}
@@ -53,6 +54,10 @@
 {%- assign enable_sticky_cta = section.settings.enable_sticky_cta -%}
 {%- assign sticky_cta_text   = section.settings.sticky_cta_text -%}
 {%- assign sticky_cta_link   = section.settings.sticky_cta_link -%}
+{%- assign carousel_speed    = section.settings.carousel_speed -%}
+{%- assign enable_dots       = section.settings.enable_dots -%}
+{%- assign enable_animations = section.settings.enable_animations -%}
+{%- assign slide_count       = section.blocks.size -%}
 
 {%- comment -%} ---- Dynamic urgency text ---- {%- endcomment -%}
 {%- case urgency_mode -%}
@@ -98,10 +103,167 @@
     overflow: hidden;
   }
 
+  /* =======================================
+     ANIMATION KEYFRAMES
+     ======================================= */
+  @keyframes hcFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes hcImageReveal {
+    from { opacity: 0; transform: scale(1.03); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes hcKenBurns {
+    0%   { transform: scale(1); }
+    100% { transform: scale(1.06); }
+  }
+
+  @keyframes hcCtaPulse {
+    0%, 100% { box-shadow: 0 6px 16px rgba(107, 68, 35, 0.32); }
+    50%      { box-shadow: 0 8px 28px rgba(107, 68, 35, 0.52); }
+  }
+
+  @keyframes hcDotPulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.3; }
+  }
+
+  /* ---- Entrance animation initial state ---- */
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate] {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"] {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+
+  /* ---- Entrance animation triggered state ---- */
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate].hc-animated {
+    animation: hcFadeUp 0.6s ease-out forwards;
+  }
+
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"].hc-animated {
+    animation: hcImageReveal 0.8s ease-out forwards;
+  }
+
+  /* Staggered delays for cascade effect */
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"].hc-animated { animation-delay: 0s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="1"].hc-animated { animation-delay: 0.08s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="2"].hc-animated { animation-delay: 0.18s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="3"].hc-animated { animation-delay: 0.3s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="4"].hc-animated { animation-delay: 0.38s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="5"].hc-animated { animation-delay: 0.46s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="6"].hc-animated { animation-delay: 0.52s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="7"].hc-animated { animation-delay: 0.58s; }
+
+  /* ---- Ken Burns continuous movement on active slide images ---- */
+  #hero-craving-{{ section.id }} .hero-craving__slide--active img {
+    animation: hcKenBurns 8s ease-in-out infinite alternate;
+  }
+
+  /* ---- CTA pulse glow (draws attention after entrance) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__ctas.hc-animated .hero-craving__btn-primary {
+    animation: hcCtaPulse 2.8s ease-in-out 1s infinite;
+  }
+
+  /* ---- Urgency dot pulse (live indicator feel) ---- */
+  #hero-craving-{{ section.id }} .hero-craving__urgency-dot {
+    animation: hcDotPulse 2s ease-in-out infinite;
+  }
+
+  /* ---- Reduced motion: disable ALL animations ---- */
+  @media (prefers-reduced-motion: reduce) {
+    #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate] {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    #hero-craving-{{ section.id }} .hero-craving__slide--active img {
+      animation: none !important;
+    }
+    #hero-craving-{{ section.id }} .hero-craving__ctas.hc-animated .hero-craving__btn-primary {
+      animation: none !important;
+    }
+    #hero-craving-{{ section.id }} .hero-craving__urgency-dot {
+      animation: none !important;
+    }
+  }
+
+  /*
+   * ==========================================
+   * CAROUSEL STYLES
+   * Crossfade approach: first slide is relative
+   * (holds height), rest are absolute overlays.
+   * ==========================================
+   */
+  #hero-craving-{{ section.id }} .hero-craving__carousel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__slide {
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__slide:not(:first-child) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__slide--active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  /* ---- Carousel dot indicators ---- */
+  #hero-craving-{{ section.id }} .hero-craving__dots {
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__dot--active {
+    background: #FFFFFF;
+    transform: scale(1.35);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  #hero-craving-{{ section.id }} .hero-craving__dot:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+  }
+
   /*
    * ==========================================
    * MOBILE BASE (375px target, mobile-first)
-   * Above fold: Image → Headline → Primary CTA
+   * Above fold: Image → Headline → Connector → Primary CTA
    * Below fold: Subline → Trust → Secondary → Urgency
    * ==========================================
    */
@@ -121,10 +283,11 @@
     flex-direction: column;
   }
 
-  /* ---- Image (above fold, ~60% of viewport) ---- */
+  /* ---- Image / carousel (above fold, ~60% of viewport) ---- */
   #hero-craving-{{ section.id }} .hero-craving__image {
     order: -1;
     margin: 0 -24px;
+    position: relative;
   }
 
   #hero-craving-{{ section.id }} .hero-craving__image-desktop {
@@ -212,7 +375,7 @@
     order: 4;
   }
 
-  /* ---- Trust Bar (below fold, order 4) ---- */
+  /* ---- Trust Bar (below fold, order 5) ---- */
   #hero-craving-{{ section.id }} .hero-craving__trust {
     list-style: none;
     display: flex;
@@ -268,7 +431,7 @@
     color: #1a1a1a;
   }
 
-  /* ---- Secondary Button (below fold, order 5, de-emphasized) ---- */
+  /* ---- Secondary Button (below fold, order 6, de-emphasized) ---- */
   #hero-craving-{{ section.id }} .hero-craving__btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -302,7 +465,7 @@
     outline-offset: 2px;
   }
 
-  /* ---- Urgency (below fold, order 6) ---- */
+  /* ---- Urgency (below fold, order 7) ---- */
   #hero-craving-{{ section.id }} .hero-craving__urgency {
     font-family: "Inter", system-ui, sans-serif;
     font-size: 12px;
@@ -441,6 +604,12 @@
       justify-content: flex-start;
       margin-top: 16px;
     }
+
+    /* Dots slightly larger on tablet */
+    #hero-craving-{{ section.id }} .hero-craving__dot {
+      width: 9px;
+      height: 9px;
+    }
   }
 
   /* =======================================
@@ -545,6 +714,16 @@
       justify-content: flex-start;
     }
 
+    /* Dots on desktop */
+    #hero-craving-{{ section.id }} .hero-craving__dots {
+      bottom: 18px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__dot {
+      width: 10px;
+      height: 10px;
+    }
+
     /* Desktop hover states (only on devices that support hover) */
     @media (hover: hover) {
       #hero-craving-{{ section.id }} .hero-craving__btn-primary:hover {
@@ -559,6 +738,11 @@
       #hero-craving-{{ section.id }} .hero-craving__btn-secondary:hover {
         background: rgba(107, 68, 35, 0.08);
         border-width: 2.5px;
+      }
+
+      #hero-craving-{{ section.id }} .hero-craving__dot:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: scale(1.2);
       }
     }
   }
@@ -629,7 +813,7 @@
   ============================================================
 {%- endcomment -%}
 <section
-  class="hero-craving"
+  class="hero-craving{% if enable_animations %} hero-craving--animate{% endif %}"
   id="hero-craving-{{ section.id }}"
   aria-label="Hero — {{ headline | strip_html | escape }}"
 >
@@ -639,18 +823,18 @@
     <div class="hero-craving__content">
 
       {%- comment -%} Headline {%- endcomment -%}
-      <h1 class="hero-craving__headline">{{ headline | newline_to_br }}</h1>
+      <h1 class="hero-craving__headline" data-hc-animate="1">{{ headline | newline_to_br }}</h1>
 
       {%- comment -%} Connector — bridges headline to CTA (mobile only, hidden on desktop) {%- endcomment -%}
       {%- if connector_text != blank -%}
-        <p class="hero-craving__connector">{{ connector_text | escape }}</p>
+        <p class="hero-craving__connector" data-hc-animate="2">{{ connector_text | escape }}</p>
       {%- endif -%}
 
       {%- comment -%} Subline {%- endcomment -%}
-      <p class="hero-craving__subline">{{ subline }}</p>
+      <p class="hero-craving__subline" data-hc-animate="4">{{ subline }}</p>
 
       {%- comment -%} Primary CTA {%- endcomment -%}
-      <div class="hero-craving__ctas">
+      <div class="hero-craving__ctas" data-hc-animate="3">
         {%- if primary_cta_text != blank -%}
           <a
             href="{{ primary_cta_link }}"
@@ -662,9 +846,9 @@
         {%- endif -%}
       </div>
 
-      {%- comment -%} Trust Bar — on mobile appears between primary & secondary CTA {%- endcomment -%}
+      {%- comment -%} Trust Bar {%- endcomment -%}
       {%- if trust_1_text != blank or trust_2_text != blank or trust_3_text != blank -%}
-        <ul class="hero-craving__trust" role="list">
+        <ul class="hero-craving__trust" role="list" data-hc-animate="5">
           {%- if trust_1_text != blank -%}
             <li class="hero-craving__trust-item">
               {%- if trust_1_icon != blank -%}
@@ -734,6 +918,7 @@
           href="{{ secondary_cta_link }}"
           class="hero-craving__btn-secondary"
           aria-label="{{ secondary_cta_text | escape }}"
+          data-hc-animate="6"
         >
           {{- secondary_cta_text | escape -}}
         </a>
@@ -745,6 +930,7 @@
           class="hero-craving__urgency"
           {% if urgency_mode == 'time_based' %}aria-live="polite"{% endif %}
           id="urgency-{{ section.id }}"
+          data-hc-animate="7"
         >
           <span class="hero-craving__urgency-dot" aria-hidden="true"></span>
           <span class="hero-craving__urgency-text">{{ urgency_display | escape }}</span>
@@ -752,67 +938,100 @@
       {%- endif -%}
     </div>
 
-    {%- comment -%} ---- Right column: product image ---- {%- endcomment -%}
-    <div class="hero-craving__image">
-      {%- if desktop_image != blank -%}
-        <img
-          class="hero-craving__image-desktop"
-          src="{{ desktop_image | image_url: width: 1500 }}"
-          srcset="
-            {{ desktop_image | image_url: width: 750 }} 750w,
-            {{ desktop_image | image_url: width: 1125 }} 1125w,
-            {{ desktop_image | image_url: width: 1500 }} 1500w
-          "
-          sizes="(min-width: 1280px) 40vw, 0px"
-          alt="{{ image_alt | escape }}"
-          width="{{ desktop_image.width }}"
-          height="{{ desktop_image.height }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-desktop' }}
-      {%- endif -%}
+    {%- comment -%} ---- Right column: image carousel ---- {%- endcomment -%}
+    <div class="hero-craving__image" data-hc-animate="img">
+      <div class="hero-craving__carousel" id="carousel-{{ section.id }}">
 
-      {%- if mobile_image != blank -%}
-        <img
-          class="hero-craving__image-mobile"
-          src="{{ mobile_image | image_url: width: 800 }}"
-          srcset="
-            {{ mobile_image | image_url: width: 400 }} 400w,
-            {{ mobile_image | image_url: width: 600 }} 600w,
-            {{ mobile_image | image_url: width: 800 }} 800w,
-            {{ mobile_image | image_url: width: 1200 }} 1200w
-          "
-          sizes="100vw"
-          alt="{{ image_alt | escape }}"
-          width="{{ mobile_image.width }}"
-          height="{{ mobile_image.height }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
-      {%- elsif desktop_image != blank -%}
-        {%- comment -%} Fall back to desktop image on mobile if no mobile image set {%- endcomment -%}
-        <img
-          class="hero-craving__image-mobile"
-          src="{{ desktop_image | image_url: width: 800 }}"
-          srcset="
-            {{ desktop_image | image_url: width: 400 }} 400w,
-            {{ desktop_image | image_url: width: 600 }} 600w,
-            {{ desktop_image | image_url: width: 800 }} 800w
-          "
-          sizes="100vw"
-          alt="{{ image_alt | escape }}"
-          width="{{ desktop_image.width }}"
-          height="{{ desktop_image.height }}"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        >
-      {%- else -%}
-        {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-mobile' }}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'slide' -%}
+            <div class="hero-craving__slide{% if forloop.first %} hero-craving__slide--active{% endif %}" {{ block.shopify_attributes }}>
+
+              {%- if block.settings.desktop_image != blank -%}
+                <img
+                  class="hero-craving__image-desktop"
+                  src="{{ block.settings.desktop_image | image_url: width: 1500 }}"
+                  srcset="
+                    {{ block.settings.desktop_image | image_url: width: 750 }} 750w,
+                    {{ block.settings.desktop_image | image_url: width: 1125 }} 1125w,
+                    {{ block.settings.desktop_image | image_url: width: 1500 }} 1500w
+                  "
+                  sizes="(min-width: 1280px) 40vw, 0px"
+                  alt="{{ block.settings.image_alt | escape }}"
+                  width="{{ block.settings.desktop_image.width }}"
+                  height="{{ block.settings.desktop_image.height }}"
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  decoding="async"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-desktop' }}
+              {%- endif -%}
+
+              {%- if block.settings.mobile_image != blank -%}
+                <img
+                  class="hero-craving__image-mobile"
+                  src="{{ block.settings.mobile_image | image_url: width: 800 }}"
+                  srcset="
+                    {{ block.settings.mobile_image | image_url: width: 400 }} 400w,
+                    {{ block.settings.mobile_image | image_url: width: 600 }} 600w,
+                    {{ block.settings.mobile_image | image_url: width: 800 }} 800w,
+                    {{ block.settings.mobile_image | image_url: width: 1200 }} 1200w
+                  "
+                  sizes="100vw"
+                  alt="{{ block.settings.image_alt | escape }}"
+                  width="{{ block.settings.mobile_image.width }}"
+                  height="{{ block.settings.mobile_image.height }}"
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  decoding="async"
+                >
+              {%- elsif block.settings.desktop_image != blank -%}
+                <img
+                  class="hero-craving__image-mobile"
+                  src="{{ block.settings.desktop_image | image_url: width: 800 }}"
+                  srcset="
+                    {{ block.settings.desktop_image | image_url: width: 400 }} 400w,
+                    {{ block.settings.desktop_image | image_url: width: 600 }} 600w,
+                    {{ block.settings.desktop_image | image_url: width: 800 }} 800w
+                  "
+                  sizes="100vw"
+                  alt="{{ block.settings.image_alt | escape }}"
+                  width="{{ block.settings.desktop_image.width }}"
+                  height="{{ block.settings.desktop_image.height }}"
+                  {% if forloop.first %}loading="eager" fetchpriority="high"{% else %}loading="lazy"{% endif %}
+                  decoding="async"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-mobile' }}
+              {%- endif -%}
+
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Fallback if no slides added {%- endcomment -%}
+        {%- if slide_count == 0 -%}
+          <div class="hero-craving__slide hero-craving__slide--active">
+            {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-desktop' }}
+            {{ 'product-1' | placeholder_svg_tag: 'hero-craving__image-mobile' }}
+          </div>
+        {%- endif -%}
+
+      </div>
+
+      {%- comment -%} Carousel dot indicators (only if 2+ slides) {%- endcomment -%}
+      {%- if slide_count > 1 and enable_dots -%}
+        <div class="hero-craving__dots" role="tablist" aria-label="Slide navigation">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'slide' -%}
+              <button
+                class="hero-craving__dot{% if forloop.first %} hero-craving__dot--active{% endif %}"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-label="Slide {{ forloop.index }}"
+                data-slide="{{ forloop.index0 }}"
+              ></button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
       {%- endif -%}
     </div>
 
@@ -840,7 +1059,8 @@
 {%- comment -%}
   ============================================================
   JAVASCRIPT - Vanilla, no dependencies
-  Handles: sticky CTA, time-based urgency, tap states
+  Handles: carousel, entrance animations, sticky CTA,
+           time-based urgency
   ============================================================
 {%- endcomment -%}
 <script>
@@ -848,6 +1068,113 @@
     'use strict';
 
     var SECTION_ID = '{{ section.id }}';
+    var sectionEl = document.getElementById('hero-craving-' + SECTION_ID);
+
+    /* ---- Entrance Animations (IntersectionObserver) ---- */
+    {% if enable_animations %}
+    (function initAnimations() {
+      var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        /* Graceful fallback: show everything immediately */
+        if (sectionEl) {
+          sectionEl.classList.remove('hero-craving--animate');
+        }
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        for (var i = 0; i < entries.length; i++) {
+          if (entries[i].isIntersecting) {
+            entries[i].target.classList.add('hc-animated');
+            observer.unobserve(entries[i].target);
+          }
+        }
+      }, { threshold: 0.15 });
+
+      var animEls = sectionEl.querySelectorAll('[data-hc-animate]');
+      for (var j = 0; j < animEls.length; j++) {
+        observer.observe(animEls[j]);
+      }
+    })();
+    {% endif %}
+
+    /* ---- Image Carousel ---- */
+    {% if slide_count > 1 %}
+    (function initCarousel() {
+      var carousel = document.getElementById('carousel-' + SECTION_ID);
+      if (!carousel) return;
+
+      var slides = carousel.querySelectorAll('.hero-craving__slide');
+      var dots = sectionEl.querySelectorAll('.hero-craving__dot');
+      var current = 0;
+      var total = slides.length;
+      var speed = {{ carousel_speed }} * 1000;
+      var timer = null;
+
+      function goTo(index) {
+        slides[current].classList.remove('hero-craving__slide--active');
+        if (dots.length) {
+          dots[current].classList.remove('hero-craving__dot--active');
+          dots[current].setAttribute('aria-selected', 'false');
+        }
+        current = ((index % total) + total) % total;
+        slides[current].classList.add('hero-craving__slide--active');
+        if (dots.length) {
+          dots[current].classList.add('hero-craving__dot--active');
+          dots[current].setAttribute('aria-selected', 'true');
+        }
+      }
+
+      function next() { goTo(current + 1); }
+
+      function startAutoplay() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, speed);
+      }
+
+      function pauseAutoplay() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+
+      /* Touch / swipe support */
+      var touchStartX = 0;
+
+      carousel.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+        pauseAutoplay();
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', function(e) {
+        var touchEndX = e.changedTouches[0].screenX;
+        var diff = touchStartX - touchEndX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) { next(); } else { goTo(current - 1); }
+        }
+        startAutoplay();
+      }, { passive: true });
+
+      /* Dot click handlers */
+      for (var d = 0; d < dots.length; d++) {
+        (function(idx) {
+          dots[idx].addEventListener('click', function() {
+            goTo(idx);
+            pauseAutoplay();
+            startAutoplay();
+          });
+        })(d);
+      }
+
+      /* Pause on hover (desktop) */
+      carousel.addEventListener('mouseenter', pauseAutoplay);
+      carousel.addEventListener('mouseleave', startAutoplay);
+
+      /* Start autoplay (respects reduced motion) */
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        startAutoplay();
+      }
+    })();
+    {% endif %}
 
     /* ---- Sticky Mobile CTA ---- */
     {% if enable_sticky_cta %}
@@ -883,11 +1210,8 @@
         }
       }
 
-      /* Debounced scroll listener using rAF */
       window.addEventListener('scroll', onScroll, { passive: true });
-      /* Also check on resize in case user rotates device */
       window.addEventListener('resize', onScroll, { passive: true });
-      /* Initial check */
       onScroll();
     })();
     {% endif %}
@@ -976,24 +1300,31 @@
     },
     {
       "type": "header",
-      "content": "Images"
+      "content": "Slideshow / Images"
     },
     {
-      "type": "image_picker",
-      "id": "desktop_image",
-      "label": "Desktop image (recommended 1500×900)"
+      "type": "range",
+      "id": "carousel_speed",
+      "label": "Slide duration (seconds)",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5,
+      "info": "Time each slide is shown before auto-advancing. Only applies when 2+ slides are added."
     },
     {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile image (recommended 800×960)",
-      "info": "If not set, the desktop image is used for both."
+      "type": "checkbox",
+      "id": "enable_dots",
+      "label": "Show slide indicators",
+      "default": true,
+      "info": "Dot navigation overlaid on the image. Only visible with 2+ slides."
     },
     {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Image alt text",
-      "default": "CutCraving chocolate peanut butter jar and herbal tea"
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable entrance animations",
+      "default": true,
+      "info": "Staggered fade-up animations on text and CTA elements. Automatically disabled for users who prefer reduced motion."
     },
     {
       "type": "header",
@@ -1161,6 +1492,31 @@
       "info": "Defaults to primary CTA link if empty."
     }
   ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image (1500×900 recommended)"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image (800×960 recommended)",
+          "info": "If empty, the desktop image is used for mobile too."
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "default": "CutCraving product"
+        }
+      ]
+    }
+  ],
   "presets": [
     {
       "name": "Hero - Craving Intelligence",
@@ -1174,8 +1530,25 @@
         "trust_2_text": "Zero artificial ingredients",
         "trust_3_text": "Made fresh weekly",
         "urgency_text": "47 jars available this week",
-        "enable_sticky_cta": true
-      }
+        "enable_sticky_cta": true,
+        "carousel_speed": 5,
+        "enable_dots": true,
+        "enable_animations": true
+      },
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "image_alt": "CutCraving chocolate peanut butter jar"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "image_alt": "CutCraving herbal tea collection"
+          }
+        }
+      ]
     }
   ]
 }
