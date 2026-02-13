@@ -107,13 +107,13 @@
      ANIMATION KEYFRAMES
      ======================================= */
   @keyframes hcFadeUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(44px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes hcImageReveal {
-    from { opacity: 0; transform: scale(1.03); }
-    to   { opacity: 1; transform: scale(1); }
+    from { opacity: 0; transform: scale(1.06) translateX(30px); }
+    to   { opacity: 1; transform: scale(1) translateX(0); }
   }
 
   @keyframes hcKenBurns {
@@ -134,32 +134,32 @@
   /* ---- Entrance animation initial state ---- */
   #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate] {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(44px);
   }
 
   #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"] {
     opacity: 0;
-    transform: scale(1.03);
+    transform: scale(1.06) translateX(30px);
   }
 
   /* ---- Entrance animation triggered state ---- */
   #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate].hc-animated {
-    animation: hcFadeUp 0.6s ease-out forwards;
+    animation: hcFadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
   #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"].hc-animated {
-    animation: hcImageReveal 0.8s ease-out forwards;
+    animation: hcImageReveal 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
-  /* Staggered delays for cascade effect */
+  /* Staggered delays — wide spacing for visible cascade */
   #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="img"].hc-animated { animation-delay: 0s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="1"].hc-animated { animation-delay: 0.08s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="2"].hc-animated { animation-delay: 0.18s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="3"].hc-animated { animation-delay: 0.3s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="4"].hc-animated { animation-delay: 0.38s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="5"].hc-animated { animation-delay: 0.46s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="6"].hc-animated { animation-delay: 0.52s; }
-  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="7"].hc-animated { animation-delay: 0.58s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="1"].hc-animated { animation-delay: 0.15s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="2"].hc-animated { animation-delay: 0.35s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="3"].hc-animated { animation-delay: 0.55s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="4"].hc-animated { animation-delay: 0.7s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="5"].hc-animated { animation-delay: 0.85s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="6"].hc-animated { animation-delay: 1.0s; }
+  #hero-craving-{{ section.id }}.hero-craving--animate [data-hc-animate="7"].hc-animated { animation-delay: 1.1s; }
 
   /* ---- Ken Burns continuous movement on active slide images ---- */
   #hero-craving-{{ section.id }} .hero-craving__slide--active img {
@@ -614,21 +614,47 @@
 
   /* =======================================
      DESKTOP LAYOUT (1280px and above)
+     Overlapping 12-col grid: text & image
+     merge into one unified composition.
      ======================================= */
   @media screen and (min-width: 1280px) {
     #hero-craving-{{ section.id }} .hero-craving__container {
       display: grid;
-      grid-template-columns: 60fr 40fr;
-      gap: 60px;
-      padding: 80px 80px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 0;
+      padding: 80px 60px;
       min-height: 680px;
       align-items: center;
     }
 
-    /* On desktop, image comes second (right column) */
+    /* Text content spans left 7 columns, sits ON TOP of image */
+    #hero-craving-{{ section.id }} .hero-craving__content {
+      grid-column: 1 / 8;
+      grid-row: 1;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Image spans right 8 columns, OVERLAPS with text area */
     #hero-craving-{{ section.id }} .hero-craving__image {
+      grid-column: 5 / 13;
+      grid-row: 1;
+      z-index: 1;
       order: 0;
       margin: 0;
+    }
+
+    /* Gradient blend: image fades into the background on its left edge */
+    #hero-craving-{{ section.id }} .hero-craving__image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -1px;
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(to right, var(--hc-bg-center) 0%, rgba(245, 241, 232, 0.7) 40%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__image-mobile {
@@ -638,31 +664,30 @@
     #hero-craving-{{ section.id }} .hero-craving__image-desktop {
       display: block;
       width: 100%;
-      max-width: 750px;
       height: auto;
       object-fit: contain;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__headline {
-      font-size: 84px;
+      font-size: 72px;
       line-height: 1.08;
       letter-spacing: -0.025em;
-      max-width: 680px;
+      max-width: 620px;
       margin-top: 0;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__subline {
-      font-size: 19px;
+      font-size: 18px;
       line-height: 1.6;
-      max-width: 600px;
+      max-width: 540px;
       margin-top: 0;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__ctas {
       gap: 20px;
-      max-width: 380px;
+      max-width: 360px;
       margin-top: 0;
     }
 
@@ -679,21 +704,24 @@
 
     #hero-craving-{{ section.id }} .hero-craving__trust {
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
-      max-width: 620px;
-      margin-top: 44px;
-      padding: 22px 32px;
-      border-radius: 18px;
+      max-width: 580px;
+      margin-top: 40px;
+      padding: 20px 28px;
+      border-radius: 16px;
       border: 1px solid rgba(0, 0, 0, 0.08);
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-      gap: 48px;
+      gap: 36px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-item {
       padding: 0;
       border-bottom: none;
-      gap: 12px;
+      gap: 10px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-item--third {
@@ -701,22 +729,25 @@
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-text {
-      font-size: 14px;
+      font-size: 13px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__trust-text--primary {
-      font-size: 16px;
+      font-size: 15px;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__urgency {
       font-size: 13px;
-      margin-top: 20px;
+      margin-top: 18px;
       justify-content: flex-start;
     }
 
-    /* Dots on desktop */
+    /* Dots on desktop — inside the image area */
     #hero-craving-{{ section.id }} .hero-craving__dots {
       bottom: 18px;
+      right: 24px;
+      left: auto;
+      width: auto;
     }
 
     #hero-craving-{{ section.id }} .hero-craving__dot {
@@ -744,6 +775,26 @@
         background: rgba(255, 255, 255, 0.8);
         transform: scale(1.2);
       }
+    }
+  }
+
+  /* =======================================
+     LARGE DESKTOP (1440px+)
+     Scale up the overlap composition
+     ======================================= */
+  @media screen and (min-width: 1440px) {
+    #hero-craving-{{ section.id }} .hero-craving__container {
+      padding: 80px 100px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__headline {
+      font-size: 80px;
+      max-width: 680px;
+    }
+
+    #hero-craving-{{ section.id }} .hero-craving__subline {
+      font-size: 19px;
+      max-width: 580px;
     }
   }
 
@@ -1090,12 +1141,27 @@
             observer.unobserve(entries[i].target);
           }
         }
-      }, { threshold: 0.15 });
+      }, { threshold: 0.1, rootMargin: '50px' });
 
       var animEls = sectionEl.querySelectorAll('[data-hc-animate]');
       for (var j = 0; j < animEls.length; j++) {
         observer.observe(animEls[j]);
       }
+
+      /* Safety net: if hero is already in viewport on load, trigger after a frame */
+      requestAnimationFrame(function() {
+        var rect = sectionEl.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          for (var k = 0; k < animEls.length; k++) {
+            if (!animEls[k].classList.contains('hc-animated')) {
+              var elRect = animEls[k].getBoundingClientRect();
+              if (elRect.top < window.innerHeight) {
+                animEls[k].classList.add('hc-animated');
+              }
+            }
+          }
+        }
+      });
     })();
     {% endif %}
 
